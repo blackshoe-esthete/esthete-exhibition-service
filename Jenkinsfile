@@ -19,7 +19,7 @@ pipeline {
 
         stage('Gradle Build') {
             steps {
-                sh 'cd /var/jenkins/workspace/${JOB_NAME} && ./gradlew clean build -x test'
+                sh 'cd /jenkins/workspace/${JOB_NAME} && ./gradlew clean build -x test'
             }
         }
 
