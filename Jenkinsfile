@@ -5,7 +5,7 @@ pipeline {
         // 환경 변수 설정
         IMAGE_NAME = 'jaehui327/esthete-core'
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-        JOB_NAME = 'esthete-core-service'
+        JOB_NAME = 'esthete-exhibition-service'
         GITHUB_TOKEN = credentials('github_personal_access_token')
     }
 
