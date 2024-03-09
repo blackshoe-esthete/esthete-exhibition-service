@@ -15,4 +15,3 @@ EXPOSE 8030
 
 # 앱 실행
 ENTRYPOINT ["java","-jar","esthete-exhibition-service.jar"]
-
