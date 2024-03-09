@@ -5,7 +5,7 @@ pipeline {
         // 환경 변수 설정
         IMAGE_NAME = 'jaehui327/esthete-exhibition-service'
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-        JOB_NAME = 'esthete-core-service'
+        JOB_NAME = 'esthete-exhibition-service'
         GITHUB_TOKEN = credentials('github_personal_access_token')
     }
 
@@ -94,17 +94,17 @@ pipeline {
 
                     def githubRepo = 'dgu-web-t3-blackshoe/esthete-gitops'
 
-                    def filePath = 'esthete-charts/esthete-core-chart/values.yaml'
+                    def filePath = 'esthete-charts/esthete-exhibition-chart/values.yaml'
 
                     def newContents = """
-# Default values for esthete-core-chart.
+# Default values for esthete-exhibition-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 # esthete-deployment-chart/values.yaml
 
 image:
-  repository: lsb8375/esthete-core
+  repository: exhibition/esthete-exhibition
   tag: \"${env.IMAGE_TAG}\"
 
 containerPort: 8080
