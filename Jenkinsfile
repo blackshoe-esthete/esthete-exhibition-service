@@ -5,7 +5,7 @@ pipeline {
         // 환경 변수 설정
         IMAGE_NAME = 'jaehui327/esthete-core'
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-        JOB_NAME = 'esthete-exhibition-service'
+        JOB_NAME = 'esthete-core-service'
         GITHUB_TOKEN = credentials('github_personal_access_token')
     }
 
@@ -19,7 +19,7 @@ pipeline {
 
         stage('Gradle Build') {
             steps {
-                sh 'cd /jenkins/workspace/${JOB_NAME} && ./gradlew clean build -x test'
+                sh 'cd /var/jenkins_home/workspace/${JOB_NAME} && ./gradlew clean build -x test'
             }
         }
 
