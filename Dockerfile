@@ -8,7 +8,7 @@ ENV APP_HOME /app
 WORKDIR $APP_HOME
 
 # JAR 파일을 작업 디렉토리에 추가
-ADD ./build/libs/esthete-exhibition-service-0.0.1-SNAPSHOT.jar esthete-exhibition-service.jar
+ADD ./build/libs/esthete-0.0.1-SNAPSHOT.jar esthete-exhibition-service.jar
 
 # 포트 설정
 EXPOSE 8030
