@@ -92,7 +92,7 @@ pipeline {
                 script {
                     def githubToken = env.GITHUB_TOKEN
 
-                    def githubRepo = 'dgu-web-t3-blackshoe/esthete-gitops'
+                    def githubRepo = 'blackshoe-esthete/esthete-gitops'
 
                     def filePath = 'esthete-charts/esthete-exhibition-chart/values.yaml'
 
@@ -104,10 +104,10 @@ pipeline {
 # esthete-deployment-chart/values.yaml
 
 image:
-  repository: exhibition/esthete-exhibition
+  repository: jaehui327/esthete-exhibition-service
   tag: \"${env.IMAGE_TAG}\"
 
-containerPort: 8080
+containerPort: 8030
 
 ingress:
   enabled: true
