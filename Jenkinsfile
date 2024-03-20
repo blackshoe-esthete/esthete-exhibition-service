@@ -19,7 +19,7 @@ pipeline {
 
         stage('Gradle Build') {
             steps {
-                sh 'cd /var/jenkins_home/workspace/${JOB_NAME} && ./gradlew clean build -x test'
+                sh 'cd /var/lib/jenkins/workspace/${JOB_NAME} && ./gradlew clean build -x test'
             }
         }
 
@@ -61,7 +61,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} --platform linux/amd64 -f /var/jenkins_home/workspace/${JOB_NAME}/Dockerfile /var/jenkins_home/workspace/${JOB_NAME}"
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} --platform linux/amd64 -f /var/lib/jenkins/workspace/${JOB_NAME}/Dockerfile /var/lib/jenkins/workspace/${JOB_NAME}"
             }
         }
 
