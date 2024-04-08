@@ -118,8 +118,7 @@ controller:
     appResyncPeriod: 60
 """
                     def shaOutput = sh(script: """
-curl -L \
--X GET \
+curl -L -X GET \
 -H "Accept: application/vnd.github+json" \
 -H "Authorization: Bearer $GITHUB_TOKEN" \
 -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -141,8 +140,7 @@ https://api.github.com/repos/${githubRepo}/contents/${filePath} | jq -r '.sha'
                     sh "rm temp-new-contents.yaml"
 
                     def response = sh(script: """
-curl -L \ 
--X PUT \
+curl -L -X PUT \
 -H "Accept: application/vnd.github+json" \
 -H "Authorization: Bearer $GITHUB_TOKEN" \
 -H "X-GitHub-Api-Version: 2022-11-28" \
