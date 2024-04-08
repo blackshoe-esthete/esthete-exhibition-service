@@ -90,8 +90,6 @@ pipeline {
         stage('Update values.yaml on GitHub') {
             steps {
                 script {
-                    # def githubToken = env.GITHUB_TOKEN
-
                     def githubRepo = 'blackshoe-esthete/esthete-gitops'
 
                     def filePath = 'esthete-charts/esthete-exhibition-chart/values.yaml'
