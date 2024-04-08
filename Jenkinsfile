@@ -118,14 +118,14 @@ controller:
     appResyncPeriod: 60
 """
                     def shaOutput = sh(script: """
-curl -s -X GET \
+curl -L -X GET \
 -H "Accept: application/vnd.github+json" \
 -H "X-GitHub-Api-Version: 2022-11-28" \
 -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/${githubRepo}/contents/${filePath} | jq -r '.sha'
 """, returnStdout: true)
 
                     def sha = shaOutput.trim() // 가져온 출력의 앞뒤 공백을 제거하고 저장
-                    println("sha: ${shaOutput}")
+                    println("sha: ${sha}")
 
                     // newContents를 파일에 저장
                     def newContentsFile = writeFile file: "temp-new-contents.yaml", text: newContents
