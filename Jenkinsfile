@@ -126,7 +126,7 @@ https://api.github.com/repos/${githubRepo}/contents/${filePath} | jq -r '.sha'
 """, returnStdout: true)
 
                     def sha = shaOutput.trim() // 가져온 출력의 앞뒤 공백을 제거하고 저장
-                    println("sha: ${sha}")
+                    println("sha: $sha")
 
                     // newContents를 파일에 저장
                     def newContentsFile = writeFile file: "temp-new-contents.yaml", text: newContents
@@ -145,7 +145,7 @@ curl -L -X PUT \
 -H "Authorization: Bearer $GITHUB_TOKEN" \
 -H "X-GitHub-Api-Version: 2022-11-28" \
 https://api.github.com/repos/${githubRepo}/contents/${filePath} \
--d '{"message": "Chore: Update image tag to $IMAGE_TAG by Jenkins","content": "$base64Contents","branch": "main","sha": $sha}'
+-d '{"message": "Chore: Update image tag to $IMAGE_TAG by Jenkins","content": $base64Contents}'
 """, returnStatus: true)
 
                     if (response == 0) {
