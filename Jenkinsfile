@@ -118,7 +118,7 @@ controller:
     appResyncPeriod: 60
 """
                     def shaOutput = sh(script: """
-curl -L -X GET \
+curl -v -X GET \
 -H "Accept: application/vnd.github+json" \
 -H "X-GitHub-Api-Version: 2022-11-28" \
 -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/${githubRepo}/contents/${filePath} | jq -r '.sha'
@@ -139,7 +139,7 @@ curl -L -X GET \
                     sh "rm temp-new-contents.yaml"
 
                     def response = sh(script: """
-curl -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/${githubRepo}/contents/${filePath} -d '{"message": "Chore: Update image tag to ${env.IMAGE_TAG} by Jenkins","content": "${base64Contents}","branch": "deployment","sha": "$sha"}'
+curl -v -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/${githubRepo}/contents/${filePath} -d '{"message": "Chore: Update image tag to ${env.IMAGE_TAG} by Jenkins","content": "${base64Contents}","branch": "deployment","sha": "$sha"}'
 """, returnStatus: true)
 
                     if (response == 0) {
