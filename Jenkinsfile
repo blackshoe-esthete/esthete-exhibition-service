@@ -96,7 +96,7 @@ pipeline {
 
                     def filePath = 'esthete-charts/esthete-exhibition-chart/values.yaml'
 
-                    def newContents = """
+                    def newContents = '''
 # Default values for esthete-exhibition-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -116,13 +116,13 @@ controller:
   ## Argo controller commandline flags
   args:
     appResyncPeriod: 60
-"""
-                    def shaOutput = sh(script: """
-curl -s -X GET \\
--H "Accept: application/vnd.github+json" \\
--H "X-GitHub-Api-Version: 2022-11-28" \\
--H 'Authorization: Bearer $GITHUB_TOKEN' https://api.github.com/repos/${githubRepo}/contents/${filePath}?ref=deployment | jq -r '.sha'
-""", returnStdout: true)
+'''
+                    def shaOutput = sh(script: '''
+curl -L \
+-H "Accept: application/vnd.github+json" \
+-H "X-GitHub-Api-Version: 2022-11-28" \
+-H 'Authorization: Bearer $GITHUB_TOKEN' https://api.github.com/repos/${githubRepo}/contents/${filePath} | jq -r '.sha'
+''', returnStdout: true)
 
                     def sha = shaOutput.trim() // 가져온 출력의 앞뒤 공백을 제거하고 저장
                     println("sha: ${sha}")
@@ -138,9 +138,9 @@ curl -s -X GET \\
                     // 파일 삭제
                     sh "rm temp-new-contents.yaml"
 
-                    def response = sh(script: """
+                    def response = sh(script: '''
 curl -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/${githubRepo}/contents/${filePath} -d '{"message": "Chore: Update image tag to ${env.IMAGE_TAG} by Jenkins","content": "${base64Contents}","branch": "deployment","sha": "$sha"}'
-""", returnStatus: true)
+''', returnStatus: true)
 
                     if (response == 0) {
                         currentBuild.result = 'SUCCESS'
