@@ -145,7 +145,7 @@ curl -L -X PUT \
 -H "Authorization: Bearer $GITHUB_TOKEN" \
 -H "X-GitHub-Api-Version: 2022-11-28" \
 https://api.github.com/repos/${githubRepo}/contents/${filePath} \
--d '{"message": "Chore: Update image tag to $IMAGE_TAG by Jenkins","content": "${base64Contents}","branch": "deployment","sha": $sha}'
+-d '{"message": "Chore: Update image tag to $IMAGE_TAG by Jenkins","content": "$base64Contents","branch": "main","sha": $sha}'
 """, returnStatus: true)
 
                     if (response == 0) {
