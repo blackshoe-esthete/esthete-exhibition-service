@@ -141,7 +141,7 @@ https://api.github.com/repos/${githubRepo}/contents/${filePath} | jq -r '.sha'
                     sh "rm temp-new-contents.yaml"
 
                     def response = sh(script: """
-curl -L\ 
+curl -L \ 
 -X PUT \
 -H "Accept: application/vnd.github+json" \
 -H "Authorization: Bearer $GITHUB_TOKEN" \
