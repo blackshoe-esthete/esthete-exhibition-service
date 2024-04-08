@@ -125,7 +125,7 @@ curl -s -X GET \
 """, returnStdout: true)
 
                     def sha = shaOutput.trim() // 가져온 출력의 앞뒤 공백을 제거하고 저장
-                    println("sha: ${sha}")
+                    println("sha: ${shaOutput}")
 
                     // newContents를 파일에 저장
                     def newContentsFile = writeFile file: "temp-new-contents.yaml", text: newContents
