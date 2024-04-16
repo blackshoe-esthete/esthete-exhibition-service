@@ -47,9 +47,6 @@ public class Photo {
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
 
-    @Column(name = "shooting_time", nullable = false, length = 20)
-    private LocalDateTime shootingTime;
-
     public void increaseViewCount() {
         this.viewCount++;
     }
