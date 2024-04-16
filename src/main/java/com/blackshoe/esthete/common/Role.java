@@ -1,4 +1,4 @@
-package com.blackshoe.esthete.entity;
+package com.blackshoe.esthete.common;
 
 public enum Role {
     USER("ROLE_USER");
