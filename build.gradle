@@ -34,6 +34,8 @@ dependencies {
 	implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.20'
 	// Spring Context Support
 	implementation 'org.springframework:spring-context-support:5.3.9'
+	// AWS S3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('bootBuildImage') {
