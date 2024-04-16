@@ -32,7 +32,7 @@ public class ExhibitionEquipment {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    private UUID exhibitionEquipmentId;
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;

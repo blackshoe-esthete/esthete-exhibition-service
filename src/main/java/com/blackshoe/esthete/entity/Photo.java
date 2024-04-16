@@ -38,7 +38,7 @@ public class Photo {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    private UUID photoId;
 
     @Column(name = "view_count")
     private Long viewCount;

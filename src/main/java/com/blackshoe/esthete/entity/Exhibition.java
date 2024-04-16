@@ -30,7 +30,7 @@ public class Exhibition {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    private UUID exhibitionId;
 
     @Column(name = "thumbnail_url", nullable = false)
     private String cloudfrontUrl;

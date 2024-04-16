@@ -26,7 +26,7 @@ public class GuestBook {
     private User user;
 
     @Column(columnDefinition = "BINARY(16)", name = "guest_uuid", nullable = false)
-    private UUID guestUuid;
+    private UUID guestId;
 
     @Column(name = "content", nullable = false, length = 50)
     private String content;

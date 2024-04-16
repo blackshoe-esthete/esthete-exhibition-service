@@ -24,7 +24,7 @@ public class Tag {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    private UUID tagId;
 
     @Column(name = "name", nullable = false, length = 10)
     private String name;
