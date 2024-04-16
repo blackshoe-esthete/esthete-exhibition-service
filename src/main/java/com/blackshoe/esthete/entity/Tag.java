@@ -20,10 +20,7 @@ public class Tag {
     @Column(name = "tags_id")
     private Long id;
 
-    @Column(name = "tags_uuid", nullable = false)
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Column(name = "tags_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID tagId;
 
     @Column(name = "name", nullable = false, length = 10)
