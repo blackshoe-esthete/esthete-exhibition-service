@@ -34,7 +34,7 @@ public class Like {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    private UUID likeId;
 
     @Column(columnDefinition = "BINARY(16)", name = "like_user_uuid", nullable = false)
     private UUID likeUserUuid;

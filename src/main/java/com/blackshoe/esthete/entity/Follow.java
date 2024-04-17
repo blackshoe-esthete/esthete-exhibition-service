@@ -30,10 +30,10 @@ public class Follow {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    private UUID followId;
 
     @Column(columnDefinition = "BINARY(16)", name = "follower_uuid", nullable = false)
-    private UUID followerUuid;
+    private UUID followerId;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, length = 20)

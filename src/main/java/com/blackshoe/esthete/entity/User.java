@@ -1,7 +1,7 @@
 package com.blackshoe.esthete.entity;
 
-import com.blackshoe.esthete.common.Gender;
-import com.blackshoe.esthete.common.Role;
+import com.blackshoe.esthete.common.constant.Gender;
+import com.blackshoe.esthete.common.constant.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,14 +25,8 @@ public class User {
     @Column(name = "users_id")
     private Long id;
 
-    @Column(name = "users_uuid", nullable = false)
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
-
-    @Column(name = "provider", nullable = false, length = 50)
-    private String provider;
+    @Column(name = "users_uuid", columnDefinition = "BINARY(16)", unique = true)
+    private UUID userId;
 
     @Column(name = "nickname", nullable = false, length = 50)
     private String nickname;

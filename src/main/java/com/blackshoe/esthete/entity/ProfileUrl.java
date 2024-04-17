@@ -28,7 +28,7 @@ public class ProfileUrl {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    private UUID profileUrlId;
 
     @Column(name = "img_url", nullable = false)
     private String cloudfrontUrl;

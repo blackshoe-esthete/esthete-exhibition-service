@@ -1,4 +1,4 @@
-package com.blackshoe.esthete.common;
+package com.blackshoe.esthete.common.constant;
 
 public enum Role {
     USER("ROLE_USER");

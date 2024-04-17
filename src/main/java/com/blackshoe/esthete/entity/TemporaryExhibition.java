@@ -24,11 +24,11 @@ public class TemporaryExhibition {
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "temporary_exhibitions_fk_users_id"))
     private User user;
 
-    @Column(name = "exhibitions_uuid", nullable = false)
+    @Column(name = "temporary_exhibitions_uuid", nullable = false)
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    private UUID temporaryExhibitionId;
 
     @Column(name = "thumbnail_url", nullable = false)
     private String cloudfrontUrl;

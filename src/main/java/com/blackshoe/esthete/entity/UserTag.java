@@ -2,6 +2,7 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,4 +23,10 @@ public class UserTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tags_id", foreignKey = @ForeignKey(name = "user_tags_fk_tags_id"))
     private Tag tag;
+
+    @Builder
+    public UserTag(User user, Tag tag) {
+        this.user = user;
+        this.tag = tag;
+    }
 }

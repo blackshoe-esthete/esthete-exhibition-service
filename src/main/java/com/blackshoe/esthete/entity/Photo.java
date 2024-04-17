@@ -38,7 +38,7 @@ public class Photo {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    private UUID photoId;
 
     @Column(name = "view_count")
     private Long viewCount;
@@ -46,9 +46,6 @@ public class Photo {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
-
-    @Column(name = "shooting_time", nullable = false, length = 20)
-    private LocalDateTime shootingTime;
 
     public void increaseViewCount() {
         this.viewCount++;
