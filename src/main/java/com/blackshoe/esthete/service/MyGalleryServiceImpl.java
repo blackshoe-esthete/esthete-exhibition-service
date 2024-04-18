@@ -11,6 +11,7 @@ import com.blackshoe.esthete.exception.UserException;
 import com.blackshoe.esthete.repository.TagRepository;
 import com.blackshoe.esthete.repository.UserRepository;
 import com.blackshoe.esthete.repository.UserTagRepository;
+import com.blackshoe.esthete.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,15 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final UserRepository userRepository;
     private final UserTagRepository userTagRepository;
     private final TagRepository tagRepository;
+    private final JwtUtil jwtUtil;
 
     // 사용자의 태그 목록을 수정하는 메서드
     @Override
     @Transactional
-    public EditUserTagsDto.EditUserTagsResponse editUserTags(UUID userId, EditUserTagsDto.EditUserTagsRequest editUserTagsRequest) {
-        User user = userRepository.findByUserId(userId).orElseThrow(
+    public EditUserTagsDto.EditUserTagsResponse editUserTags(String authorizationHeader, EditUserTagsDto.EditUserTagsRequest editUserTagsRequest) {
+        String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
+        String userId = jwtUtil.getUserIdFromToken(accessToken);
+        User user = userRepository.findByUserId(UUID.fromString(userId)).orElseThrow(
                 () -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
         List<EditUserTagsDto.TagName> tagNameList = editUserTagsRequest.getTagNameList();
