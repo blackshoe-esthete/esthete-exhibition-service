@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum SuccessStatus implements BaseCode {
-    _OK(HttpStatus.OK, "200", "성공 입니다."),
+    _OK(HttpStatus.OK, "200", "성공입니다."),
     _CREATED(HttpStatus.CREATED, "201", "성공적으로 생성되었습니다."),
     _EDIT_USER_TAGS(HttpStatus.OK, "200", "선호 태그 수정에 성공했습니다.");
 

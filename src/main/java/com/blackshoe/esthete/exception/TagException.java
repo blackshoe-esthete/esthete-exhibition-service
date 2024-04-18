@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class TagException extends RuntimeException{
+public class TagException extends RuntimeException {
     private final TagErrorResult tagErrorResult;
 
     @Override
