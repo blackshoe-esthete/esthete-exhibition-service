@@ -23,4 +23,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         UserErrorResult errorResult = e.getUserErrorResult();
         return ApiResponse.onFailure(errorResult);
     }
+
+    @ExceptionHandler(TagException.class)
+    public ResponseEntity<ApiResponse<BaseErrorCode>> handleUserException(TagException e) {
+        TagErrorResult errorResult = e.getTagErrorResult();
+        return ApiResponse.onFailure(errorResult);
+    }
 }
