@@ -1,9 +1,7 @@
 package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -35,4 +33,17 @@ public class ProfileUrl {
 
     @Column(name = "s3_url", nullable = false)
     private String s3Url;
+
+    @Builder
+    public ProfileUrl(User user, UUID profileUrlId, String cloudfrontUrl, String s3Url) {
+        this.user = user;
+        this.profileUrlId = profileUrlId;
+        this.cloudfrontUrl = cloudfrontUrl;
+        this.s3Url = s3Url;
+    }
+
+    public void updateProfileUrl(String cloudfrontUrl, String s3Url) {
+        this.cloudfrontUrl = cloudfrontUrl;
+        this.s3Url = s3Url;
+    }
 }
