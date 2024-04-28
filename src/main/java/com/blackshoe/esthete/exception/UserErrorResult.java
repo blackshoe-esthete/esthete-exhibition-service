@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum UserErrorResult implements BaseErrorCode {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "404", "존재하지 않는 유저입니다."),
-    ;
+    INTRODUCE_TOO_LONG(HttpStatus.UNPROCESSABLE_ENTITY, "422", "한 줄 소개가 20자를 초과했습니다."),
+    BIOGRAPHY_TOO_LONG(HttpStatus.UNPROCESSABLE_ENTITY, "422", "약력이 50자를 초과했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
