@@ -17,7 +17,7 @@ public class EditUserProfileDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class EditUserProfileImgResponse {
         private String s3Url;
-        private String cloudFrontUrl;
+        private String cloudfrontUrl;
     }
 
     @Data

@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
         return EditUserProfileDto.EditUserProfileImgResponse.builder()
                 .s3Url(s3Url)
-                .cloudFrontUrl(cloudFrontUrl)
+                .cloudfrontUrl(cloudFrontUrl)
                 .build();
     }
 
