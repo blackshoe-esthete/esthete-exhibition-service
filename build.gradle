@@ -35,7 +35,8 @@ dependencies {
 	// Spring Context Support
 	implementation 'org.springframework:spring-context-support:5.3.9'
 	// AWS S3
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.0")
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
 }
 
 tasks.named('bootBuildImage') {

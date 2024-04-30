@@ -40,7 +40,12 @@ cloud:
       secretKey: ${S3_SECRET_KEY}
     s3:
       bucket: ${S3_BUCKET_NAME}
+      root-directory: ${S3_ROOT_DIRECTORY}
+      user-directory: ${S3_USER_DIRECTORY}
+      profile-directory: ${S3_PROFILE_DIRECTORY}
     region:
-      static: ap-northeast-2
+      static: ${S3_REGION}
     stack:
       auto: false
+    cloudfront:
+      domain-name: ${CLOUD_FRONT_DOMAIN_NAME}

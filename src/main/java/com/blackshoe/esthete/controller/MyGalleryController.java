@@ -2,25 +2,49 @@ package com.blackshoe.esthete.controller;
 
 import com.blackshoe.esthete.common.ApiResponse;
 import com.blackshoe.esthete.common.constant.SuccessStatus;
+import com.blackshoe.esthete.dto.EditUserProfileDto;
 import com.blackshoe.esthete.dto.EditUserTagsDto;
 import com.blackshoe.esthete.service.MyGalleryService;
+import com.blackshoe.esthete.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/mygallery")
 @RequiredArgsConstructor
 public class MyGalleryController {
-    private final MyGalleryService myGalleryService;
+     private final MyGalleryService myGalleryService;
+     private final UserService userService;
 
     // 사용자의 선호 태그를 수정하는 API
     @PutMapping("/edit/user/tags")
-    public ResponseEntity<ApiResponse<Object>> editUserTags(
+    public ResponseEntity<ApiResponse<EditUserTagsDto.EditUserTagsResponse>> editUserTags(
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody EditUserTagsDto.EditUserTagsRequest editUserTagsRequest) {
 
         EditUserTagsDto.EditUserTagsResponse editUserTagsResponse = myGalleryService.editUserTags(authorizationHeader, editUserTagsRequest);
-        return ApiResponse.onSuccess(SuccessStatus._EDIT_USER_TAGS, editUserTagsResponse);
+        return ApiResponse.onSuccess(SuccessStatus.EDIT_USER_TAGS, editUserTagsResponse);
+    }
+
+    // 사용자의 프로필 이미지를 수정하는 API
+    @PutMapping("/edit/user/profile/img")
+    public ResponseEntity<ApiResponse<EditUserProfileDto.EditUserProfileImgResponse>> editUserProfile(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestPart("file") MultipartFile multipartFile) {
+
+        EditUserProfileDto.EditUserProfileImgResponse editUserProfileResponse = userService.editUserProfileImg(authorizationHeader, multipartFile);
+        return ApiResponse.onSuccess(SuccessStatus.EDIT_USER_PROFILE_IMG, editUserProfileResponse);
+    }
+
+    // 사용자의 프로필 정보를 수정하는 API
+    @PutMapping("/edit/user/profile/infos")
+    public ResponseEntity<ApiResponse<EditUserProfileDto.EditUserProfileInfosResponse>> editUserProfile(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody EditUserProfileDto.EditUserProfileInfosRequest editUserProfileInfosRequest) {
+
+        EditUserProfileDto.EditUserProfileInfosResponse editUserProfileInfosResponse = userService.editUserProfileInfos(authorizationHeader, editUserProfileInfosRequest);
+        return ApiResponse.onSuccess(SuccessStatus.EDIT_USER_PROFILE_INFOS, editUserProfileInfosResponse);
     }
 }

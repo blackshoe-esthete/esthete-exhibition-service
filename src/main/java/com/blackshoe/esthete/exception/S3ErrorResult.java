@@ -8,10 +8,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum UserErrorResult implements BaseErrorCode {
-    NOT_FOUND_USER(HttpStatus.NOT_FOUND, "404", "존재하지 않는 유저입니다."),
-    INTRODUCE_TOO_LONG(HttpStatus.UNPROCESSABLE_ENTITY, "422", "한 줄 소개가 20자를 초과했습니다."),
-    BIOGRAPHY_TOO_LONG(HttpStatus.UNPROCESSABLE_ENTITY, "422", "약력이 50자를 초과했습니다.");
+public enum S3ErrorResult implements BaseErrorCode {
+    IMAGE_SIZE_TOO_LARGE(HttpStatus.PAYLOAD_TOO_LARGE, "413", "이미지 크기가 너무 큽니다."),
+    CONVERSION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "500", "File로의 전환에 실패했습니다."),
+    S3_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "500", "S3 파일 업로드에 실패했습니다."),
+    S3_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "500", "S3 파일 삭제에 실패했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

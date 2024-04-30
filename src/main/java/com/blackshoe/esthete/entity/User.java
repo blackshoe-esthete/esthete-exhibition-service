@@ -7,10 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -68,5 +65,11 @@ public class User {
 
     public void increaseSupportCount() {
         this.supportCount++;
+    }
+
+    public void updateUserProfile(String nickname, String introduce, String biography) {
+        this.nickname = nickname;
+        this.introduce = introduce;
+        this.biography = biography;
     }
 }
