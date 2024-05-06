@@ -15,7 +15,9 @@ public enum SuccessStatus implements BaseCode {
     // MyGallery
     EDIT_USER_TAGS(HttpStatus.OK, "200", "선호 태그 수정에 성공했습니다."),
     EDIT_USER_PROFILE_IMG(HttpStatus.OK, "200", "프로필 사진 수정에 성공했습니다."),
-    EDIT_USER_PROFILE_INFOS(HttpStatus.OK, "200", "프로필 정보 수정에 성공했습니다.");
+    EDIT_USER_PROFILE_INFOS(HttpStatus.OK, "200", "프로필 정보 수정에 성공했습니다."),
+    UPLOAD_EXHIBITION_PHOTO(HttpStatus.OK, "201", "전시 사진 추가에 성공했습니다."),
+    UPLOAD_EXHIBITION(HttpStatus.CREATED, "201", "전시 제작에 성공했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

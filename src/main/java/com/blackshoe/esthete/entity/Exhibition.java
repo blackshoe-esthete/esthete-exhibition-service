@@ -2,12 +2,10 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -26,10 +24,7 @@ public class Exhibition {
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "exhibitions_fk_users_id"))
     private User user;
 
-    @Column(name = "exhibitions_uuid", nullable = false)
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Column(name = "exhibitions_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID exhibitionId;
 
     @Column(name = "thumbnail_url", nullable = false)
@@ -47,6 +42,16 @@ public class Exhibition {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
+
+    @Builder
+    public Exhibition(User user, UUID exhibitionId, String cloudfrontUrl, String title, String description) {
+        this.user = user;
+        this.exhibitionId = exhibitionId;
+        this.cloudfrontUrl = cloudfrontUrl;
+        this.title = title;
+        this.description = description;
+        this.viewCount = 0L;
+    }
 
     public void increaseViewCount() {
         this.viewCount++;

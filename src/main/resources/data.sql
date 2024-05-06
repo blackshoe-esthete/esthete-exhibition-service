@@ -28,6 +28,19 @@ INSERT INTO tags (tags_uuid, name) VALUES
 
 ON DUPLICATE KEY UPDATE tags_uuid = tags_uuid;
 
+-- 디폴트 유저 삽입
 INSERT INTO users (users_uuid, nickname, email, role, gender, introduce, biography, created_at, updated_at, view_count, support_count) VALUES
     (UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), 'test_user', 'hsh111366@naver.com', 'USER', 'MALE', '', '', NOW(), NOW(), 0, 0)
     ON DUPLICATE KEY UPDATE users_uuid = users_uuid;
+
+-- 디폴트 임시저장 전시 삽입
+INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbnail_url) VALUES
+    (UNHEX(REPLACE('33a7b24b-c1ac-7252-ca7f-c6706daf22aa', '-', '')), 1, "https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg")
+    ON DUPLICATE KEY UPDATE temporary_exhibitions_uuid = temporary_exhibitions_uuid;
+
+-- 디폴트 임시저장 전시 사진 삽입
+INSERT INTO temporary_exhibitions_photos (temporary_exhibitions_id, img_url, s3_url) VALUES
+    (1, "https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg", "https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg"),
+    (1, "https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg", "https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg"),
+    (1, "https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg", "https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg")
+    ON DUPLICATE KEY UPDATE temporary_exhibitions_photos_id = temporary_exhibitions_photos_id;
