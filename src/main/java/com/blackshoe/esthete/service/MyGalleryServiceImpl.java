@@ -31,18 +31,16 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     // 사용자의 태그 목록을 수정하는 메서드
     @Override
     @Transactional
-    public EditUserTagsDto.EditUserTagsResponse editUserTags(String authorizationHeader, EditUserTagsDto.EditUserTagsRequest editUserTagsRequest) {
+    public EditUserTagsDto.TagList editUserTags(String authorizationHeader, EditUserTagsDto.TagList tagList) {
         String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
         String userId = jwtUtil.getUserIdFromToken(accessToken);
         User user = userRepository.findByUserId(UUID.fromString(userId)).orElseThrow(
                 () -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
-        List<EditUserTagsDto.TagName> tagNameList = editUserTagsRequest.getTagNameList();
-
         // 중복 태그 확인
         Set<String> tagNames = new HashSet<>();
-        for (EditUserTagsDto.TagName tagName : tagNameList) {
-            if (!tagNames.add(tagName.getTagName())) {
+        for (String tagName : tagList.getTagList()) {
+            if (!tagNames.add(tagName)) {
                 // 중복된 태그가 있는 경우
                 throw new TagException(TagErrorResult.DUPLICATE_TAG);
             }
@@ -52,9 +50,9 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         userTagRepository.deleteAllByUser(user);
 
         // 새로운 태그들을 생성하여 UserTag 엔티티로 변환하여 저장
-        List<UserTag> newTagNameList = tagNameList.stream()
+        List<UserTag> newTagNameList = tagList.getTagList().stream()
                 .map(tagName -> {
-                    Tag tag = tagRepository.findByName(tagName.getTagName())
+                    Tag tag = tagRepository.findByName(tagName)
                             .orElseThrow(() -> new TagException(TagErrorResult.NOT_FOUND_TAG));
                     return UserTag.builder()
                             .user(user)
@@ -66,15 +64,8 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         // 새로 생성한 UserTag 엔티티들을 저장
         userTagRepository.saveAll(newTagNameList);
 
-        // 유저의 태그 리스트 조회
-        List<EditUserTagsDto.TagName> savedTagNameList = userTagRepository.findByUser(user).stream()
-                .map(userTag -> EditUserTagsDto.TagName.builder().tagName(userTag.getTag().getName()).build())
-                .collect(Collectors.toList());
-
         // 응답에 유저의 태그 리스트를 포함하여 반환
-        return EditUserTagsDto.EditUserTagsResponse.builder()
-                .tagNameList(savedTagNameList)
-                .build();
+        return tagList;
     }
 
     // 전시를 업로드하는 메소드
