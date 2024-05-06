@@ -4,6 +4,7 @@ import com.blackshoe.esthete.common.ApiResponse;
 import com.blackshoe.esthete.common.constant.SuccessStatus;
 import com.blackshoe.esthete.dto.EditUserProfileDto;
 import com.blackshoe.esthete.dto.EditUserTagsDto;
+import com.blackshoe.esthete.dto.UploadExhibitionDto;
 import com.blackshoe.esthete.service.MyGalleryService;
 import com.blackshoe.esthete.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,15 @@ public class MyGalleryController {
 
         EditUserProfileDto.EditUserProfileInfosResponse editUserProfileInfosResponse = userService.editUserProfileInfos(authorizationHeader, editUserProfileInfosRequest);
         return ApiResponse.onSuccess(SuccessStatus.EDIT_USER_PROFILE_INFOS, editUserProfileInfosResponse);
+    }
+
+    // 전시를 업로드하는 API
+    @PostMapping("/upload/exhibitions")
+    public ResponseEntity<ApiResponse<UploadExhibitionDto.UploadExhibitionResponse>> uploadExhibition(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
+
+        UploadExhibitionDto.UploadExhibitionResponse uploadExhibitionResponse = myGalleryService.uploadExhibition(authorizationHeader, uploadExhibitionRequest);
+        return ApiResponse.onSuccess(SuccessStatus.UPLOAD_EXHIBITION, uploadExhibitionResponse);
     }
 }

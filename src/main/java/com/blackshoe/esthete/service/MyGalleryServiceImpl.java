@@ -1,25 +1,16 @@
 package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.dto.EditUserTagsDto;
-import com.blackshoe.esthete.entity.Tag;
-import com.blackshoe.esthete.entity.User;
-import com.blackshoe.esthete.entity.UserTag;
-import com.blackshoe.esthete.exception.TagErrorResult;
-import com.blackshoe.esthete.exception.TagException;
-import com.blackshoe.esthete.exception.UserErrorResult;
-import com.blackshoe.esthete.exception.UserException;
-import com.blackshoe.esthete.repository.TagRepository;
-import com.blackshoe.esthete.repository.UserRepository;
-import com.blackshoe.esthete.repository.UserTagRepository;
+import com.blackshoe.esthete.dto.UploadExhibitionDto;
+import com.blackshoe.esthete.entity.*;
+import com.blackshoe.esthete.exception.*;
+import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +18,14 @@ import java.util.stream.Collectors;
 public class MyGalleryServiceImpl implements MyGalleryService {
     private final UserRepository userRepository;
     private final UserTagRepository userTagRepository;
+    private final PhotoRepository photoRepository;
+    private final PhotoUrlRepository photoUrlRepository;
     private final TagRepository tagRepository;
+    private final ExhibitionTagRepository exhibitionTagRepository;
+    private final ExhibitionRepository exhibitionRepository;
+    private final ExhibitionLocationRepository exhibitionLocationRepository;
+    private final TemporaryExhibitionRepository temporaryExhibitionRepository;
+    private final TemporaryExhibitionPhotoRepository temporaryExhibitionPhotoRepository;
     private final JwtUtil jwtUtil;
 
     // 사용자의 태그 목록을 수정하는 메서드
@@ -76,6 +74,84 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         // 응답에 유저의 태그 리스트를 포함하여 반환
         return EditUserTagsDto.EditUserTagsResponse.builder()
                 .tagNameList(savedTagNameList)
+                .build();
+    }
+
+    // 전시를 업로드하는 메소드
+    @Override
+    @Transactional
+    public UploadExhibitionDto.UploadExhibitionResponse uploadExhibition(String authorizationHeader, UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
+        String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
+        String userId = jwtUtil.getUserIdFromToken(accessToken);
+        User user = userRepository.findByUserId(UUID.fromString(userId)).orElseThrow(
+                () -> new UserException(UserErrorResult.NOT_FOUND_USER));
+        TemporaryExhibition temporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(uploadExhibitionRequest.getTemporaryExhibitionId()).orElseThrow(
+                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION));
+
+        // Exhibition 엔터티 생성 & 저장
+        Exhibition exhibition = Exhibition.builder()
+                .user(user)
+                .exhibitionId(temporaryExhibition.getTemporaryExhibitionId())
+                .cloudfrontUrl(temporaryExhibition.getCloudfrontUrl())
+                .title(uploadExhibitionRequest.getTitle())
+                .description(uploadExhibitionRequest.getDescription())
+                .build();
+
+        exhibitionRepository.save(exhibition);
+
+        // ExhibitionTag 엔터티 생성 & 저장
+        for (String tagName : uploadExhibitionRequest.getTagList()) {
+            Tag tag = tagRepository.findByName(tagName).orElseThrow(
+                    () -> new TagException(TagErrorResult.NOT_FOUND_TAG));
+
+            ExhibitionTag exhibitionTag = ExhibitionTag.builder()
+                    .user(user)
+                    .exhibition(exhibition)
+                    .tag(tag)
+                    .build();
+
+            exhibitionTagRepository.save(exhibitionTag);
+        }
+
+        // Photo & PhotoUrl 엔터티 생성 & 저장
+        List<TemporaryExhibitionPhoto> temporaryExhibitionPhotoList = temporaryExhibitionPhotoRepository.findAllByTemporaryExhibition(temporaryExhibition);
+        for (TemporaryExhibitionPhoto temporaryExhibitionPhoto : temporaryExhibitionPhotoList) {
+            Photo photo = Photo.builder()
+                    .user(user)
+                    .exhibition(exhibition)
+                    .build();
+
+            photoRepository.save(photo);
+
+            PhotoUrl photoUrl = PhotoUrl.builder()
+                    .photo(photo)
+                    .cloudfrontUrl(temporaryExhibition.getCloudfrontUrl())
+                    .s3Url(temporaryExhibitionPhoto.getS3Url())
+                    .build();
+
+            photoUrlRepository.save(photoUrl);
+        }
+
+        // ExhibitionLocation 엔터티 생성 & 저장
+        if (uploadExhibitionRequest.getLocationInfo() != null) {
+            ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
+                    .user(user)
+                    .exhibition(exhibition)
+                    .longitude(uploadExhibitionRequest.getLocationInfo().getLongitude())
+                    .latitude(uploadExhibitionRequest.getLocationInfo().getLatitude())
+                    .state(uploadExhibitionRequest.getLocationInfo().getState())
+                    .city(uploadExhibitionRequest.getLocationInfo().getCity())
+                    .town(uploadExhibitionRequest.getLocationInfo().getTown())
+                    .build();
+
+            exhibitionLocationRepository.save(exhibitionLocation);
+        }
+
+        // TemporaryExhibition 엔터티 삭제
+        temporaryExhibitionRepository.delete(temporaryExhibition);
+
+        return UploadExhibitionDto.UploadExhibitionResponse.builder()
+                .exhibitionId(exhibition.getExhibitionId())
                 .build();
     }
 }
