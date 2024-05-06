@@ -77,7 +77,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sudo docker stop ${{ env.IMAGE_NAME }} || true
             sudo docker rm ${{ env.IMAGE_NAME }} || true
-            sudo docker run -d --name ${{ env.IMAGE_NAME }} -p 8030:8030 \
+            sudo docker run -d --name ${{ env.IMAGE_NAME }} --network exhibition-network -p 8030:8030 \
                 -e DB_HOST='${{ secrets.DB_HOST }}' \
                 -e DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
                 -e DB_PORT='${{ secrets.DB_PORT }}' \
@@ -89,4 +89,5 @@ jobs:
                 -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}' \
                 -e SPRING_DATASOURCE_DDL_AUTO='${{ secrets.SPRING_DATASOURCE_DDL_AUTO }}' \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
+            sleep 15
             sudo docker image prune -af
