@@ -74,26 +74,25 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           envs: GITHUB_SHA,NEXT_EXHIBITION_VER
           script: |
-            IMAGE_NAME_LOWER=$(echo "${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}" | tr '[:upper:]' '[:lower:]')
-            sudo docker pull $IMAGE_NAME_LOWER
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sudo docker stop ${{ env.IMAGE_NAME }} || true
             sudo docker rm ${{ env.IMAGE_NAME }} || true
             sudo docker run -d --name ${{ env.IMAGE_NAME }} --network esthete-network -p 8030:8030 \
-                -e DB_HOST='${{ secrets.DB_HOST }}' \
-                -e DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
-                -e DB_PORT='${{ secrets.DB_PORT }}' \
-                -e DB_USERNAME='${{ secrets.DB_USERNAME }}' \
-                -e INITIAL_DB='${{ secrets.INITIAL_DB }}' \
-                -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
-                -e AWS_ACCESS_KEY='${{ secrets.AWS_ACCESS_KEY }}' \
-                -e AWS_SECRET_KEY='${{ secrets.AWS_SECRET_KEY }}' \
-                -e CLOUDFRONT_DISTRIBUTION_DOMAIN='${{ secrets.CLOUDFRONT_DISTRIBUTION_DOMAIN }}' \
-                -e S3_BUCKET='${{ secrets.S3_BUCKET }}' \
-                -e S3_ROOT_DIRECTORY='${{ secrets.S3_ROOT_DIRECTORY }}' \
-                -e S3_USER_DIRECTORY='${{ secrets.S3_USER_DIRECTORY }}' \
-                -e S3_PROFILE_DIRECTORY='${{ secrets.S3_PROFILE_DIRECTORY }}' \
-                -e S3_REGION='${{ secrets.S3_REGION }}' \
-                ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
+            -e DB_HOST='${{ secrets.DB_HOST }}' \
+            -e DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
+            -e DB_PORT='${{ secrets.DB_PORT }}' \
+            -e DB_USERNAME='${{ secrets.DB_USERNAME }}' \
+            -e INITIAL_DB='${{ secrets.INITIAL_DB }}' \
+            -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
+            -e AWS_ACCESS_KEY='${{ secrets.AWS_ACCESS_KEY }}' \
+            -e AWS_SECRET_KEY='${{ secrets.AWS_SECRET_KEY }}' \
+            -e CLOUDFRONT_DISTRIBUTION_DOMAIN='${{ secrets.CLOUDFRONT_DISTRIBUTION_DOMAIN }}' \
+            -e S3_BUCKET='${{ secrets.S3_BUCKET }}' \
+            -e S3_ROOT_DIRECTORY='${{ secrets.S3_ROOT_DIRECTORY }}' \
+            -e S3_USER_DIRECTORY='${{ secrets.S3_USER_DIRECTORY }}' \
+            -e S3_PROFILE_DIRECTORY='${{ secrets.S3_PROFILE_DIRECTORY }}' \
+            -e S3_REGION='${{ secrets.S3_REGION }}' \
+            "${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}"
             sleep 15
             sudo docker image prune -af
             sudo docker images ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }} | grep -v ${{ env.NEXT_EXHIBITION_VER }} | awk '{print $3}' | xargs -r sudo docker rmi
