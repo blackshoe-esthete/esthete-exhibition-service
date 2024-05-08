@@ -47,5 +47,31 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .build());
     }
 
+    @Override
+    @Transactional // 팔
+    public Page<SearchExhibitionDto.SearchAuthorResponse> searchAllAuthor(int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "supportCount"));
+        Page<User> allUser = userRepository.findAll(pageRequest);
 
+        return allUser.map(author -> SearchExhibitionDto.SearchAuthorResponse.builder()
+                .photographerId(author.getUserId())
+                .photographerName(author.getNickname())
+                .photographerIntroduction(author.getIntroduce())
+                .supportCount(author.getSupportCount())
+                .build());
+    }
+
+    @Override
+    @Transactional
+    public Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthor(String authorKeyword, int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "supportCount"));
+        Page<User> findAuthorList = userRepository.findByNicknameContaining(authorKeyword, pageRequest);
+
+        return findAuthorList.map(author -> SearchExhibitionDto.SearchAuthorResponse.builder()
+                .photographerId(author.getUserId())
+                .photographerName(author.getNickname())
+                .photographerIntroduction(author.getIntroduce())
+                .supportCount(author.getSupportCount())
+                .build());
+    }
 }

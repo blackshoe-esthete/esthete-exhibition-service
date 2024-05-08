@@ -33,5 +33,17 @@ public class ExhibitionController {
         }
     }
 
-
+    @GetMapping("/author")
+    public ResponseEntity<ApiResponse<Page<SearchExhibitionDto.SearchAuthorResponse>>> searchFilterWithAuthor(
+            @RequestParam(required = false) String authorKeyword,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size) {
+        if(authorKeyword == null){ // 아무것도 검색하지 않은 상태 -> 팔로우가 많은 순으로 모두 보여줌
+            Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthorResponses = exhibitionService.searchAllAuthor(page, size);
+            return ApiResponse.onSuccess(SuccessStatus.SEARCH_ALL_AUTHOR, searchAuthorResponses);
+        }else{ // 작가명을 입력한 상태 -> 검색명을 포함한 작가 이름 중 팔로우가 많은 순으로 보여줌
+            Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthorResponses = exhibitionService.searchAuthor(authorKeyword, page, size);
+            return ApiResponse.onSuccess(SuccessStatus.SEARCH_AUTHOR_BY_KEYWORD, searchAuthorResponses);
+        }
+    }
 }
