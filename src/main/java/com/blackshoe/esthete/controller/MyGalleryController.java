@@ -4,6 +4,7 @@ import com.blackshoe.esthete.common.ApiResponse;
 import com.blackshoe.esthete.common.constant.SuccessStatus;
 import com.blackshoe.esthete.dto.EditUserProfileDto;
 import com.blackshoe.esthete.dto.EditUserTagsDto;
+import com.blackshoe.esthete.dto.UploadExhibitionDto;
 import com.blackshoe.esthete.service.MyGalleryService;
 import com.blackshoe.esthete.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +21,11 @@ public class MyGalleryController {
 
     // 사용자의 선호 태그를 수정하는 API
     @PutMapping("/edit/user/tags")
-    public ResponseEntity<ApiResponse<EditUserTagsDto.EditUserTagsResponse>> editUserTags(
+    public ResponseEntity<ApiResponse<EditUserTagsDto.TagList>> editUserTags(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody EditUserTagsDto.EditUserTagsRequest editUserTagsRequest) {
+            @RequestBody EditUserTagsDto.TagList tagList) {
 
-        EditUserTagsDto.EditUserTagsResponse editUserTagsResponse = myGalleryService.editUserTags(authorizationHeader, editUserTagsRequest);
+        EditUserTagsDto.TagList editUserTagsResponse = myGalleryService.editUserTags(authorizationHeader, tagList);
         return ApiResponse.onSuccess(SuccessStatus.EDIT_USER_TAGS, editUserTagsResponse);
     }
 
@@ -46,5 +47,15 @@ public class MyGalleryController {
 
         EditUserProfileDto.EditUserProfileInfosResponse editUserProfileInfosResponse = userService.editUserProfileInfos(authorizationHeader, editUserProfileInfosRequest);
         return ApiResponse.onSuccess(SuccessStatus.EDIT_USER_PROFILE_INFOS, editUserProfileInfosResponse);
+    }
+
+    // 전시를 업로드하는 API
+    @PostMapping("/upload/exhibitions")
+    public ResponseEntity<ApiResponse<UploadExhibitionDto.UploadExhibitionResponse>> uploadExhibition(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
+
+        UploadExhibitionDto.UploadExhibitionResponse uploadExhibitionResponse = myGalleryService.uploadExhibition(authorizationHeader, uploadExhibitionRequest);
+        return ApiResponse.onSuccess(SuccessStatus.UPLOAD_EXHIBITION, uploadExhibitionResponse);
     }
 }

@@ -2,12 +2,10 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -30,24 +28,17 @@ public class Photo {
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "photos_fk_users_id"))
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "photos_fk_temporary_exhibitions_id"))
-    private TemporaryExhibition temporaryExhibition;
-
-    @Column(name = "photos_uuid", nullable = false)
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Column(name = "photos_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID photoId;
-
-    @Column(name = "view_count")
-    private Long viewCount;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
 
-    public void increaseViewCount() {
-        this.viewCount++;
+    @Builder
+    Photo(Exhibition exhibition, User user) {
+        this.exhibition = exhibition;
+        this.user = user;
+        this.photoId = UUID.randomUUID();
     }
 }
