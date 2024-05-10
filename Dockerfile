@@ -2,7 +2,7 @@
 FROM openjdk:17
 
 # 환경 변수 설정
-ENV APP_HOME /app
+ENV APP_HOME /exhibition-service
 
 # 작업 디렉토리 설정
 WORKDIR $APP_HOME

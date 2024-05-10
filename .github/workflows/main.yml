@@ -1,0 +1,99 @@
+name: cicd for exhibition-service
+on:
+  push:
+    branches: [ test ]
+  pull_request:
+    branches: [ test ]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ap-northeast-2
+  IMAGE_NAME: esthete-exhibition-service
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+      - name: Determine and Push Next Version Tag
+        run: |
+          if ! git tag --sort version:refname | grep -q .; then
+            git tag 1.0.0
+          else
+            NEXT_EXHIBITION_VER=$(git tag --sort version:refname | tail -n 1 | awk -F. -v OFS=. '{$NF++; print}')
+            git tag $NEXT_EXHIBITION_VER
+          fi
+          git push --tags
+          echo "NEXT_EXHIBITION_VER=$NEXT_EXHIBITION_VER" >> $GITHUB_ENV
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
+          platforms: linux/arm64
+
+      - name: Deploy to test server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_TEST_DNS }}
+          username: ubuntu
+          key: ${{ secrets.PRIVATE_KEY }}
+          envs: GITHUB_SHA,NEXT_EXHIBITION_VER
+          script: |
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
+            sudo docker stop ${{ env.IMAGE_NAME }} || true
+            sudo docker rm ${{ env.IMAGE_NAME }} || true
+            sudo docker run -d --name ${{ env.IMAGE_NAME }} --network esthete-network -p 8030:8030 \
+                -e DB_HOST='${{ secrets.DB_HOST }}' \
+                -e DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
+                -e DB_PORT='${{ secrets.DB_PORT }}' \
+                -e SPRING_DATASOURCE_DDL_AUTO='${{ secrets.SPRING_DATASOURCE_DDL_AUTO }}' \
+                -e DB_USERNAME='${{ secrets.DB_USERNAME }}' \
+                -e INITIAL_DB='${{ secrets.INITIAL_DB }}' \
+                -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
+                -e AWS_ACCESS_KEY='${{ secrets.AWS_ACCESS_KEY }}' \
+                -e AWS_SECRET_KEY='${{ secrets.AWS_SECRET_KEY }}' \
+                -e CLOUDFRONT_DISTRIBUTION_DOMAIN='${{ secrets.CLOUDFRONT_DISTRIBUTION_DOMAIN }}' \
+                -e S3_BUCKET='${{ secrets.S3_BUCKET }}' \
+                -e S3_ROOT_DIRECTORY='${{ secrets.S3_ROOT_DIRECTORY }}' \
+                -e S3_USER_DIRECTORY='${{ secrets.S3_USER_DIRECTORY }}' \
+                -e S3_PROFILE_DIRECTORY='${{ secrets.S3_PROFILE_DIRECTORY }}' \
+                -e S3_REGION='${{ secrets.S3_REGION }}' \
+                ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
+            sleep 15
+            sudo docker image prune -af || true
+            sudo docker images ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }} | grep -v ${{ env.NEXT_EXHIBITION_VER }} | awk '{print $3}' | xargs -r sudo docker rmi || true
