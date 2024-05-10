@@ -17,7 +17,13 @@ public enum SuccessStatus implements BaseCode {
     EDIT_USER_PROFILE_IMG(HttpStatus.OK, "200", "프로필 사진 수정에 성공했습니다."),
     EDIT_USER_PROFILE_INFOS(HttpStatus.OK, "200", "프로필 정보 수정에 성공했습니다."),
     UPLOAD_EXHIBITION_PHOTO(HttpStatus.OK, "201", "전시 사진 추가에 성공했습니다."),
-    UPLOAD_EXHIBITION(HttpStatus.CREATED, "201", "전시 제작에 성공했습니다.");
+    UPLOAD_EXHIBITION(HttpStatus.CREATED, "201", "전시 제작에 성공했습니다."),
+    // Exhibition
+    SEARCH_ALL_EXHIBITION(HttpStatus.OK, "200", "전체 전시 검색에 성공했습니다."),
+    SEARCH_EXHIBITION_BY_KEYWORD(HttpStatus.OK, "200", "전시 검색에 성공했습니다."),
+    SEARCH_ALL_AUTHOR(HttpStatus.OK, "200", "전체 작가 검색에 성공했습니다."),
+    SEARCH_AUTHOR_BY_KEYWORD(HttpStatus.OK, "200", "작가 검색에 성공했습니다."),
+    ;
 
     private final HttpStatus httpStatus;
     private final String code;
