@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/searching")
+@RequestMapping("/api/v1/exhibition/searching")
 @RequiredArgsConstructor
 public class ExhibitionController {
     private final ExhibitionService exhibitionService;
 
     // 토큰이 없는 경우에도 검색이 가능함 -> 토큰 없이 검색
 
-    @GetMapping("/exhibition")
+    @GetMapping("/exhibition_title")
     public ResponseEntity<ApiResponse<Page<SearchExhibitionDto.SearchExhibitionResponse>>> searchFilterWithExhibition(
             @RequestParam(required = false) String exhibitionKeyword,
             @RequestParam(required = false, defaultValue = "0") Integer page,
@@ -33,7 +33,7 @@ public class ExhibitionController {
         }
     }
 
-    @GetMapping("/author")
+    @GetMapping("/author_name")
     public ResponseEntity<ApiResponse<Page<SearchExhibitionDto.SearchAuthorResponse>>> searchFilterWithAuthor(
             @RequestParam(required = false) String authorKeyword,
             @RequestParam(required = false, defaultValue = "0") Integer page,
