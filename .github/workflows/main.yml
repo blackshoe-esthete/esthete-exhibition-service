@@ -81,6 +81,7 @@ jobs:
                 -e DB_HOST='${{ secrets.DB_HOST }}' \
                 -e DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
                 -e DB_PORT='${{ secrets.DB_PORT }}' \
+                -e SPRING_DATASOURCE_DDL_AUTO='${{ secrets.SPRING_DATASOURCE_DDL_AUTO }}' \
                 -e DB_USERNAME='${{ secrets.DB_USERNAME }}' \
                 -e INITIAL_DB='${{ secrets.INITIAL_DB }}' \
                 -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
