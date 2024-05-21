@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.exception.SdkClientException;
 
 import java.io.File;
 import java.util.Arrays;
@@ -21,14 +22,16 @@ import java.util.UUID;
 public class S3Util {
     private final S3Operations s3Operations;
 
-    @Value("${cloud.aws.s3.bucket}")
+    @Value("${spring.cloud.aws.s3.bucket}")
     private String BUCKET;
-    @Value("${cloud.aws.cloudfront.domain-name}")
+    @Value("${spring.cloud.aws.cloudfront.domain-name}")
     private String CLOUDFRONT_DOMAIN;
-    @Value("${cloud.aws.s3.user-directory}")
+    @Value("${spring.cloud.aws.s3.user-directory}")
     private String USER_DIRECTORY;
-    @Value("${cloud.aws.s3.profile-directory}")
+    @Value("${spring.cloud.aws.s3.profile-directory}")
     private String PROFILE_DIRECTORY;
+    @Value("${spring.cloud.aws.s3.exhibition-photo-directory}")
+    private String EXHIBITION_PHOTO_DIRECTORY;
 
     // S3에 파일을 업로드하는 메서드
     public void upload(MultipartFile multipartFile, String key) { // dirName의 디렉토리가 S3 Bucket 내부에 생성됨
@@ -95,6 +98,11 @@ public class S3Util {
     public String createProfileKey(UUID userId, MultipartFile multipartFile) {
         String fileExtension = Objects.requireNonNull(multipartFile.getOriginalFilename()).substring(multipartFile.getOriginalFilename().lastIndexOf("."));
         return USER_DIRECTORY + "/" + userId + "/" + PROFILE_DIRECTORY + "/" + UUID.randomUUID() + fileExtension;
+    }
+
+    public String createExhibitionPhotoKey(UUID userId, MultipartFile multipartFile) {
+        String fileExtension = Objects.requireNonNull(multipartFile.getOriginalFilename()).substring(multipartFile.getOriginalFilename().lastIndexOf("."));
+        return USER_DIRECTORY + "/" + userId + "/" + EXHIBITION_PHOTO_DIRECTORY + "/" + UUID.randomUUID() + fileExtension;
     }
 
     // S3 URL 생성

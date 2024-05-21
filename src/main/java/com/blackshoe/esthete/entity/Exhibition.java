@@ -27,10 +27,10 @@ public class Exhibition {
     @Column(name = "exhibitions_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID exhibitionId;
 
-    @Column(name = "thumbnail_url", nullable = false)
+    @Column(name = "thumbnail_url")
     private String cloudfrontUrl;
 
-    @Column(name = "title", nullable = false, length = 50)
+    @Column(name = "title", length = 50)
     private String title;
 
     @Column(name = "description", columnDefinition = "TEXT")
@@ -43,14 +43,29 @@ public class Exhibition {
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
 
+    @PrePersist
+    public void updateExhibitionId() {
+        if (this.exhibitionId == null) {
+            this.exhibitionId = UUID.randomUUID();
+        }
+    }
+
     @Builder
-    public Exhibition(User user, UUID exhibitionId, String cloudfrontUrl, String title, String description) {
-        this.user = user;
+    public Exhibition(UUID exhibitionId, String cloudfrontUrl, String title, String description) {
         this.exhibitionId = exhibitionId;
         this.cloudfrontUrl = cloudfrontUrl;
         this.title = title;
         this.description = description;
         this.viewCount = 0L;
+    }
+
+    public void setUser(User user){
+        this.user = user;
+    }
+
+    public void updateExhibitionInfo(String title, String description){
+        this.title = title;
+        this.description = description;
     }
 
     public void increaseViewCount() {

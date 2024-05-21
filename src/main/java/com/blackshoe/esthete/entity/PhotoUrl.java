@@ -18,7 +18,7 @@ public class PhotoUrl {
     @Column(name = "photos_urls_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photos_id", foreignKey = @ForeignKey(name = "photos_urls_fk_photos_id"))
     private Photo photo;
 
@@ -31,11 +31,21 @@ public class PhotoUrl {
     @Column(name = "s3_url", nullable = false)
     private String s3Url;
 
+    @PrePersist
+    public void updatePhotoUrlId() {
+        if (this.photoUrlId == null) {
+            this.photoUrlId = UUID.randomUUID();
+        }
+    }
+
     @Builder
-    public PhotoUrl(Photo photo, String cloudfrontUrl, String s3Url) {
-        this.photo = photo;
-        this.photoUrlId = UUID.randomUUID();
+    public PhotoUrl(String cloudfrontUrl, String s3Url) {
         this.cloudfrontUrl = cloudfrontUrl;
         this.s3Url = s3Url;
+    }
+
+
+    public void setPhoto(Photo photo){
+        this.photo = photo;
     }
 }
