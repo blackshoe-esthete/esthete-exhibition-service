@@ -30,14 +30,14 @@ public class MyGalleryController {
     }
 
     // 사용자의 프로필 이미지를 수정하는 API
-    @PutMapping("/edit/user/profile/img")
-    public ResponseEntity<ApiResponse<EditUserProfileDto.EditUserProfileImgResponse>> editUserProfile(
-            @RequestHeader("Authorization") String authorizationHeader,
-            @RequestPart("file") MultipartFile multipartFile) {
-
-        EditUserProfileDto.EditUserProfileImgResponse editUserProfileResponse = userService.editUserProfileImg(authorizationHeader, multipartFile);
-        return ApiResponse.onSuccess(SuccessStatus.EDIT_USER_PROFILE_IMG, editUserProfileResponse);
-    }
+//    @PutMapping("/edit/user/profile/img")
+//    public ResponseEntity<ApiResponse<EditUserProfileDto.EditUserProfileImgResponse>> editUserProfile(
+//            @RequestHeader("Authorization") String authorizationHeader,
+//            @RequestPart("file") MultipartFile multipartFile) {
+//
+//        EditUserProfileDto.EditUserProfileImgResponse editUserProfileResponse = userService.editUserProfileImg(authorizationHeader, multipartFile);
+//        return ApiResponse.onSuccess(SuccessStatus.EDIT_USER_PROFILE_IMG, editUserProfileResponse);
+//    }
 
     // 사용자의 프로필 정보를 수정하는 API
     @PutMapping("/edit/user/profile/infos")
@@ -50,12 +50,12 @@ public class MyGalleryController {
     }
 
     // 전시를 업로드하는 API
-    @PostMapping("/upload/exhibitions")
-    public ResponseEntity<ApiResponse<UploadExhibitionDto.UploadExhibitionResponse>> uploadExhibition(
-            @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
-
-        UploadExhibitionDto.UploadExhibitionResponse uploadExhibitionResponse = myGalleryService.uploadExhibition(authorizationHeader, uploadExhibitionRequest);
-        return ApiResponse.onSuccess(SuccessStatus.UPLOAD_EXHIBITION, uploadExhibitionResponse);
-    }
+//    @PostMapping("/upload/exhibitions")
+//    public ResponseEntity<ApiResponse<UploadExhibitionDto.UploadExhibitionResponse>> uploadExhibition(
+//            @RequestHeader("Authorization") String authorizationHeader,
+//            @RequestBody UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
+//
+//        UploadExhibitionDto.UploadExhibitionResponse uploadExhibitionResponse = myGalleryService.uploadExhibition(authorizationHeader, uploadExhibitionRequest);
+//        return ApiResponse.onSuccess(SuccessStatus.UPLOAD_EXHIBITION, uploadExhibitionResponse);
+//    }
 }

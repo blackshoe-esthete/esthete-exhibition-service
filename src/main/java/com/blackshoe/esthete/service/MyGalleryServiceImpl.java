@@ -25,7 +25,6 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final ExhibitionRepository exhibitionRepository;
     private final ExhibitionLocationRepository exhibitionLocationRepository;
     private final TemporaryExhibitionRepository temporaryExhibitionRepository;
-    private final TemporaryExhibitionPhotoRepository temporaryExhibitionPhotoRepository;
     private final JwtUtil jwtUtil;
 
     // 사용자의 태그 목록을 수정하는 메서드
@@ -68,81 +67,83 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         return tagList;
     }
 
-    // 전시를 업로드하는 메소드
-    @Override
-    @Transactional
-    public UploadExhibitionDto.UploadExhibitionResponse uploadExhibition(String authorizationHeader, UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
-        String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
-        String userId = jwtUtil.getUserIdFromToken(accessToken);
-        User user = userRepository.findByUserId(UUID.fromString(userId)).orElseThrow(
-                () -> new UserException(UserErrorResult.NOT_FOUND_USER));
-        TemporaryExhibition temporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(uploadExhibitionRequest.getTemporaryExhibitionId()).orElseThrow(
-                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION));
-
-        // Exhibition 엔터티 생성 & 저장
-        Exhibition exhibition = Exhibition.builder()
-                .user(user)
-                .exhibitionId(temporaryExhibition.getTemporaryExhibitionId())
-                .cloudfrontUrl(temporaryExhibition.getCloudfrontUrl())
-                .title(uploadExhibitionRequest.getTitle())
-                .description(uploadExhibitionRequest.getDescription())
-                .build();
-
-        exhibitionRepository.save(exhibition);
-
-        // ExhibitionTag 엔터티 생성 & 저장
-        for (String tagName : uploadExhibitionRequest.getTagList()) {
-            Tag tag = tagRepository.findByName(tagName).orElseThrow(
-                    () -> new TagException(TagErrorResult.NOT_FOUND_TAG));
-
-            ExhibitionTag exhibitionTag = ExhibitionTag.builder()
-                    .user(user)
-                    .exhibition(exhibition)
-                    .tag(tag)
-                    .build();
-
-            exhibitionTagRepository.save(exhibitionTag);
-        }
-
-        // Photo & PhotoUrl 엔터티 생성 & 저장
-        List<TemporaryExhibitionPhoto> temporaryExhibitionPhotoList = temporaryExhibitionPhotoRepository.findAllByTemporaryExhibition(temporaryExhibition);
-        for (TemporaryExhibitionPhoto temporaryExhibitionPhoto : temporaryExhibitionPhotoList) {
-            Photo photo = Photo.builder()
-                    .user(user)
-                    .exhibition(exhibition)
-                    .build();
-
-            photoRepository.save(photo);
-
-            PhotoUrl photoUrl = PhotoUrl.builder()
-                    .photo(photo)
-                    .cloudfrontUrl(temporaryExhibition.getCloudfrontUrl())
-                    .s3Url(temporaryExhibitionPhoto.getS3Url())
-                    .build();
-
-            photoUrlRepository.save(photoUrl);
-        }
-
-        // ExhibitionLocation 엔터티 생성 & 저장
-        if (uploadExhibitionRequest.getLocationInfo() != null) {
-            ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
-                    .user(user)
-                    .exhibition(exhibition)
-                    .longitude(uploadExhibitionRequest.getLocationInfo().getLongitude())
-                    .latitude(uploadExhibitionRequest.getLocationInfo().getLatitude())
-                    .state(uploadExhibitionRequest.getLocationInfo().getState())
-                    .city(uploadExhibitionRequest.getLocationInfo().getCity())
-                    .town(uploadExhibitionRequest.getLocationInfo().getTown())
-                    .build();
-
-            exhibitionLocationRepository.save(exhibitionLocation);
-        }
-
-        // TemporaryExhibition 엔터티 삭제
-        temporaryExhibitionRepository.delete(temporaryExhibition);
-
-        return UploadExhibitionDto.UploadExhibitionResponse.builder()
-                .exhibitionId(exhibition.getExhibitionId())
-                .build();
-    }
+//    // 전시를 업로드하는 메소드
+//    @Override
+//    @Transactional
+//    public UploadExhibitionDto.UploadExhibitionResponse uploadExhibition(String authorizationHeader, UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
+//        String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
+//        String userId = jwtUtil.getUserIdFromToken(accessToken);
+//        User user = userRepository.findByUserId(UUID.fromString(userId)).orElseThrow(
+//                () -> new UserException(UserErrorResult.NOT_FOUND_USER));
+//        TemporaryExhibition temporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(uploadExhibitionRequest.getTemporaryExhibitionId()).orElseThrow(
+//                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION));
+//
+//        // Exhibition 엔터티 생성 & 저장
+//        Exhibition exhibition = Exhibition.builder()
+//                .user(user)
+//                .exhibitionId(temporaryExhibition.getTemporaryExhibitionId())
+//                .cloudfrontUrl(temporaryExhibition.getCloudfrontUrl())
+//                .title(uploadExhibitionRequest.getTitle())
+//                .description(uploadExhibitionRequest.getDescription())
+//                .build();
+//
+//        exhibitionRepository.save(exhibition);
+//
+//        // ExhibitionTag 엔터티 생성 & 저장
+//        for (String tagName : uploadExhibitionRequest.getTagList()) {
+//            Tag tag = tagRepository.findByName(tagName).orElseThrow(
+//                    () -> new TagException(TagErrorResult.NOT_FOUND_TAG));
+//
+//            ExhibitionTag exhibitionTag = ExhibitionTag.builder()
+//                    .user(user)
+//                    .exhibition(exhibition)
+//                    .tag(tag)
+//                    .build();
+//
+//            exhibitionTagRepository.save(exhibitionTag);
+//        }
+//
+//        // Photo & PhotoUrl 엔터티 생성 & 저장
+//        List<TemporaryExhibitionPhoto> temporaryExhibitionPhotoList = temporaryExhibitionPhotoRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(
+//                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_PHOTO)
+//        );
+//        for (TemporaryExhibitionPhoto temporaryExhibitionPhoto : temporaryExhibitionPhotoList) {
+//            Photo photo = Photo.builder()
+//                    .user(user)
+//                    .exhibition(exhibition)
+//                    .build();
+//
+//            photoRepository.save(photo);
+//
+//            PhotoUrl photoUrl = PhotoUrl.builder()
+//                    .photo(photo)
+//                    .cloudfrontUrl(temporaryExhibition.getCloudfrontUrl())
+//                    .s3Url(temporaryExhibitionPhoto.getS3Url())
+//                    .build();
+//
+//            photoUrlRepository.save(photoUrl);
+//        }
+//
+//        // ExhibitionLocation 엔터티 생성 & 저장
+//        if (uploadExhibitionRequest.getLocationInfo() != null) {
+//            ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
+//                    .user(user)
+//                    .exhibition(exhibition)
+//                    .longitude(uploadExhibitionRequest.getLocationInfo().getLongitude())
+//                    .latitude(uploadExhibitionRequest.getLocationInfo().getLatitude())
+//                    .state(uploadExhibitionRequest.getLocationInfo().getState())
+//                    .city(uploadExhibitionRequest.getLocationInfo().getCity())
+//                    .town(uploadExhibitionRequest.getLocationInfo().getTown())
+//                    .build();
+//
+//            exhibitionLocationRepository.save(exhibitionLocation);
+//        }
+//
+//        // TemporaryExhibition 엔터티 삭제
+//        temporaryExhibitionRepository.delete(temporaryExhibition);
+//
+//        return UploadExhibitionDto.UploadExhibitionResponse.builder()
+//                .exhibitionId(exhibition.getExhibitionId())
+//                .build();
+//    }
 }
