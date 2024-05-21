@@ -31,7 +31,7 @@ public class S3Util {
     @Value("${spring.cloud.aws.s3.profile-directory}")
     private String PROFILE_DIRECTORY;
     @Value("${spring.cloud.aws.s3.exhibition-photo-directory}")
-    private String EXHIBITION_PHOTO_DIRECTORY;
+    private String EXHIBITION_PHOTO_DIRECTORY; // 환경변수 추가ㅎ
 
     // S3에 파일을 업로드하는 메서드
     public void upload(MultipartFile multipartFile, String key) { // dirName의 디렉토리가 S3 Bucket 내부에 생성됨

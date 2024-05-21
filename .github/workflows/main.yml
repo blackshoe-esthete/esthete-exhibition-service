@@ -93,6 +93,7 @@ jobs:
                 -e S3_USER_DIRECTORY='${{ secrets.S3_USER_DIRECTORY }}' \
                 -e S3_PROFILE_DIRECTORY='${{ secrets.S3_PROFILE_DIRECTORY }}' \
                 -e S3_REGION='${{ secrets.S3_REGION }}' \
+                -e S3_EXHIBITION_PHOTO_DIRECTORY='${{ secrets.S3_EXHIBITION_PHOTO_DIRECTORY }}' \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sleep 15
             sudo docker image prune -af || true
