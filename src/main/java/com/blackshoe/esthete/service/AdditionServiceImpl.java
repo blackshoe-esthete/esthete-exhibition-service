@@ -296,5 +296,59 @@ public class AdditionServiceImpl implements AdditionService{
 
     }
 
+    public Exhibition transferTmpExhibitionToExhibition(TemporaryExhibition temporaryExhibition){
+        User user = userRepository.findByUserId(temporaryExhibition.getUser().getUserId()).orElseThrow(
+                () -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
+        Exhibition exhibition = Exhibition.builder().build();
+        exhibition.setUser(user);
+        exhibitionRepository.save(exhibition);
+
+        //photo
+        List<Photo> photos = photoRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(
+                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_PHOTO));
+
+        for(Photo photo : photos){
+            photo.setExhibition(exhibition);
+        }
+
+        //exhibitionInfo
+        exhibition.updateExhibitionInfo(temporaryExhibition.getTitle(), temporaryExhibition.getDescription());
+
+        //exhibitionTag
+        List<ExhibitionTag> exhibitionTags = exhibitionTagRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(
+                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_TAG));
+
+        for(ExhibitionTag exhibitionTag : exhibitionTags){
+            exhibitionTag.updateExhibition(exhibition);
+        }
+
+        //exhibitionLocation
+        ExhibitionLocation exhibitionLocation = exhibitionLocationRepository.findByTemporaryExhibition(temporaryExhibition).orElseThrow(
+                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION_LOCATION));
+
+        exhibitionLocation.updateExhibition(exhibition);
+
+        exhibitionRepository.save(exhibition);
+
+        log.info("임시저장 전시 옮기기, 자식들과 연관관계 끊기 -> 데이터 삭제");
+        //임시저장 전시 자식들과 연관관계 끊기 -> 데이터 삭제
+
+        for(Photo photo : photos){
+            photo.deleteTemporaryExhibition(temporaryExhibition);
+        }
+
+        for(ExhibitionTag exhibitionTag : exhibitionTags){
+            exhibitionTag.deleteTemporaryExhibition();
+        }
+
+        exhibitionLocation.deleteTemporaryExhibition();
+
+        temporaryExhibition.deleteUser();
+
+        temporaryExhibitionRepository.delete(temporaryExhibition);
+
+        return exhibition;
+
+    }
 }
