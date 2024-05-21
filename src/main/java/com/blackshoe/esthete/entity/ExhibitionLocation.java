@@ -16,9 +16,13 @@ public class ExhibitionLocation {
     @Column(name = "exhibitions_locations_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exhibitions_id", foreignKey = @ForeignKey(name = "exhibitions_locations_fk_exhibitions_id"))
     private Exhibition exhibition;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "exhibitions_locations_fk_exhibitions_id"))
+    private TemporaryExhibition temporaryExhibition;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "exhibitions_locations_fk_users_id"))
@@ -40,13 +44,33 @@ public class ExhibitionLocation {
     private String town;
 
     @Builder
-    public ExhibitionLocation(User user, Exhibition exhibition, Double longitude, Double latitude, String state, String city, String town) {
-        this.user = user;
-        this.exhibition = exhibition;
+    public ExhibitionLocation(Double longitude, Double latitude, String state, String city, String town) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.state = state;
         this.city = city;
         this.town = town;
     }
+
+    public void changeExhibitionLocation(Double longitude, Double latitude, String state, String city, String town){
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.state = state;
+        this.city = city;
+        this.town = town;
+    }
+
+    public void updateTemporaryExhibition(TemporaryExhibition temporaryExhibition){
+        this.temporaryExhibition = temporaryExhibition;
+    }
+
+    public void deleteTemporaryExhibition(){
+        this.temporaryExhibition = null;
+    }
+
+    public void updateExhibition(Exhibition exhibition){
+        this.exhibition = exhibition;
+    }
+
+
 }
