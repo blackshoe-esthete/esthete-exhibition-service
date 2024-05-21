@@ -92,7 +92,51 @@ public class AdditionServiceImpl implements AdditionService{
         }
     }
 
+    @Override
+    @Transactional
+    public CreateExhibitionDto.CreateExhibitionResponse saveExhibition(UUID userId, List<MultipartFile> exhibitionPhotos, CreateExhibitionDto.CreateExhibitionRequest requestDto){
+        Optional<TemporaryExhibition> findTemporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(requestDto.getTmpExhibitionId());
 
+        if (findTemporaryExhibition.isPresent()) { // 임시저장 테이블에 해당 전시가 있는 경우 -> 업데이트 후 삭제하고 전시 테이블로 옮김
+            log.info("임시저장 이력이 있는 저장");
+
+            //전시 사진들과 필터 및 설정값 변경
+            List<CreateExhibitionDto.ExhibitionPhotoImgUrl> exhibitionPhotoImgUrls = uploadExhibitionPhotoWithFilter(exhibitionPhotos, findTemporaryExhibition.get().getTemporaryExhibitionId(), null);
+            saveExhibitionPhoto(exhibitionPhotoImgUrls, requestDto, findTemporaryExhibition.get().getTemporaryExhibitionId(), null);
+
+            //전시 정보 업데이트
+            saveExhibitionPhotoInformation(findTemporaryExhibition.get().getTemporaryExhibitionId(), requestDto, null);
+
+            //임시저장 데이터 삭제 후 전시 테이블로 이전
+            Exhibition exhibition = transferTmpExhibitionToExhibition(findTemporaryExhibition.get());
+
+            return CreateExhibitionDto.CreateExhibitionResponse.builder()
+                    .exhibitionId(exhibition.getExhibitionId())
+                    .createdAt(exhibition.getCreatedAt())
+                    .build();
+        }else{
+            log.info("바로 전시 저장");
+            User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+            Exhibition exhibition = Exhibition.builder().build();
+            exhibition.setUser(user);
+            exhibitionRepository.save(exhibition);// @PrePersist로 인한 널값 방지 -> 나중에 리팩토링
+
+            //전시 사진들과 필터 및 설정값 생성
+            List<CreateExhibitionDto.ExhibitionPhotoImgUrl> exhibitionPhotoImgUrls = uploadExhibitionPhotoWithFilter(exhibitionPhotos, null, exhibition.getExhibitionId());
+            saveExhibitionPhoto(exhibitionPhotoImgUrls, requestDto, null, exhibition.getExhibitionId());
+            log.info("1. 전시 사진들과 필터 및 설정값 생성");
+
+            //전시 정보 생성
+            saveExhibitionPhotoInformation(null, requestDto, exhibition.getExhibitionId());
+            log.info("2. 전시 정보 생성");
+
+            return CreateExhibitionDto.CreateExhibitionResponse.builder()
+                    .exhibitionId(exhibition.getExhibitionId())
+                    .createdAt(exhibition.getCreatedAt())
+                    .build();
+
+        }
+    }
 
 
     public List<CreateExhibitionDto.ExhibitionPhotoImgUrl> uploadExhibitionPhotoWithFilter(List<MultipartFile> exhibitionPhotos, UUID temporaryExhibitionId, UUID exhibitionId){
@@ -230,7 +274,29 @@ public class AdditionServiceImpl implements AdditionService{
                 idx++;
             }
         }else if(exhibitionId != null && temporaryExhibitionId == null){
+            log.info("바로 저장 경우, 대표사진 url db에 생성");
+            Exhibition findExhibition = exhibitionRepository.findByExhibitionId(exhibitionId).orElseThrow(
+                    () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
 
+            int idx=0;
+            for(CreateExhibitionDto.FilterPhoto filterPhoto : requestDto.getFilterPhotoList().getFilterPhotos()) {
+
+                Photo exhibitionPhoto = Photo.builder() // 전시 사진 객체 생성
+                        .grayScale(filterPhoto.getGrayScale())
+                        .filterId(filterPhoto.getFilterId())
+                        .build();
+
+                PhotoUrl exhibitionPhotoUrl = PhotoUrl.builder()
+                        .s3Url(exhibitionPhotoImgUrls.get(idx).getS3Url())
+                        .cloudfrontUrl(exhibitionPhotoImgUrls.get(idx).getCloudfrontUrl())
+                        .build();
+
+                exhibitionPhotoUrl.setPhoto(exhibitionPhoto);
+                exhibitionPhoto.setExhibition(findExhibition);
+                photoRepository.save(exhibitionPhoto);
+                photoUrlRepository.save(exhibitionPhotoUrl);
+                idx++;
+            }
         }
     }
 
@@ -291,7 +357,28 @@ public class AdditionServiceImpl implements AdditionService{
             temporaryExhibitionRepository.save(findTemporaryExhibition);
 
         }else if (exhibitionId != null && temporaryExhibitionId == null) { //바로 저장
+            Exhibition findExhibition = exhibitionRepository.findByExhibitionId(exhibitionId).orElseThrow(
+                    () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+            log.info("바로 저장 경우, 필터태그 생성");
+            for(UUID tag : requestDto.getExhibitionInformation().getTagList().getTags()){
+                ExhibitionTag exhibitionTag = ExhibitionTag.builder().build();
+                exhibitionTag.updateExhibition(findExhibition);
 
+                Tag savedtag = tagRepository.findByTagId(tag).orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TAG));
+                exhibitionTag.updateTag(savedtag);
+            }
+            findExhibition.updateExhibitionInfo(requestDto.getExhibitionInformation().getTitle(), requestDto.getExhibitionInformation().getDescription());
+
+            ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
+                    .longitude(requestDto.getExhibitionLocation().getLongitude())
+                    .latitude(requestDto.getExhibitionLocation().getLatitude())
+                    .state(requestDto.getExhibitionLocation().getState())
+                    .city(requestDto.getExhibitionLocation().getCity())
+                    .town(requestDto.getExhibitionLocation().getTown())
+                    .build();
+
+            exhibitionLocation.updateExhibition(findExhibition);
+            exhibitionLocationRepository.save(exhibitionLocation);
         }
 
     }

@@ -10,5 +10,5 @@ public interface AdditionService {
 
     CreateExhibitionDto.CreateTmpExhibitionResponse saveTemporaryExhibition(UUID userId, List<MultipartFile> exhibitionPhotos, CreateExhibitionDto.CreateExhibitionRequest requestDto);
 
-
+    CreateExhibitionDto.CreateExhibitionResponse saveExhibition(UUID userId, List<MultipartFile> exhibitionPhotos, CreateExhibitionDto.CreateExhibitionRequest requestDto);
 }
