@@ -37,20 +37,20 @@ spring:
       database: 1
   jwt:
     secret: ${JWT_SECRET}
-
-cloud:
-  aws:
-    credentials:
-      accessKey: ${AWS_ACCESS_KEY}
-      secretKey: ${AWS_SECRET_KEY}
-    s3:
-      bucket: ${S3_BUCKET}
-      root-directory: ${S3_ROOT_DIRECTORY}
-      user-directory: ${S3_USER_DIRECTORY}
-      profile-directory: ${S3_PROFILE_DIRECTORY}
-    region:
-      static: ${S3_REGION}
-    stack:
-      auto: false
-    cloudfront:
-      domain-name: ${CLOUDFRONT_DISTRIBUTION_DOMAIN}
+  cloud:
+    aws:
+      credentials:
+        accessKey: ${AWS_ACCESS_KEY}
+        secretKey: ${AWS_SECRET_KEY}
+      s3:
+        bucket: ${S3_BUCKET}
+        root-directory: ${S3_ROOT_DIRECTORY}
+        user-directory: ${S3_USER_DIRECTORY}
+        profile-directory: ${S3_PROFILE_DIRECTORY}
+        exhibition-photo-directory: ${S3_EXHIBITION_PHOTO_DIRECTORY}
+      region:
+        static: ${S3_REGION}
+      stack:
+        auto: false
+      cloudfront:
+        domain-name: ${CLOUDFRONT_DISTRIBUTION_DOMAIN}

@@ -25,20 +25,67 @@ public class Photo {
     private Exhibition exhibition;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "photos_fk_temporary_exhibitions_id"))
+    private TemporaryExhibition temporaryExhibition;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "photos_fk_users_id"))
     private User user;
 
     @Column(name = "photos_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID photoId;
 
+    @Column(name = "gray_scale")
+    private Float grayScale;
+
+    @Column(name = "filter_uuid")
+    private UUID filterId;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
 
-    @Builder
-    Photo(Exhibition exhibition, User user) {
-        this.exhibition = exhibition;
-        this.user = user;
-        this.photoId = UUID.randomUUID();
+    @PrePersist
+    public void updatePhotoId() {
+        if (this.photoId == null) {
+            this.photoId = UUID.randomUUID();
+        }
     }
+
+    @Builder
+    public Photo(Float grayScale, UUID filterId){
+        this.grayScale = grayScale;
+        this.filterId = filterId;
+    }
+
+    public void setUser(User user){
+        this.user = user;
+    }
+
+    public void setTemporaryExhibition(TemporaryExhibition temporaryExhibition){
+        this.temporaryExhibition = temporaryExhibition;
+    }
+
+    public void setExhibition(Exhibition exhibition){
+        this.exhibition = exhibition;
+    }
+
+    public void deleteTemporaryExhibition(TemporaryExhibition temporaryExhibition){
+        this.temporaryExhibition = null;
+    }
+
+//    public void updateTemporaryExhibition(TemporaryExhibition temporaryExhibition){
+//        this.temporaryExhibition = temporaryExhibition;
+//        temporaryExhibition.addTemporaryExhibitionPhoto(this);
+//    }
+//
+//    public void updateExhibition(Exhibition exhibition){
+//        this.exhibition = exhibition;
+//        exhibition.addTemporaryExhibitionPhoto(this);
+//    }
+//
+//    public void updateExhibition(Exhibition exhibition){
+//        this.exhibition = exhibition;
+//        exhibition.addPhoto(this);
+//    }
 }

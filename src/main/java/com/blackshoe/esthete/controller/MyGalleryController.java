@@ -50,12 +50,12 @@ public class MyGalleryController {
     }
 
     // 전시를 업로드하는 API
-    @PostMapping("/upload/exhibitions")
-    public ResponseEntity<ApiResponse<UploadExhibitionDto.UploadExhibitionResponse>> uploadExhibition(
-            @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
-
-        UploadExhibitionDto.UploadExhibitionResponse uploadExhibitionResponse = myGalleryService.uploadExhibition(authorizationHeader, uploadExhibitionRequest);
-        return ApiResponse.onSuccess(SuccessStatus.UPLOAD_EXHIBITION, uploadExhibitionResponse);
-    }
+//    @PostMapping("/upload/exhibitions")
+//    public ResponseEntity<ApiResponse<UploadExhibitionDto.UploadExhibitionResponse>> uploadExhibition(
+//            @RequestHeader("Authorization") String authorizationHeader,
+//            @RequestBody UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
+//
+//        UploadExhibitionDto.UploadExhibitionResponse uploadExhibitionResponse = myGalleryService.uploadExhibition(authorizationHeader, uploadExhibitionRequest);
+//        return ApiResponse.onSuccess(SuccessStatus.UPLOAD_EXHIBITION, uploadExhibitionResponse);
+//    }
 }
