@@ -47,5 +47,10 @@ public class AdditionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(exhibitionResponse);
     }
 
+    @GetMapping("/geo-coding")
+    public ResponseEntity<String> geoCoding(@RequestParam String address) {
+        String coordinateFromAddress = geoCodingService.getCoordinateFromAddress(address);
+        return ResponseEntity.status(HttpStatus.OK).body(coordinateFromAddress);
+    }
 
 }
