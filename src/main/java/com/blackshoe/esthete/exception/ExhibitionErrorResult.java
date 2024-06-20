@@ -18,8 +18,10 @@ public enum ExhibitionErrorResult implements BaseErrorCode {
     INVALID_EXHIBITION_PHOTO_IMG_SIZE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 전시 사진입니다."),
     EXHIBITION_PHOTO_IMG_UPLOAD_FAILED(HttpStatus.BAD_REQUEST, "400", "전시 사진 S3 업로드 실패했습니다."),
     NOT_FOUND_PHOTO_URL(HttpStatus.NOT_FOUND, "404", "존재하지 않는 사진 url입니다."),
+    INVALID_LOCATION_GROUP_TYPE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 그룹 주소 타입입니다."),
+    INVALID_ADDRESS_FILTER(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 전시 주소 필터입니다."),
+    INVALID_SORT_TYPE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 정렬 타입입니다."),
     ;
-
 
     private final HttpStatus httpStatus;
     private final String code;

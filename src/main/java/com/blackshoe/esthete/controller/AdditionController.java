@@ -2,6 +2,7 @@ package com.blackshoe.esthete.controller;
 
 import com.blackshoe.esthete.dto.CreateExhibitionDto;
 import com.blackshoe.esthete.service.AdditionService;
+import com.blackshoe.esthete.service.GeoCodingService;
 import com.blackshoe.esthete.service.UserService;
 import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class AdditionController {
     private final JwtUtil jwtUtil;
     private final AdditionService additionService;
+    private final GeoCodingService geoCodingService;
 
     @PostMapping(value = "/temporary_exhibition", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<CreateExhibitionDto.CreateTmpExhibitionResponse> saveTemporaryExhibition(
@@ -44,4 +46,6 @@ public class AdditionController {
         CreateExhibitionDto.CreateExhibitionResponse exhibitionResponse = additionService.saveExhibition(userId, exhibitionPhotos, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(exhibitionResponse);
     }
+
+
 }
