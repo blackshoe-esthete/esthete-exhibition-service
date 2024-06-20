@@ -53,4 +53,9 @@ public class AdditionController {
         return ResponseEntity.status(HttpStatus.OK).body(coordinateFromAddress);
     }
 
+    @GetMapping("/reverse-geo-coding")
+    public ResponseEntity<String> reverseGeoCoding(@RequestParam Double latitude, @RequestParam Double longitude) {
+        String addrFromCoordinate = geoCodingService.getAddressFromCoordinate(latitude, longitude);
+        return ResponseEntity.status(HttpStatus.OK).body(addrFromCoordinate);
+    }
 }

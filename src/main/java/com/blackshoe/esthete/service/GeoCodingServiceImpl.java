@@ -50,4 +50,33 @@ public class GeoCodingServiceImpl implements GeoCodingService{
         return coordinateFromAddress;
     }
 
+
+    @Override
+    public String getAddressFromCoordinate(Double latitude, Double longitude) {
+
+        WebClient webClient = WebClient.builder()
+                .baseUrl(GEO_CODING_SERVICE_URL)
+                .build();
+
+        String addrFromCoordinate = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/json")
+                        .queryParam("latlng", latitude + "," + longitude)
+                        .queryParam("key", GEO_CODING_SERVICE_API_KEY)
+                        .build())
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
+                    log.error("geo-coding-service 4xx error");
+                    throw new GeoCodingApiException(GeoCodingApiErrorResult.GEO_CODING_SERVICE_4XX_ERROR);
+                })
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> {
+                    log.error("geo-coding-service 5xx error");
+                    throw new GeoCodingApiException(GeoCodingApiErrorResult.GEO_CODING_SERVICE_5XX_ERROR);
+                })
+                .bodyToMono(String.class)
+                .block();
+
+        return addrFromCoordinate;
+    }
+
 }
