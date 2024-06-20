@@ -94,6 +94,7 @@ jobs:
                 -e S3_PROFILE_DIRECTORY='${{ secrets.S3_PROFILE_DIRECTORY }}' \
                 -e S3_REGION='${{ secrets.S3_REGION }}' \
                 -e S3_EXHIBITION_PHOTO_DIRECTORY='${{ secrets.S3_EXHIBITION_PHOTO_DIRECTORY }}' \
+                -e GCP_GEOCODING_API_KEY='${{ secrets.GCP_GEOCODING_API_KEY }}' \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sleep 15
             sudo docker image prune -af || true
