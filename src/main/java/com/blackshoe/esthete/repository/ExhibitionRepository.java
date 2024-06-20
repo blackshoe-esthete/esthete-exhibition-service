@@ -23,5 +23,71 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
 
     Optional<Exhibition> findByExhibitionId(UUID exhibitionId);
 
+    default Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findTop10ByUserLocationGroupByState(ExhibitionPointFilter exhibitionPointFilter) {
+        return findByUserLocationGroupByState(exhibitionPointFilter, PageRequest.of(0, 10));
+    }
+
+    @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
+            "count(el), " +
+            "el.state, " +
+            "el.exhibition.cloudfrontUrl) " +
+            "FROM ExhibitionLocation el " +
+            "WHERE el.latitude " +
+            "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
+            "AND :#{#exhibitionPointFilter.latitude + #exhibitionPointFilter.latitudeDelta} " +
+            "AND el.longitude " +
+            "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
+            "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
+            "GROUP BY el.state " +
+            "ORDER BY count(el) DESC")
+    Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByState(
+            @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
+
+
+    default Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findTop10ByUserLocationGroupByCity(ExhibitionPointFilter exhibitionPointFilter) {
+        return findByUserLocationGroupByCity(exhibitionPointFilter, PageRequest.of(0, 10));
+    }
+
+    @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
+            "count(el), " +
+            "el.state, " +
+            "el.city, " +
+            "el.exhibition.cloudfrontUrl) " +
+            "FROM ExhibitionLocation el " +
+            "WHERE el.latitude " +
+            "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
+            "AND :#{#exhibitionPointFilter.latitude + #exhibitionPointFilter.latitudeDelta} " +
+            "AND el.longitude " +
+            "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
+            "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
+            "GROUP BY el.state, el.city " +
+            "ORDER BY count(el) DESC")
+    Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByCity(
+            @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
+
+
+    default Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findTop10ByUserLocationGroupByTown(ExhibitionPointFilter exhibitionLocationFilter){
+        return findByUserLocationGroupByTown(exhibitionLocationFilter, PageRequest.of(0, 10));
+    }
+
+    @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
+            "count(el), " +
+            "el.state, " +
+            "el.city, " +
+            "el.town, " +
+            "el.exhibition.cloudfrontUrl) " +
+            "FROM ExhibitionLocation el " +
+            "WHERE el.latitude " +
+            "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
+            "AND :#{#exhibitionPointFilter.latitude + #exhibitionPointFilter.latitudeDelta} " +
+            "AND el.longitude " +
+            "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
+            "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
+            "GROUP BY el.state, el.city, el.town " +
+            "ORDER BY count(el) DESC")
+    Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByTown(
+            @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
+
+
 
 }

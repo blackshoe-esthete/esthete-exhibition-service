@@ -56,5 +56,27 @@ public class ExhibitionController {
         }
     }
 
+    @GetMapping("/map/location/current")
+    public ResponseEntity<ApiResponse<Page<ExhibitionClusteringDto.MarkedRegionGroupResponse>>> getTop10ByUserLocationGroupBy(
+            @RequestParam(name = "longitude") double longitude,
+            @RequestParam(name = "latitude") double latitude,
+            @RequestParam(name = "radius") double radius,
+            @RequestParam(name = "group") String group) {
+        ExhibitionPointFilter exhibitionLocationFilter = ExhibitionPointFilter.builder()
+                .longitude(longitude)
+                .latitude(latitude)
+                .radius(radius)
+                .build();
+
+
+        ExhibitionLocationGroupType exhibitionLocationGroupType = ExhibitionLocationGroupType.convertParamToColumn(group);
+        Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> markedRegionGroupResponse = exhibitionService.getTop10ByUserLocationGroupBy(exhibitionLocationFilter, exhibitionLocationGroupType);
+
+        return ApiResponse.onSuccess(SuccessStatus.GET_EXHIBITION_GROUP_IN_MAP, markedRegionGroupResponse);
+
+    }
+
+
+
 
 }

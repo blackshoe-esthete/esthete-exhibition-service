@@ -83,6 +83,26 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .build());
     }
 
+    @Override
+    @Transactional
+    public Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> getTop10ByUserLocationGroupBy(ExhibitionPointFilter exhibitionLocationFilter, ExhibitionLocationGroupType exhibitionLocationGroupType){
+       Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> markedRegionGroupResponse;
+
+       switch (exhibitionLocationGroupType){
+           case STATE:
+               markedRegionGroupResponse = exhibitionRepository.findTop10ByUserLocationGroupByState(exhibitionLocationFilter);
+               return markedRegionGroupResponse;
+           case CITY:
+               markedRegionGroupResponse = exhibitionRepository.findTop10ByUserLocationGroupByCity(exhibitionLocationFilter);
+               return markedRegionGroupResponse;
+           case TOWN:
+               markedRegionGroupResponse = exhibitionRepository.findTop10ByUserLocationGroupByTown(exhibitionLocationFilter);
+               return markedRegionGroupResponse;
+           default:
+               throw new ExhibitionException(ExhibitionErrorResult.INVALID_LOCATION_GROUP_TYPE);
+       }
+    }
+
 
 
 }
