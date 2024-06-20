@@ -16,4 +16,5 @@ public interface ExhibitionService {
     Page<SearchExhibitionDto.SearchAuthorResponse> searchAllAuthor(int page, int size);
 
     Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthor(String authorKeyword, int page, int size);
+
 }
