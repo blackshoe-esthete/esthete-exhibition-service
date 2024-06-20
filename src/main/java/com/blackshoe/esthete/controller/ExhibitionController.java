@@ -56,48 +56,4 @@ public class ExhibitionController {
         }
     }
 
-    @GetMapping("/map/location/current")
-    public ResponseEntity<ApiResponse<Page<ExhibitionClusteringDto.MarkedRegionGroupResponse>>> getTop10ByUserLocationGroupBy(
-            @RequestParam(name = "longitude") double longitude,
-            @RequestParam(name = "latitude") double latitude,
-            @RequestParam(name = "radius") double radius,
-            @RequestParam(name = "group") String group) {
-        ExhibitionPointFilter exhibitionLocationFilter = ExhibitionPointFilter.builder()
-                .longitude(longitude)
-                .latitude(latitude)
-                .radius(radius)
-                .build();
-
-
-        ExhibitionLocationGroupType exhibitionLocationGroupType = ExhibitionLocationGroupType.convertParamToColumn(group);
-        Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> markedRegionGroupResponse = exhibitionService.getTop10ByUserLocationGroupBy(exhibitionLocationFilter, exhibitionLocationGroupType);
-
-        return ApiResponse.onSuccess(SuccessStatus.GET_EXHIBITION_GROUP_IN_MAP, markedRegionGroupResponse);
-
-    }
-
-    @GetMapping("/map/location")
-    public ResponseEntity<ApiResponse<Page<ExhibitionClusteringDto.MarkedExhibitionsResponse>>> readByAddress (
-            @RequestParam(name = "state", required = true) Optional<String> state,
-            @RequestParam(name = "city", required = false) Optional<String> city,
-            @RequestParam(name = "town", required = false) Optional<String> town,
-            @RequestParam(name = "page") Integer page,
-            @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "sort") String sort) {
-
-        ExhibitionAddressFilter exhibitionAddressFilter = ExhibitionAddressFilter.builder()
-                .state(state.orElse(""))
-                .city(city.orElse(""))
-                .town(town.orElse(""))
-                .build();
-
-        Sort sortBy = ExhibitionSortType.convertParamToColumn(sort);
-
-        Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> markedExhibitionsResponse
-                = exhibitionService.readByAddress(exhibitionAddressFilter, page, size, sortBy);
-
-        return ApiResponse.onSuccess(SuccessStatus.GET_EXHIBITIONS_IN_MAP, markedExhibitionsResponse);
-    }
-
-
 }
