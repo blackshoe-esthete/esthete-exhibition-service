@@ -76,7 +76,28 @@ public class ExhibitionController {
 
     }
 
+    @GetMapping("/map/location")
+    public ResponseEntity<ApiResponse<Page<ExhibitionClusteringDto.MarkedExhibitionsResponse>>> readByAddress (
+            @RequestParam(name = "state", required = true) Optional<String> state,
+            @RequestParam(name = "city", required = false) Optional<String> city,
+            @RequestParam(name = "town", required = false) Optional<String> town,
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size,
+            @RequestParam(name = "sort") String sort) {
 
+        ExhibitionAddressFilter exhibitionAddressFilter = ExhibitionAddressFilter.builder()
+                .state(state.orElse(""))
+                .city(city.orElse(""))
+                .town(town.orElse(""))
+                .build();
+
+        Sort sortBy = ExhibitionSortType.convertParamToColumn(sort);
+
+        Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> markedExhibitionsResponse
+                = exhibitionService.readByAddress(exhibitionAddressFilter, page, size, sortBy);
+
+        return ApiResponse.onSuccess(SuccessStatus.GET_EXHIBITIONS_IN_MAP, markedExhibitionsResponse);
+    }
 
 
 }

@@ -103,6 +103,29 @@ public class ExhibitionServiceImpl implements ExhibitionService{
        }
     }
 
+    @Override
+    @Transactional
+    public Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> readByAddress(ExhibitionAddressFilter exhibitionAddressFilter, Integer page, Integer size, Sort sortBy){
+        Pageable pageable = PageRequest.of(page, size, sortBy);
+
+        Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> markedExhibitionsResponse;
+
+        ExhibitionAddressSearchType exhibitionAddressSearchType = exhibitionAddressFilter.getSearchType();
+
+        switch (exhibitionAddressSearchType) {
+            case STATE:
+                markedExhibitionsResponse = exhibitionRepository.findAllByExhibitionLocationState(exhibitionAddressFilter, pageable);
+                return markedExhibitionsResponse;
+            case CITY:
+                markedExhibitionsResponse = exhibitionRepository.findAllByExhibitionLocationStateAndCity(exhibitionAddressFilter, pageable);
+                return markedExhibitionsResponse;
+            case TOWN:
+                markedExhibitionsResponse = exhibitionRepository.findAllByExhibitionLocationStateAndCityAndTown(exhibitionAddressFilter, pageable);
+                return markedExhibitionsResponse;
+            default:
+                throw new ExhibitionException(ExhibitionErrorResult.INVALID_ADDRESS_FILTER);
+        }
+    }
 
 
 }

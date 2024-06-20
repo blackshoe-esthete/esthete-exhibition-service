@@ -89,5 +89,25 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
 
 
+    //클러스터된 전시 리스트 가져오는 메소드
+    @Query("SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedExhibitionsResponse(el.exhibition) " +
+            "FROM ExhibitionLocation el " +
+            "WHERE el.state = :#{#exhibitionAddressFilter.state} ")
+    Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationState(
+            @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
 
+    @Query("SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedExhibitionsResponse(el.exhibition) " +
+            "FROM ExhibitionLocation el " +
+            "WHERE el.state = :#{#exhibitionAddressFilter.state} " +
+            "AND el.city = :#{#exhibitionAddressFilter.city} ")
+    Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationStateAndCity(
+            @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
+
+    @Query("SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedExhibitionsResponse(el.exhibition) " +
+            "FROM ExhibitionLocation el " +
+            "WHERE el.state = :#{#exhibitionAddressFilter.state} " +
+            "AND el.city = :#{#exhibitionAddressFilter.city} " +
+            "AND el.town = :#{#exhibitionAddressFilter.town} ")
+    Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationStateAndCityAndTown(
+            @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
 }
