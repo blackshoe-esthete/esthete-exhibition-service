@@ -1,18 +1,17 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
-import java.util.UUID;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "profile_urls")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProfileUrl {
+public class ProfileUrl extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_urls_id")
@@ -22,12 +21,6 @@ public class ProfileUrl {
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "profile_urls_fk_users_id"))
     private User user;
 
-    @Column(name = "profile_urls_uuid", nullable = false)
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID profileUrlId;
-
     @Column(name = "img_url", nullable = false)
     private String cloudfrontUrl;
 
@@ -35,9 +28,8 @@ public class ProfileUrl {
     private String s3Url;
 
     @Builder
-    public ProfileUrl(User user, UUID profileUrlId, String cloudfrontUrl, String s3Url) {
+    public ProfileUrl(User user, String cloudfrontUrl, String s3Url) {
         this.user = user;
-        this.profileUrlId = profileUrlId;
         this.cloudfrontUrl = cloudfrontUrl;
         this.s3Url = s3Url;
     }

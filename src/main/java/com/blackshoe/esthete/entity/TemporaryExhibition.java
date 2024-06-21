@@ -1,20 +1,19 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Table(name = "temporary_exhibitions")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TemporaryExhibition {
+public class TemporaryExhibition extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "temporary_exhibitions_id")
@@ -39,13 +38,6 @@ public class TemporaryExhibition {
     @Column(name = "view_count")
     private Long viewCount;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, length = 20)
-    private LocalDateTime createdAt;
-
-//    @OneToMany(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Photo> temporaryExhibitionPhotos;
-
     @PrePersist
     public void updateTemporaryExhibitionId() {
         if (this.temporaryExhibitionId == null) {
@@ -68,10 +60,6 @@ public class TemporaryExhibition {
     public void deleteUser(){
         this.user = null;
     }
-
-//    public void addTemporaryExhibitionPhoto(Photo photo){
-//        this.temporaryExhibitionPhotos.add(photo);
-//    }
 
     public void updateTemporaryExhibitionInfo(String title, String description){
         this.title = title;
