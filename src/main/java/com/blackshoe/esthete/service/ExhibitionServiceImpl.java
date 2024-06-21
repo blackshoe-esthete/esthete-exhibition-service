@@ -150,4 +150,14 @@ public class ExhibitionServiceImpl implements ExhibitionService{
             return MainHomeDto.ExhibitionResponse.of(exhibitions);
         }
     }
+
+    // 소외 전시회 조회 메서드
+    @Override
+    public List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions() {
+        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountAsc();
+        if (Objects.isNull(exhibitions) || exhibitions.size() < 6) {
+            throw new ExhibitionException(ExhibitionErrorResult.FAIL_TO_GET_SIX_EXHIBITIONS);
+        }
+        return MainHomeDto.ExhibitionResponse.of(exhibitions);
+    }
 }

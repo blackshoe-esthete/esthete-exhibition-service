@@ -105,4 +105,11 @@ public class ExhibitionController {
         List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getRecommendExhibitions(authorizationHeader);
         return ApiResponse.onSuccess(SuccessStatus.GET_RECOMMEND_EXHIBITIONS, exhibitionResponses);
     }
+
+    @GetMapping("/isolation")
+    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getIsolationExhibitions() {
+
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getIsolationExhibitions();
+        return ApiResponse.onSuccess(SuccessStatus.GET_ISOLATION_EXHIBITIONS, exhibitionResponses);
+    }
 }

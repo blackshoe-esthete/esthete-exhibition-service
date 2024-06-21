@@ -25,4 +25,6 @@ public interface ExhibitionService {
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> readByAddress(ExhibitionAddressFilter exhibitionAddressFilter, Integer page, Integer size, Sort sortBy);
 
     List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader);
+
+    List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions();
 }

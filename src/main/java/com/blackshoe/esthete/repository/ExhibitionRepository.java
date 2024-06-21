@@ -113,4 +113,6 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
   
     List<Exhibition> findTop6ByOrderByViewCountDesc();
+
+    List<Exhibition> findTop6ByOrderByViewCountAsc();
 }
