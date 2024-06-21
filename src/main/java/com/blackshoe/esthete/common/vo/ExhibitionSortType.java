@@ -9,8 +9,8 @@ import org.springframework.data.domain.Sort;
 @Getter
 @RequiredArgsConstructor
 public enum ExhibitionSortType {
-    TRENDING("viewCount"),
-    RECENT("createdAt");
+    TRENDING("exhibition.viewCount"),
+    RECENT("exhibition.createdAt");
 
     private final String sortType;
 
