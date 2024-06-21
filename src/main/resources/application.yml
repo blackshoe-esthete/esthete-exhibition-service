@@ -71,4 +71,4 @@ eureka:
     fetch-registry: true
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    hostname: ${INSTANCE_HOST} # 지금은 instance public dns임?
+    hostname: ${INSTANCE_HOST}
