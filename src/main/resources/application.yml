@@ -54,3 +54,9 @@ spring:
         auto: false
       cloudfront:
         domain-name: ${CLOUDFRONT_DISTRIBUTION_DOMAIN}
+    gcp:
+      geo-coding:
+        api-key: ${GCP_GEOCODING_API_KEY}
+
+services:
+  geo-coding-service: https://maps.googleapis.com/maps/api/geocode
