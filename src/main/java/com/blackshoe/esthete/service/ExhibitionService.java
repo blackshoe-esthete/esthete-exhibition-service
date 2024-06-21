@@ -27,4 +27,6 @@ public interface ExhibitionService {
     List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader);
 
     List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions();
+
+    List<MainHomeDto.ExhibitionResponse> getExhibitionsByTag(String tagName);
 }

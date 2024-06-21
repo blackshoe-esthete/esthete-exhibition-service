@@ -1,6 +1,7 @@
 package com.blackshoe.esthete.repository;
 
 import com.blackshoe.esthete.entity.ExhibitionTag;
+import com.blackshoe.esthete.entity.Tag;
 import com.blackshoe.esthete.entity.TemporaryExhibition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,6 @@ public interface ExhibitionTagRepository extends JpaRepository<ExhibitionTag,Lon
     Boolean existsAllByTemporaryExhibition(TemporaryExhibition findTemporaryExhibition);
 
     Optional<List<ExhibitionTag>> findAllByTemporaryExhibition(TemporaryExhibition findTemporaryExhibition);
+
+    Optional<List<ExhibitionTag>> findAllByTag(Tag tag);
 }

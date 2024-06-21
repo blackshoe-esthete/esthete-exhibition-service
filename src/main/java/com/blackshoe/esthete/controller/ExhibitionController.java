@@ -98,6 +98,7 @@ public class ExhibitionController {
         return ApiResponse.onSuccess(SuccessStatus.GET_EXHIBITIONS_IN_MAP, markedExhibitionsResponse);
     }
 
+    // 개인 추천 전시회 조회 API
     @GetMapping("/recommend")
     public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getRecommendExhibitions(
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
@@ -106,10 +107,20 @@ public class ExhibitionController {
         return ApiResponse.onSuccess(SuccessStatus.GET_RECOMMEND_EXHIBITIONS, exhibitionResponses);
     }
 
+    // 소외 전시회 조회 API
     @GetMapping("/isolation")
     public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getIsolationExhibitions() {
 
         List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getIsolationExhibitions();
         return ApiResponse.onSuccess(SuccessStatus.GET_ISOLATION_EXHIBITIONS, exhibitionResponses);
+    }
+
+    // 태그 선택 전시회 조회 API
+    @GetMapping("/{tag_name}")
+    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getExhibitionsByTag(
+            @PathVariable("tag_name") String tagName) {
+
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getExhibitionsByTag(tagName);
+        return ApiResponse.onSuccess(SuccessStatus.GET_TAG_EXHIBITIONS, exhibitionResponses);
     }
 }
