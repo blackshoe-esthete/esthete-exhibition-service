@@ -1,20 +1,19 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Table(name = "exhibitions")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Exhibition {
+public class Exhibition extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exhibitions_id")
@@ -28,7 +27,7 @@ public class Exhibition {
     private UUID exhibitionId;
 
     @Column(name = "thumbnail_url")
-    private String cloudfrontUrl;
+    private String thumbnailUrl;
 
     @Column(name = "title", length = 50)
     private String title;
@@ -39,10 +38,6 @@ public class Exhibition {
     @Column(name = "view_count")
     private Long viewCount;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, length = 20)
-    private LocalDateTime createdAt;
-
     @PrePersist
     public void updateExhibitionId() {
         if (this.exhibitionId == null) {
@@ -51,9 +46,9 @@ public class Exhibition {
     }
 
     @Builder
-    public Exhibition(UUID exhibitionId, String cloudfrontUrl, String title, String description) {
+    public Exhibition(UUID exhibitionId, String thumbnailUrl, String title, String description) {
         this.exhibitionId = exhibitionId;
-        this.cloudfrontUrl = cloudfrontUrl;
+        this.thumbnailUrl = thumbnailUrl;
         this.title = title;
         this.description = description;
         this.viewCount = 0L;

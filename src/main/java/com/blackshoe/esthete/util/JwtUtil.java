@@ -1,11 +1,16 @@
 package com.blackshoe.esthete.util;
 
+import com.blackshoe.esthete.entity.User;
 import com.blackshoe.esthete.exception.TokenErrorResult;
 import com.blackshoe.esthete.exception.TokenException;
+import com.blackshoe.esthete.exception.UserErrorResult;
+import com.blackshoe.esthete.exception.UserException;
+import com.blackshoe.esthete.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,12 +18,15 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.UUID;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
+    private final UserRepository userRepository;
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(this.SECRET_KEY);
@@ -48,6 +56,16 @@ public class JwtUtil {
         }
     }
 
+    // 토큰에서 유저를 반환하는 메서드
+    public User getUserFromHeader(String authorizationHeader) {
+        String token = getTokenFromHeader(authorizationHeader);
+        isTokenExpired(token);
+        UUID userId = UUID.fromString(getUserIdFromToken(token));
+
+        return userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+    }
+
     // Jwt 토큰의 유효기간을 확인하는 메서드
     public boolean isTokenExpired(String token) {
         try {
@@ -62,7 +80,7 @@ public class JwtUtil {
         } catch (JwtException | IllegalArgumentException e) {
             // 토큰이 유효하지 않은 경우
             log.warn("유효하지 않은 토큰입니다.");
-            throw new TokenException(TokenErrorResult.INVALID_TOKEN);
+            throw new TokenException(TokenErrorResult.IS_EXPIRED);
         }
     }
 }

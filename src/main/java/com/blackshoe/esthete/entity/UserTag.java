@@ -1,5 +1,6 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "users_tags")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserTag {
+public class UserTag extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "users_tags_id")

@@ -1,5 +1,6 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Table(name = "exhibitions_tags")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExhibitionTag {
+public class ExhibitionTag extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exhibitions_tags_id")
@@ -23,21 +24,15 @@ public class ExhibitionTag {
     private Exhibition exhibition;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "exhibitions_tags_fk_exhibitions_id"))
-    private TemporaryExhibition temporaryExhibition;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "exhibitions_tags_fk_users_id"))
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tags_id", foreignKey = @ForeignKey(name = "exhibitions_tags_fk_tags_id"))
     private Tag tag;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "exhibitions_tags_fk_temporary_exhibitions_id"))
+    private TemporaryExhibition temporaryExhibition;
 
     @Builder
-    public ExhibitionTag(User user, Exhibition exhibition, Tag tag, TemporaryExhibition temporaryExhibition) {
-        this.user = user;
+    public ExhibitionTag(Exhibition exhibition, Tag tag, TemporaryExhibition temporaryExhibition) {
         this.exhibition = exhibition;
         this.tag = tag;
         this.temporaryExhibition = temporaryExhibition;
@@ -59,5 +54,4 @@ public class ExhibitionTag {
     public void deleteTemporaryExhibition(){
         this.temporaryExhibition = null;
     }
-
 }

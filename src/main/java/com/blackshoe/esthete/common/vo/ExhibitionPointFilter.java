@@ -1,7 +1,5 @@
 package com.blackshoe.esthete.common.vo;
 
-import com.blackshoe.esthete.exception.ExhibitionErrorResult;
-import com.blackshoe.esthete.exception.ExhibitionException;
 import lombok.Builder;
 import lombok.Data;
 
