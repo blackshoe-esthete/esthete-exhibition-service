@@ -18,6 +18,7 @@ public enum ExhibitionErrorResult implements BaseErrorCode {
     INVALID_EXHIBITION_PHOTO_IMG_SIZE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 전시 사진입니다."),
     EXHIBITION_PHOTO_IMG_UPLOAD_FAILED(HttpStatus.BAD_REQUEST, "400", "전시 사진 S3 업로드 실패했습니다."),
     NOT_FOUND_PHOTO_URL(HttpStatus.NOT_FOUND, "404", "존재하지 않는 사진 url입니다."),
+    FAIL_TO_GET_SIX_EXHIBITIONS(HttpStatus.NOT_FOUND, "404", "전시회 6개를 가져오는 데 실패했습니다."),
     ;
 
 
