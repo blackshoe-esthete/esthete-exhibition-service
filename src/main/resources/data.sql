@@ -59,3 +59,29 @@ INSERT INTO exhibitions (created_at, exhibitions_id, users_id, view_count, exhib
     (NOW(), 6, 3, 1000, UNHEX(REPLACE('f5f16b49-12ac-4745-aac5-4b1b269eabcb', '-', '')), '봄1', '혼자여행', '썸네일 url이라고 생각하세요'),
     (NOW(), 7, 2, 123, UNHEX(REPLACE('a3087e10-7da2-4760-a82d-d80c4397e0e1', '-', '')), '봄2', '혼자여행', '썸네일 url이라고 생각하세요')
     ON DUPLICATE KEY UPDATE exhibitions_id = exhibitions_id;
+
+-- 디폴트 전시 태그 삽입
+INSERT INTO exhibitions_tags (exhibitions_tags_id, exhibitions_id, tags_id)
+VALUES
+    (1, 1, 1),
+    (2, 1, 3),
+    (3, 1, 13),
+    (4, 2, 2),
+    (5, 2, 4),
+    (6, 2, 12),
+    (7, 3, 5),
+    (8, 3, 8),
+    (9, 3, 25),
+    (10, 4, 24),
+    (11, 4, 11),
+    (12, 4, 9),
+    (13, 5, 15),
+    (14, 5, 2),
+    (15, 5, 5),
+    (16, 6, 21),
+    (17, 6, 20),
+    (18, 6, 10),
+    (19, 7, 6),
+    (20, 7, 7),
+    (21, 7, 14)
+    ON DUPLICATE KEY UPDATE exhibitions_tags_id = exhibitions_tags_id;
