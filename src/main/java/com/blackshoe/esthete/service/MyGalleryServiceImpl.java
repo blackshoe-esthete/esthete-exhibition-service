@@ -1,12 +1,18 @@
 package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.dto.EditUserTagsDto;
+import com.blackshoe.esthete.dto.MyGalleryDto;
 import com.blackshoe.esthete.entity.Tag;
+import com.blackshoe.esthete.entity.TemporaryExhibition;
 import com.blackshoe.esthete.entity.User;
 import com.blackshoe.esthete.entity.UserTag;
+import com.blackshoe.esthete.exception.MyGalleryErrorResult;
+import com.blackshoe.esthete.exception.MyGalleryException;
 import com.blackshoe.esthete.exception.TagErrorResult;
 import com.blackshoe.esthete.exception.TagException;
-import com.blackshoe.esthete.repository.*;
+import com.blackshoe.esthete.repository.TagRepository;
+import com.blackshoe.esthete.repository.TemporaryExhibitionRepository;
+import com.blackshoe.esthete.repository.UserTagRepository;
 import com.blackshoe.esthete.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +26,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class MyGalleryServiceImpl implements MyGalleryService {
-    private final UserRepository userRepository;
     private final UserTagRepository userTagRepository;
-    private final PhotoRepository photoRepository;
-    private final PhotoUrlRepository photoUrlRepository;
     private final TagRepository tagRepository;
-    private final ExhibitionTagRepository exhibitionTagRepository;
-    private final ExhibitionRepository exhibitionRepository;
-    private final ExhibitionLocationRepository exhibitionLocationRepository;
     private final TemporaryExhibitionRepository temporaryExhibitionRepository;
     private final JwtUtil jwtUtil;
 
@@ -68,83 +68,12 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         return tagList;
     }
 
-//    // 전시를 업로드하는 메소드
-//    @Override
-//    @Transactional
-//    public UploadExhibitionDto.UploadExhibitionResponse uploadExhibition(String authorizationHeader, UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
-//        String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
-//        String userId = jwtUtil.getUserIdFromToken(accessToken);
-//        User user = userRepository.findByUserId(UUID.fromString(userId)).orElseThrow(
-//                () -> new UserException(UserErrorResult.NOT_FOUND_USER));
-//        TemporaryExhibition temporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(uploadExhibitionRequest.getTemporaryExhibitionId()).orElseThrow(
-//                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION));
-//
-//        // Exhibition 엔터티 생성 & 저장
-//        Exhibition exhibition = Exhibition.builder()
-//                .user(user)
-//                .exhibitionId(temporaryExhibition.getTemporaryExhibitionId())
-//                .cloudfrontUrl(temporaryExhibition.getCloudfrontUrl())
-//                .title(uploadExhibitionRequest.getTitle())
-//                .description(uploadExhibitionRequest.getDescription())
-//                .build();
-//
-//        exhibitionRepository.save(exhibition);
-//
-//        // ExhibitionTag 엔터티 생성 & 저장
-//        for (String tagName : uploadExhibitionRequest.getTagList()) {
-//            Tag tag = tagRepository.findByName(tagName).orElseThrow(
-//                    () -> new TagException(TagErrorResult.NOT_FOUND_TAG));
-//
-//            ExhibitionTag exhibitionTag = ExhibitionTag.builder()
-//                    .user(user)
-//                    .exhibition(exhibition)
-//                    .tag(tag)
-//                    .build();
-//
-//            exhibitionTagRepository.save(exhibitionTag);
-//        }
-//
-//        // Photo & PhotoUrl 엔터티 생성 & 저장
-//        List<TemporaryExhibitionPhoto> temporaryExhibitionPhotoList = temporaryExhibitionPhotoRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(
-//                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_PHOTO)
-//        );
-//        for (TemporaryExhibitionPhoto temporaryExhibitionPhoto : temporaryExhibitionPhotoList) {
-//            Photo photo = Photo.builder()
-//                    .user(user)
-//                    .exhibition(exhibition)
-//                    .build();
-//
-//            photoRepository.save(photo);
-//
-//            PhotoUrl photoUrl = PhotoUrl.builder()
-//                    .photo(photo)
-//                    .cloudfrontUrl(temporaryExhibition.getCloudfrontUrl())
-//                    .s3Url(temporaryExhibitionPhoto.getS3Url())
-//                    .build();
-//
-//            photoUrlRepository.save(photoUrl);
-//        }
-//
-//        // ExhibitionLocation 엔터티 생성 & 저장
-//        if (uploadExhibitionRequest.getLocationInfo() != null) {
-//            ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
-//                    .user(user)
-//                    .exhibition(exhibition)
-//                    .longitude(uploadExhibitionRequest.getLocationInfo().getLongitude())
-//                    .latitude(uploadExhibitionRequest.getLocationInfo().getLatitude())
-//                    .state(uploadExhibitionRequest.getLocationInfo().getState())
-//                    .city(uploadExhibitionRequest.getLocationInfo().getCity())
-//                    .town(uploadExhibitionRequest.getLocationInfo().getTown())
-//                    .build();
-//
-//            exhibitionLocationRepository.save(exhibitionLocation);
-//        }
-//
-//        // TemporaryExhibition 엔터티 삭제
-//        temporaryExhibitionRepository.delete(temporaryExhibition);
-//
-//        return UploadExhibitionDto.UploadExhibitionResponse.builder()
-//                .exhibitionId(exhibition.getExhibitionId())
-//                .build();
-//    }
+    // 임시 저장 전시회를 전체 조회하는 메서드
+    @Override
+    public List<MyGalleryDto.TemporaryExhibitionResponse> getTemporaryExhibitions(String authorizationHeader) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        List<TemporaryExhibition> temporaryExhibitions = temporaryExhibitionRepository.findAllByUserOrderByCreatedAtDesc(user)
+                .orElseThrow(() -> new MyGalleryException(MyGalleryErrorResult.FAIL_TO_GET_TEMPORARY_EXHIBITIONS));
+        return MyGalleryDto.TemporaryExhibitionResponse.of(temporaryExhibitions);
+    }
 }
