@@ -59,6 +59,7 @@ public class JwtUtil {
     // 토큰에서 유저를 반환하는 메서드
     public User getUserFromHeader(String authorizationHeader) {
         String token = getTokenFromHeader(authorizationHeader);
+        isTokenExpired(token);
         UUID userId = UUID.fromString(getUserIdFromToken(token));
 
         return userRepository.findByUserId(userId)
@@ -79,7 +80,7 @@ public class JwtUtil {
         } catch (JwtException | IllegalArgumentException e) {
             // 토큰이 유효하지 않은 경우
             log.warn("유효하지 않은 토큰입니다.");
-            throw new TokenException(TokenErrorResult.INVALID_TOKEN);
+            throw new TokenException(TokenErrorResult.IS_EXPIRED);
         }
     }
 }
