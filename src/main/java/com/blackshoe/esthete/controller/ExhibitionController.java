@@ -2,6 +2,7 @@ package com.blackshoe.esthete.controller;
 
 import com.blackshoe.esthete.common.ApiResponse;
 import com.blackshoe.esthete.common.constant.SuccessStatus;
+import com.blackshoe.esthete.dto.MainHomeDto;
 import com.blackshoe.esthete.dto.SearchExhibitionDto;
 import com.blackshoe.esthete.service.ExhibitionService;
 import lombok.RequiredArgsConstructor;
@@ -9,17 +10,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/exhibition/searching")
+@RequestMapping("/api/v1/exhibitions")
 @RequiredArgsConstructor
 public class ExhibitionController {
     private final ExhibitionService exhibitionService;
 
     // 토큰이 없는 경우에도 검색이 가능함 -> 토큰 없이 검색
 
-    @GetMapping("/exhibition_title")
+    @GetMapping("/searching/title")
     public ResponseEntity<ApiResponse<Page<SearchExhibitionDto.SearchExhibitionResponse>>> searchFilterWithExhibition(
             @RequestParam(required = false) String exhibitionKeyword,
             @RequestParam(required = false, defaultValue = "0") Integer page,
@@ -33,7 +34,7 @@ public class ExhibitionController {
         }
     }
 
-    @GetMapping("/author_name")
+    @GetMapping("/searching/author")
     public ResponseEntity<ApiResponse<Page<SearchExhibitionDto.SearchAuthorResponse>>> searchFilterWithAuthor(
             @RequestParam(required = false) String authorKeyword,
             @RequestParam(required = false, defaultValue = "0") Integer page,
@@ -45,5 +46,13 @@ public class ExhibitionController {
             Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthorResponses = exhibitionService.searchAuthor(authorKeyword, page, size);
             return ApiResponse.onSuccess(SuccessStatus.SEARCH_AUTHOR_BY_KEYWORD, searchAuthorResponses);
         }
+    }
+
+    @GetMapping("/recommend")
+    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getRecommendExhibitions(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getRecommendExhibitions(authorizationHeader);
+        return ApiResponse.onSuccess(SuccessStatus.GET_RECOMMEND_EXHIBITIONS, exhibitionResponses);
     }
 }
