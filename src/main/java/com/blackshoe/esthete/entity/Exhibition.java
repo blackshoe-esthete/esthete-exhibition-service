@@ -51,9 +51,9 @@ public class Exhibition {
     }
 
     @Builder
-    public Exhibition(UUID exhibitionId, String cloudfrontUrl, String title, String description) {
+    public Exhibition(UUID exhibitionId, String thumbnailUrl, String title, String description) {
         this.exhibitionId = exhibitionId;
-        this.thumbnailUrl = cloudfrontUrl;
+        this.thumbnailUrl = thumbnailUrl;
         this.title = title;
         this.description = description;
         this.viewCount = 0L;

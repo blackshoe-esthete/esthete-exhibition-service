@@ -9,17 +9,15 @@ import com.blackshoe.esthete.common.vo.ExhibitionSortType;
 import com.blackshoe.esthete.dto.ExhibitionClusteringDto;
 import com.blackshoe.esthete.dto.MainHomeDto;
 import com.blackshoe.esthete.dto.SearchExhibitionDto;
-import com.blackshoe.esthete.entity.Exhibition;
 import com.blackshoe.esthete.service.ExhibitionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/exhibitions")

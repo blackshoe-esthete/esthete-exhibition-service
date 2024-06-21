@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 public class ExhibitionClusteringDto {
@@ -58,12 +57,12 @@ public class ExhibitionClusteringDto {
     public static class MarkedExhibitionsResponse {
         private UUID exhibitionId;
         private String title;
-        private String cloudfrontUrl;
+        private String thumbnailUrl;
 
         public MarkedExhibitionsResponse(Exhibition exhibition){
             this.exhibitionId = exhibition.getExhibitionId();
             this.title = exhibition.getTitle();
-            this.cloudfrontUrl = exhibition.getCloudfrontUrl();
+            this.thumbnailUrl = exhibition.getThumbnailUrl();
         }
     }
 
