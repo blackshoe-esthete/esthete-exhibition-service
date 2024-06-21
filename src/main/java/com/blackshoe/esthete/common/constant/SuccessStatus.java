@@ -23,6 +23,8 @@ public enum SuccessStatus implements BaseCode {
     SEARCH_EXHIBITION_BY_KEYWORD(HttpStatus.OK, "200", "전시 검색에 성공했습니다."),
     SEARCH_ALL_AUTHOR(HttpStatus.OK, "200", "전체 작가 검색에 성공했습니다."),
     SEARCH_AUTHOR_BY_KEYWORD(HttpStatus.OK, "200", "작가 검색에 성공했습니다."),
+    GET_EXHIBITION_GROUP_IN_MAP(HttpStatus.OK, "200", "전시 클러스터링에 성공했습니다."),
+    GET_EXHIBITIONS_IN_MAP(HttpStatus.OK, "200", "클러스터에 해당하는 전시 리스트 조회를 성공했습니다."),
     GET_RECOMMEND_EXHIBITIONS(HttpStatus.OK, "200", "개인 추천 전시회 조회에 성공했습니다."),
     ;
 

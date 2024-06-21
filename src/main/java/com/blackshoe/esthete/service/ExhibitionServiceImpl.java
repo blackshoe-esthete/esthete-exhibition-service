@@ -1,5 +1,10 @@
 package com.blackshoe.esthete.service;
 
+import com.blackshoe.esthete.common.vo.ExhibitionAddressFilter;
+import com.blackshoe.esthete.common.vo.ExhibitionAddressSearchType;
+import com.blackshoe.esthete.common.vo.ExhibitionLocationGroupType;
+import com.blackshoe.esthete.common.vo.ExhibitionPointFilter;
+import com.blackshoe.esthete.dto.ExhibitionClusteringDto;
 import com.blackshoe.esthete.dto.MainHomeDto;
 import com.blackshoe.esthete.dto.SearchExhibitionDto;
 import com.blackshoe.esthete.entity.Exhibition;
@@ -12,6 +17,7 @@ import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,6 +90,50 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .build());
     }
 
+    @Override
+    @Transactional
+    public Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> getTop10ByUserLocationGroupBy(ExhibitionPointFilter exhibitionLocationFilter, ExhibitionLocationGroupType exhibitionLocationGroupType){
+       Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> markedRegionGroupResponse;
+
+       switch (exhibitionLocationGroupType){
+           case STATE:
+               markedRegionGroupResponse = exhibitionRepository.findTop10ByUserLocationGroupByState(exhibitionLocationFilter);
+               return markedRegionGroupResponse;
+           case CITY:
+               markedRegionGroupResponse = exhibitionRepository.findTop10ByUserLocationGroupByCity(exhibitionLocationFilter);
+               return markedRegionGroupResponse;
+           case TOWN:
+               markedRegionGroupResponse = exhibitionRepository.findTop10ByUserLocationGroupByTown(exhibitionLocationFilter);
+               return markedRegionGroupResponse;
+           default:
+               throw new ExhibitionException(ExhibitionErrorResult.INVALID_LOCATION_GROUP_TYPE);
+       }
+    }
+
+    @Override
+    @Transactional
+    public Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> readByAddress(ExhibitionAddressFilter exhibitionAddressFilter, Integer page, Integer size, Sort sortBy){
+        Pageable pageable = PageRequest.of(page, size, sortBy);
+
+        Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> markedExhibitionsResponse;
+
+        ExhibitionAddressSearchType exhibitionAddressSearchType = exhibitionAddressFilter.getSearchType();
+
+        switch (exhibitionAddressSearchType) {
+            case STATE:
+                markedExhibitionsResponse = exhibitionRepository.findAllByExhibitionLocationState(exhibitionAddressFilter, pageable);
+                return markedExhibitionsResponse;
+            case CITY:
+                markedExhibitionsResponse = exhibitionRepository.findAllByExhibitionLocationStateAndCity(exhibitionAddressFilter, pageable);
+                return markedExhibitionsResponse;
+            case TOWN:
+                markedExhibitionsResponse = exhibitionRepository.findAllByExhibitionLocationStateAndCityAndTown(exhibitionAddressFilter, pageable);
+                return markedExhibitionsResponse;
+            default:
+                throw new ExhibitionException(ExhibitionErrorResult.INVALID_ADDRESS_FILTER);
+        }
+    }
+  
     // 개인 추천 전시회 조회 메서드
     @Override
     @Transactional

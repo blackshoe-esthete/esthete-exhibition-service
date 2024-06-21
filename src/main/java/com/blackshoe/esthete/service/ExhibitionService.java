@@ -1,8 +1,13 @@
 package com.blackshoe.esthete.service;
 
-import com.blackshoe.esthete.dto.MainHomeDto;
+import com.blackshoe.esthete.common.vo.ExhibitionAddressFilter;
+import com.blackshoe.esthete.common.vo.ExhibitionLocationGroupType;
+import com.blackshoe.esthete.common.vo.ExhibitionPointFilter;
+import com.blackshoe.esthete.dto.ExhibitionClusteringDto;
 import com.blackshoe.esthete.dto.SearchExhibitionDto;
+import com.blackshoe.esthete.dto.MainHomeDto;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -14,6 +19,10 @@ public interface ExhibitionService {
     Page<SearchExhibitionDto.SearchAuthorResponse> searchAllAuthor(int page, int size);
 
     Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthor(String authorKeyword, int page, int size);
+
+    Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> getTop10ByUserLocationGroupBy(ExhibitionPointFilter exhibitionLocationFilter, ExhibitionLocationGroupType exhibitionLocationGroupType);
+
+    Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> readByAddress(ExhibitionAddressFilter exhibitionAddressFilter, Integer page, Integer size, Sort sortBy);
 
     List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader);
 }
