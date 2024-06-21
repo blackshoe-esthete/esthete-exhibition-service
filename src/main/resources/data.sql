@@ -32,9 +32,9 @@ ON DUPLICATE KEY UPDATE tags_uuid = tags_uuid;
 INSERT INTO users (users_id, users_uuid, nickname, email, role, gender, introduce, biography, created_at, updated_at, view_count, support_count) VALUES
     (1, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), 'test_user', 'hsh111366@naver.com', 'USER', 'MALE', '안녕하세요.', '', NOW(), NOW(), 0, 10),
     (2, UNHEX(REPLACE('550e8400-e29b-41d4-a716-446655440000', '-', '')), 'test_user2', 'asefa1354@naver.com', 'USER', 'FEMALE', '반가워요.', '', NOW(), NOW(), 0, 20),
-    (3, UNHEX(REPLACE('4b55df30-7a87-49b2-bd56-e0f5210a9a5d', '-', '')), 'test_user1', 'riquer546@naver.com', 'USER', 'MALE', '행복해요.', '', NOW(), NOW(), 0, 5),
-    (4, UNHEX(REPLACE('86a93e29-0f46-4a65-9c49-7fbf7c13e9f2', '-', '')), 'test_user1', 'fpdogsj44@naver.com', 'USER', 'FEMALE', '즐거워요.', '', NOW(), NOW(), 0, 100),
-    (5, UNHEX(REPLACE('4d4be043-5d57-45eb-a3fb-dc48e5e452b0', '-', '')), 'test_user2', 'sfas46587@naver.com', 'USER', 'MALE', '화가나요.', '', NOW(), NOW(), 0, 1)
+    (3, UNHEX(REPLACE('4b55df30-7a87-49b2-bd56-e0f5210a9a5d', '-', '')), 'test_user3', 'riquer546@naver.com', 'USER', 'MALE', '행복해요.', '', NOW(), NOW(), 0, 5),
+    (4, UNHEX(REPLACE('86a93e29-0f46-4a65-9c49-7fbf7c13e9f2', '-', '')), 'test_user4', 'fpdogsj44@naver.com', 'USER', 'FEMALE', '즐거워요.', '', NOW(), NOW(), 0, 100),
+    (5, UNHEX(REPLACE('4d4be043-5d57-45eb-a3fb-dc48e5e452b0', '-', '')), 'test_user5', 'sfas46587@naver.com', 'USER', 'MALE', '화가나요.', '', NOW(), NOW(), 0, 1)
     ON DUPLICATE KEY UPDATE users_uuid = users_uuid;
 
 -- 디폴트 임시저장 전시 삽입
@@ -53,8 +53,8 @@ INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbna
 INSERT INTO exhibitions (created_at, exhibitions_id, users_id, view_count, exhibitions_uuid, title, description, thumbnail_url) VALUES
     (NOW(), 1, 1, 203, UNHEX(REPLACE('d8265394-573e-4d5e-baf0-8b75fe10896e', '-', '')), '겨울', '혼자여행', '썸네일 url이라고 생각하세요'),
     (NOW(), 2, 2, 152, UNHEX(REPLACE('b35b9358-df1d-4d9c-b362-cb51e94e5e25', '-', '')), '겨울1', '혼자여행', '썸네일 url이라고 생각하세요'),
-    (NOW(), 3, 3, 313, UNHEX(REPLACE('5f2e2f9d-0411-437e-91e5-7922a35b1044', '-', '')), '가울', '혼자여행', '썸네일 url이라고 생각하세요'),
-    (NOW(), 4, 2, 22, UNHEX(REPLACE('d61d5f71-f5bc-4ab3-92c8-62b1de207102', '-', '')), '가울1', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (NOW(), 3, 3, 313, UNHEX(REPLACE('5f2e2f9d-0411-437e-91e5-7922a35b1044', '-', '')), '가을', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (NOW(), 4, 2, 22, UNHEX(REPLACE('d61d5f71-f5bc-4ab3-92c8-62b1de207102', '-', '')), '가을1', '혼자여행', '썸네일 url이라고 생각하세요'),
     (NOW(), 5, 2, 15, UNHEX(REPLACE('74148b2b-9f0e-4650-8e94-3ec6ccde34a6', '-', '')), '봄', '혼자여행', '썸네일 url이라고 생각하세요'),
     (NOW(), 6, 3, 1000, UNHEX(REPLACE('f5f16b49-12ac-4745-aac5-4b1b269eabcb', '-', '')), '봄1', '혼자여행', '썸네일 url이라고 생각하세요'),
     (NOW(), 7, 2, 123, UNHEX(REPLACE('a3087e10-7da2-4760-a82d-d80c4397e0e1', '-', '')), '봄2', '혼자여행', '썸네일 url이라고 생각하세요')

@@ -28,7 +28,7 @@ public class Exhibition {
     private UUID exhibitionId;
 
     @Column(name = "thumbnail_url")
-    private String cloudfrontUrl;
+    private String thumbnailUrl;
 
     @Column(name = "title", length = 50)
     private String title;
@@ -53,7 +53,7 @@ public class Exhibition {
     @Builder
     public Exhibition(UUID exhibitionId, String cloudfrontUrl, String title, String description) {
         this.exhibitionId = exhibitionId;
-        this.cloudfrontUrl = cloudfrontUrl;
+        this.thumbnailUrl = cloudfrontUrl;
         this.title = title;
         this.description = description;
         this.viewCount = 0L;

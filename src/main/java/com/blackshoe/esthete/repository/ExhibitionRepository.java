@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -110,4 +111,6 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.town = :#{#exhibitionAddressFilter.town} ")
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationStateAndCityAndTown(
             @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
+  
+    List<Exhibition> findTop6ByOrderByViewCountDesc();
 }
