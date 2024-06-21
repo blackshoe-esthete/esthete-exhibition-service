@@ -12,7 +12,7 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  IMAGE_NAME: esthete-exhibition-service
+  IMAGE_NAME: esthete-exhibition-service-v2
 
 jobs:
   build:
