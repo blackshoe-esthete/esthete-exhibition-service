@@ -1,5 +1,6 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Table(name = "photos")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Photo {
+public class Photo extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "photos_id")
@@ -25,25 +26,17 @@ public class Photo {
     private Exhibition exhibition;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "photos_fk_temporary_exhibitions_id"))
+    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "photos_fk_temporary_temporary_exhibitions_id"))
     private TemporaryExhibition temporaryExhibition;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "photos_fk_users_id"))
-    private User user;
 
     @Column(name = "photos_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID photoId;
 
-    @Column(name = "gray_scale")
-    private Float grayScale;
-
     @Column(name = "filter_uuid")
     private UUID filterId;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, length = 20)
-    private LocalDateTime createdAt;
+    @Column(name = "gray_scale")
+    private Float grayScale;
 
     @PrePersist
     public void updatePhotoId() {
@@ -58,10 +51,6 @@ public class Photo {
         this.filterId = filterId;
     }
 
-    public void setUser(User user){
-        this.user = user;
-    }
-
     public void setTemporaryExhibition(TemporaryExhibition temporaryExhibition){
         this.temporaryExhibition = temporaryExhibition;
     }
@@ -73,19 +62,4 @@ public class Photo {
     public void deleteTemporaryExhibition(TemporaryExhibition temporaryExhibition){
         this.temporaryExhibition = null;
     }
-
-//    public void updateTemporaryExhibition(TemporaryExhibition temporaryExhibition){
-//        this.temporaryExhibition = temporaryExhibition;
-//        temporaryExhibition.addTemporaryExhibitionPhoto(this);
-//    }
-//
-//    public void updateExhibition(Exhibition exhibition){
-//        this.exhibition = exhibition;
-//        exhibition.addTemporaryExhibitionPhoto(this);
-//    }
-//
-//    public void updateExhibition(Exhibition exhibition){
-//        this.exhibition = exhibition;
-//        exhibition.addPhoto(this);
-//    }
 }

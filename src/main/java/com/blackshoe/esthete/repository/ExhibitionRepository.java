@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
     @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
             "count(el), " +
             "el.state, " +
-            "el.exhibition.cloudfrontUrl) " +
+            "el.exhibition.thumbnailUrl) " +
             "FROM ExhibitionLocation el " +
             "WHERE el.latitude " +
             "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
@@ -52,7 +53,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "count(el), " +
             "el.state, " +
             "el.city, " +
-            "el.exhibition.cloudfrontUrl) " +
+            "el.exhibition.thumbnailUrl) " +
             "FROM ExhibitionLocation el " +
             "WHERE el.latitude " +
             "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
@@ -75,7 +76,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "el.state, " +
             "el.city, " +
             "el.town, " +
-            "el.exhibition.cloudfrontUrl) " +
+            "el.exhibition.thumbnailUrl) " +
             "FROM ExhibitionLocation el " +
             "WHERE el.latitude " +
             "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
@@ -110,4 +111,8 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.town = :#{#exhibitionAddressFilter.town} ")
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationStateAndCityAndTown(
             @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
+  
+    List<Exhibition> findTop6ByOrderByViewCountDesc();
+
+    List<Exhibition> findTop6ByOrderByViewCountAsc();
 }

@@ -1,9 +1,9 @@
 package com.blackshoe.esthete.repository;
 
-import com.blackshoe.esthete.entity.GuestBook;
+import com.blackshoe.esthete.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GuestBookRepository extends JpaRepository<GuestBook,Long> {
+public interface CommentRepository extends JpaRepository<Comment,Long> {
 }
