@@ -272,6 +272,9 @@ public class AdditionServiceImpl implements AdditionService{
                 photoUrlRepository.save(temporaryExhibitionPhotoUrl);
                 idx++;
             }
+            //exhibition에 썸네일 주소 넣기
+            findTemporaryExhibition.setCloudfrontUrl(exhibitionPhotoImgUrls.get(0).getCloudfrontUrl());
+
         }else if(exhibitionId != null && temporaryExhibitionId == null){
             log.info("바로 저장 경우, 대표사진 url db에 생성");
             Exhibition findExhibition = exhibitionRepository.findByExhibitionId(exhibitionId).orElseThrow(
@@ -296,6 +299,8 @@ public class AdditionServiceImpl implements AdditionService{
                 photoUrlRepository.save(exhibitionPhotoUrl);
                 idx++;
             }
+            //exhibition에 썸네일 주소 넣기
+            findExhibition.setCloudfrontUrl(exhibitionPhotoImgUrls.get(0).getCloudfrontUrl());
         }
     }
 
@@ -390,6 +395,9 @@ public class AdditionServiceImpl implements AdditionService{
         exhibition.setUser(user);
         exhibitionRepository.save(exhibition);
 
+        //thumbnail
+        exhibition.setCloudfrontUrl(temporaryExhibition.getThumbnailUrl());
+
         //photo
         List<Photo> photos = photoRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(
                 () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_PHOTO));
@@ -419,6 +427,9 @@ public class AdditionServiceImpl implements AdditionService{
 
         log.info("임시저장 전시 옮기기, 자식들과 연관관계 끊기 -> 데이터 삭제");
         //임시저장 전시 자식들과 연관관계 끊기 -> 데이터 삭제
+
+        //thumbnail 삭제 -> 추가함
+        temporaryExhibition.setCloudfrontUrl(null);
 
         for(Photo photo : photos){
             photo.deleteTemporaryExhibition(temporaryExhibition);
