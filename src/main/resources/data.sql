@@ -50,14 +50,16 @@ INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbna
 #     ON DUPLICATE KEY UPDATE temporary_exhibitions_photos_id = temporary_exhibitions_photos_id;
 
 -- 디폴트 전시 삽입
-INSERT INTO exhibitions (created_at, exhibitions_id, users_id, view_count, exhibitions_uuid, title, description, thumbnail_url) VALUES
-    (NOW(), 1, 1, 203, UNHEX(REPLACE('d8265394-573e-4d5e-baf0-8b75fe10896e', '-', '')), '겨울', '혼자여행', '썸네일 url이라고 생각하세요'),
-    (NOW(), 2, 2, 152, UNHEX(REPLACE('b35b9358-df1d-4d9c-b362-cb51e94e5e25', '-', '')), '겨울1', '혼자여행', '썸네일 url이라고 생각하세요'),
-    (NOW(), 3, 3, 313, UNHEX(REPLACE('5f2e2f9d-0411-437e-91e5-7922a35b1044', '-', '')), '가을', '혼자여행', '썸네일 url이라고 생각하세요'),
-    (NOW(), 4, 2, 22, UNHEX(REPLACE('d61d5f71-f5bc-4ab3-92c8-62b1de207102', '-', '')), '가을1', '혼자여행', '썸네일 url이라고 생각하세요'),
-    (NOW(), 5, 2, 15, UNHEX(REPLACE('74148b2b-9f0e-4650-8e94-3ec6ccde34a6', '-', '')), '봄', '혼자여행', '썸네일 url이라고 생각하세요'),
-    (NOW(), 6, 3, 1000, UNHEX(REPLACE('f5f16b49-12ac-4745-aac5-4b1b269eabcb', '-', '')), '봄1', '혼자여행', '썸네일 url이라고 생각하세요'),
-    (NOW(), 7, 2, 123, UNHEX(REPLACE('a3087e10-7da2-4760-a82d-d80c4397e0e1', '-', '')), '봄2', '혼자여행', '썸네일 url이라고 생각하세요')
+INSERT INTO exhibitions (exhibitions_id, users_id, view_count, exhibitions_uuid, title, description, thumbnail_url) VALUES
+    (1, 1, 203, UNHEX(REPLACE('d8265394-573e-4d5e-baf0-8b75fe10896e', '-', '')), '봄', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (2, 1, 152, UNHEX(REPLACE('b35b9358-df1d-4d9c-b362-cb51e94e5e25', '-', '')), '여름', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (3, 1, 313, UNHEX(REPLACE('5f2e2f9d-0411-437e-91e5-7922a35b1044', '-', '')), '가을', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (4, 2, 22, UNHEX(REPLACE('d61d5f71-f5bc-4ab3-92c8-62b1de207102', '-', '')), '겨울', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (5, 2, 15, UNHEX(REPLACE('74148b2b-9f0e-4650-8e94-3ec6ccde34a6', '-', '')), '부산', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (6, 2, 1000, UNHEX(REPLACE('f5f16b49-12ac-4745-aac5-4b1b269eabcb', '-', '')), '서울', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (7, 3, 1235, UNHEX(REPLACE('a3087e10-7da2-4760-a82d-d80c4397e0e1', '-', '')), '대전', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (8, 3, 2, UNHEX(REPLACE('f8e0c2d1-6a0d-47cb-80f2-03d28acdd27f', '-', '')), '울산', '혼자여행', '썸네일 url이라고 생각하세요'),
+    (9, 3, 56, UNHEX(REPLACE('ce7d48b4-ef0e-4c6d-bb74-b8be6d9f2874', '-', '')), '대구', '혼자여행', '썸네일 url이라고 생각하세요')
     ON DUPLICATE KEY UPDATE exhibitions_id = exhibitions_id;
 
 -- 디폴트 전시 태그 삽입
