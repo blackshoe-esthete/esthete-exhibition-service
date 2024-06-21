@@ -4,7 +4,6 @@ import com.blackshoe.esthete.common.ApiResponse;
 import com.blackshoe.esthete.common.constant.SuccessStatus;
 import com.blackshoe.esthete.dto.EditUserProfileDto;
 import com.blackshoe.esthete.dto.EditUserTagsDto;
-import com.blackshoe.esthete.dto.UploadExhibitionDto;
 import com.blackshoe.esthete.service.MyGalleryService;
 import com.blackshoe.esthete.service.UserService;
 import lombok.RequiredArgsConstructor;
