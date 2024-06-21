@@ -3,10 +3,7 @@ package com.blackshoe.esthete.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,9 +11,8 @@ import java.util.UUID;
 
 public class CreateExhibitionDto {
 
-    @Data
     @Builder
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,9 +21,8 @@ public class CreateExhibitionDto {
         private UUID filterId;
     }
 
-    @Data
     @Builder
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,9 +30,8 @@ public class CreateExhibitionDto {
         private List<FilterPhoto> filterPhotos;
     }
 
-    @Data
     @Builder
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,9 +39,8 @@ public class CreateExhibitionDto {
         private List<UUID> tags;
     }
 
-    @Data
     @Builder
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -59,9 +52,8 @@ public class CreateExhibitionDto {
         private String town;
     }
 
-    @Data
     @Builder
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -72,9 +64,8 @@ public class CreateExhibitionDto {
         private UUID tmpExhibitionId;
     }
 
-    @Data
     @Builder
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -84,9 +75,8 @@ public class CreateExhibitionDto {
         private TagList tagList;
     }
 
-    @Data
     @Builder
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -95,9 +85,8 @@ public class CreateExhibitionDto {
         private LocalDateTime createdAt;
     }
 
-    @Data
     @Builder
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -106,9 +95,8 @@ public class CreateExhibitionDto {
         private LocalDateTime createdAt;
     }
 
-    @Data
     @Builder
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
