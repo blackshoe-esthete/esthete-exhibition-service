@@ -14,6 +14,7 @@ public class CreateExhibitionDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FilterPhoto {
@@ -24,6 +25,7 @@ public class CreateExhibitionDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FilterPhotoList {
@@ -33,6 +35,7 @@ public class CreateExhibitionDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class TagList {
@@ -42,6 +45,7 @@ public class CreateExhibitionDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ExhibitionLocation {
@@ -55,6 +59,7 @@ public class CreateExhibitionDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class CreateExhibitionRequest {
@@ -67,6 +72,7 @@ public class CreateExhibitionDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ExhibitionInformation {
@@ -78,6 +84,7 @@ public class CreateExhibitionDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class CreateTmpExhibitionResponse {
@@ -88,6 +95,7 @@ public class CreateExhibitionDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class CreateExhibitionResponse {
@@ -98,6 +106,7 @@ public class CreateExhibitionDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ExhibitionPhotoImgUrl {

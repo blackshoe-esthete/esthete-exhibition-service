@@ -18,7 +18,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/v1/exhibition/addition")
+@RequestMapping("/api/v1/exhibitions/addition")
 public class AdditionController {
     private final JwtUtil jwtUtil;
     private final AdditionService additionService;
