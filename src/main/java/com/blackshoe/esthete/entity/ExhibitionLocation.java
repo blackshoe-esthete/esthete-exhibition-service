@@ -34,13 +34,13 @@ public class ExhibitionLocation {
     @Column(name = "latitude", nullable = false, length = 20)
     private Double latitude;
 
-    @Column(name = "state", nullable = false, length = 20)
+    @Column(name = "state", nullable = false, length = 100)
     private String state;
 
-    @Column(name = "city", nullable = false, length = 20)
+    @Column(name = "city", nullable = false, length = 100)
     private String city;
 
-    @Column(name = "town", nullable = false, length = 20)
+    @Column(name = "town", nullable = false, length = 100)
     private String town;
 
     @Builder

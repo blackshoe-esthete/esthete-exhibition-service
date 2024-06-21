@@ -78,4 +78,6 @@ public class TemporaryExhibition {
         this.title = title;
         this.description = description;
     }
+
+    public void setCloudfrontUrl(String cloudfrontUrl) {this.cloudfrontUrl = cloudfrontUrl;}
 }

@@ -71,4 +71,6 @@ public class Exhibition {
     public void increaseViewCount() {
         this.viewCount++;
     }
+
+    public void setCloudfrontUrl(String cloudfrontUrl){this.cloudfrontUrl = cloudfrontUrl;}
 }

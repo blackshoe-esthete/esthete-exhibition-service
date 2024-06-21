@@ -38,7 +38,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.longitude " +
             "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
             "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
-            "GROUP BY el.state " +
+            "GROUP BY el.state, el.exhibition.cloudfrontUrl " +
             "ORDER BY count(el) DESC")
     Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByState(
             @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
@@ -60,7 +60,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.longitude " +
             "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
             "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
-            "GROUP BY el.state, el.city " +
+            "GROUP BY el.state, el.city, el.exhibition.cloudfrontUrl " +
             "ORDER BY count(el) DESC")
     Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByCity(
             @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
@@ -83,7 +83,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.longitude " +
             "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
             "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
-            "GROUP BY el.state, el.city, el.town " +
+            "GROUP BY el.state, el.city, el.town, el.exhibition.cloudfrontUrl " +
             "ORDER BY count(el) DESC")
     Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByTown(
             @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
@@ -92,12 +92,14 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
     //클러스터된 전시 리스트 가져오는 메소드
     @Query("SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedExhibitionsResponse(el.exhibition) " +
             "FROM ExhibitionLocation el " +
+            "JOIN el.exhibition e " +
             "WHERE el.state = :#{#exhibitionAddressFilter.state} ")
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationState(
             @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
 
     @Query("SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedExhibitionsResponse(el.exhibition) " +
             "FROM ExhibitionLocation el " +
+            "JOIN el.exhibition e " +
             "WHERE el.state = :#{#exhibitionAddressFilter.state} " +
             "AND el.city = :#{#exhibitionAddressFilter.city} ")
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationStateAndCity(
@@ -105,6 +107,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
 
     @Query("SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedExhibitionsResponse(el.exhibition) " +
             "FROM ExhibitionLocation el " +
+            "JOIN el.exhibition e " +
             "WHERE el.state = :#{#exhibitionAddressFilter.state} " +
             "AND el.city = :#{#exhibitionAddressFilter.city} " +
             "AND el.town = :#{#exhibitionAddressFilter.town} ")
