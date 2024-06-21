@@ -1,5 +1,6 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "exhibitions_locations")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExhibitionLocation {
+public class ExhibitionLocation extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exhibitions_locations_id")
@@ -21,7 +22,7 @@ public class ExhibitionLocation {
     private Exhibition exhibition;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "exhibitions_locations_fk_exhibitions_id"))
+    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "exhibitions_locations_fk_temporary_exhibitions_id"))
     private TemporaryExhibition temporaryExhibition;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -71,6 +72,4 @@ public class ExhibitionLocation {
     public void updateExhibition(Exhibition exhibition){
         this.exhibition = exhibition;
     }
-
-
 }

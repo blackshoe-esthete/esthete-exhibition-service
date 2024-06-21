@@ -3,7 +3,6 @@ package com.blackshoe.esthete.controller;
 import com.blackshoe.esthete.dto.CreateExhibitionDto;
 import com.blackshoe.esthete.service.AdditionService;
 import com.blackshoe.esthete.service.GeoCodingService;
-import com.blackshoe.esthete.service.UserService;
 import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

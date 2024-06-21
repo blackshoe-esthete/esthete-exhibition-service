@@ -4,13 +4,15 @@ import com.blackshoe.esthete.common.ApiResponse;
 import com.blackshoe.esthete.common.constant.SuccessStatus;
 import com.blackshoe.esthete.dto.EditUserProfileDto;
 import com.blackshoe.esthete.dto.EditUserTagsDto;
-import com.blackshoe.esthete.dto.UploadExhibitionDto;
+import com.blackshoe.esthete.dto.MyGalleryDto;
 import com.blackshoe.esthete.service.MyGalleryService;
 import com.blackshoe.esthete.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/mygallery")
@@ -49,13 +51,12 @@ public class MyGalleryController {
         return ApiResponse.onSuccess(SuccessStatus.EDIT_USER_PROFILE_INFOS, editUserProfileInfosResponse);
     }
 
-    // 전시를 업로드하는 API
-//    @PostMapping("/upload/exhibitions")
-//    public ResponseEntity<ApiResponse<UploadExhibitionDto.UploadExhibitionResponse>> uploadExhibition(
-//            @RequestHeader("Authorization") String authorizationHeader,
-//            @RequestBody UploadExhibitionDto.UploadExhibitionRequest uploadExhibitionRequest) {
-//
-//        UploadExhibitionDto.UploadExhibitionResponse uploadExhibitionResponse = myGalleryService.uploadExhibition(authorizationHeader, uploadExhibitionRequest);
-//        return ApiResponse.onSuccess(SuccessStatus.UPLOAD_EXHIBITION, uploadExhibitionResponse);
-//    }
+    // 임시저장 전시회를 조회하는 API
+    @GetMapping("/temp-exhibitions")
+    public ResponseEntity<ApiResponse<List<MyGalleryDto.TemporaryExhibitionResponse>>> getTemporaryExhibitions(
+            @RequestHeader("Authorization") String authorizationHeader) {
+
+        List<MyGalleryDto.TemporaryExhibitionResponse> temporaryExhibitionResponses = myGalleryService.getTemporaryExhibitions(authorizationHeader);
+        return ApiResponse.onSuccess(SuccessStatus.GET_ALL_TEMPORARY_EXHIBITIONS, temporaryExhibitionResponses);
+    }
 }

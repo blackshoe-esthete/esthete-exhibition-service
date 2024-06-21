@@ -1,5 +1,6 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "photos_tags")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PhotoTag {
+public class PhotoTag extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "photos_tags_id")
@@ -18,14 +19,6 @@ public class PhotoTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photos_id", foreignKey = @ForeignKey(name = "photos_tags_fk_photos_id"))
     private Photo photo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exhibitions_id", foreignKey = @ForeignKey(name = "photos_tags_fk_exhibitions_id"))
-    private Exhibition exhibition;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "photos_tags_fk_users_id"))
-    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tags_id", foreignKey = @ForeignKey(name = "photos_tags_fk_tags_id"))

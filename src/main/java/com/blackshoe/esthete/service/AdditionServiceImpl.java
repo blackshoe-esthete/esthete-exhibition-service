@@ -29,7 +29,6 @@ import java.util.UUID;
 public class AdditionServiceImpl implements AdditionService{
 
     private final TemporaryExhibitionRepository temporaryExhibitionRepository;
-    //private final TemporaryExhibitionPhotoRepository temporaryExhibitionPhotoRepository;
     private final PhotoRepository photoRepository;
     private final PhotoUrlRepository photoUrlRepository;
     private final ExhibitionTagRepository exhibitionTagRepository;
@@ -397,7 +396,7 @@ public class AdditionServiceImpl implements AdditionService{
         exhibitionRepository.save(exhibition);
 
         //thumbnail
-        exhibition.setCloudfrontUrl(temporaryExhibition.getCloudfrontUrl());
+        exhibition.setCloudfrontUrl(temporaryExhibition.getThumbnailUrl());
 
         //photo
         List<Photo> photos = photoRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(

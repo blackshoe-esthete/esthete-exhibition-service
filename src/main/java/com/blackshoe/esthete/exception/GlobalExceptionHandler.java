@@ -35,4 +35,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         S3ErrorResult errorResult = e.getS3ErrorResult();
         return ApiResponse.onFailure(errorResult);
     }
+    // MyGallery Error
+    @ExceptionHandler(MyGalleryException.class)
+    public ResponseEntity<ApiResponse<BaseErrorCode>> handleMyGalleryException(MyGalleryException e) {
+        MyGalleryErrorResult errorResult = e.getMyGalleryErrorResult();
+        return ApiResponse.onFailure(errorResult);
+    }
 }

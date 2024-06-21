@@ -21,6 +21,7 @@ public enum ExhibitionErrorResult implements BaseErrorCode {
     INVALID_LOCATION_GROUP_TYPE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 그룹 주소 타입입니다."),
     INVALID_ADDRESS_FILTER(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 전시 주소 필터입니다."),
     INVALID_SORT_TYPE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 정렬 타입입니다."),
+    FAIL_TO_GET_SIX_EXHIBITIONS(HttpStatus.NOT_FOUND, "404", "전시회 6개를 가져오는 데 실패했습니다."),
     ;
 
     private final HttpStatus httpStatus;
