@@ -27,7 +27,7 @@ public class TemporaryExhibition extends BaseEntity {
     private UUID temporaryExhibitionId;
 
     @Column(name = "thumbnail_url")
-    private String cloudfrontUrl;
+    private String thumbnailUrl;
 
     @Column(name = "title", length = 50)
     private String title;
@@ -46,8 +46,8 @@ public class TemporaryExhibition extends BaseEntity {
     }
 
     @Builder
-    public TemporaryExhibition(String cloudfrontUrl, String title, String description) {
-        this.cloudfrontUrl = cloudfrontUrl;
+    public TemporaryExhibition(String thumbnailUrl, String title, String description) {
+        this.thumbnailUrl = thumbnailUrl;
         this.title = title;
         this.description = description;
         this.viewCount = 0L;
