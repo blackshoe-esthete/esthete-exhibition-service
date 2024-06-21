@@ -1,16 +1,20 @@
 package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.dto.EditUserTagsDto;
-import com.blackshoe.esthete.dto.UploadExhibitionDto;
-import com.blackshoe.esthete.entity.*;
-import com.blackshoe.esthete.exception.*;
+import com.blackshoe.esthete.entity.Tag;
+import com.blackshoe.esthete.entity.User;
+import com.blackshoe.esthete.entity.UserTag;
+import com.blackshoe.esthete.exception.TagErrorResult;
+import com.blackshoe.esthete.exception.TagException;
 import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,10 +35,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     @Override
     @Transactional
     public EditUserTagsDto.TagList editUserTags(String authorizationHeader, EditUserTagsDto.TagList tagList) {
-        String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
-        String userId = jwtUtil.getUserIdFromToken(accessToken);
-        User user = userRepository.findByUserId(UUID.fromString(userId)).orElseThrow(
-                () -> new UserException(UserErrorResult.NOT_FOUND_USER));
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
 
         // 중복 태그 확인
         Set<String> tagNames = new HashSet<>();

@@ -2,7 +2,6 @@ package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.common.constant.Rule;
 import com.blackshoe.esthete.dto.EditUserProfileDto;
-
 import com.blackshoe.esthete.entity.ProfileUrl;
 import com.blackshoe.esthete.entity.User;
 import com.blackshoe.esthete.exception.UserErrorResult;
@@ -10,7 +9,6 @@ import com.blackshoe.esthete.exception.UserException;
 import com.blackshoe.esthete.repository.ProfileUrlRepository;
 import com.blackshoe.esthete.repository.UserRepository;
 import com.blackshoe.esthete.util.JwtUtil;
-//import com.blackshoe.esthete.util.S3Util;
 import com.blackshoe.esthete.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,12 +27,9 @@ public class UserServiceImpl implements UserService {
     // 사용자의 프로필 사진을 수정하는 메서드
     @Override
     public EditUserProfileDto.EditUserProfileImgResponse editUserProfileImg(String authorizationHeader, MultipartFile multipartFile) {
-        String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
-        UUID userId = UUID.fromString(jwtUtil.getUserIdFromToken(accessToken));
-        User user = userRepository.findByUserId(userId).orElseThrow(
-                () -> new UserException(UserErrorResult.NOT_FOUND_USER));
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
 
-        String key = s3Util.createProfileKey(userId, multipartFile);
+        String key = s3Util.createProfileKey(user.getUserId(), multipartFile);
         String s3Url = s3Util.createS3Url(key);
         String cloudFrontUrl = s3Util.createCloudFrontUrl(key);
 
@@ -73,10 +68,7 @@ public class UserServiceImpl implements UserService {
     // 사용자의 프로필 정보를 수정하는 메서드
     @Override
     public EditUserProfileDto.EditUserProfileInfosResponse editUserProfileInfos(String authorizationHeader, EditUserProfileDto.EditUserProfileInfosRequest editUserProfileInfosRequest) {
-        String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
-        String userId = jwtUtil.getUserIdFromToken(accessToken);
-        User user = userRepository.findByUserId(UUID.fromString(userId)).orElseThrow(
-                () -> new UserException(UserErrorResult.NOT_FOUND_USER));
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
 
         // 한 줄 소개 제한 글자 수를 초과한 경우
         if (editUserProfileInfosRequest.getUserIntroduce().length() > Rule.INTRODUCE_LIMIT.getLimit()) {
