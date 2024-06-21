@@ -99,6 +99,8 @@ jobs:
                 -e S3_REGION='${{ secrets.S3_REGION }}' \
                 -e S3_EXHIBITION_PHOTO_DIRECTORY='${{ secrets.S3_EXHIBITION_PHOTO_DIRECTORY }}' \
                 -e GCP_GEOCODING_API_KEY='${{ secrets.GCP_GEOCODING_API_KEY }}' \
+                -e EUREKA_HOST='${{ secrets.EUREKA_HOST }}' \ 
+                -e INSTANCE_HOST='${{ secrets.HOST_TEST_DNS }}' \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sleep 15
             sudo docker image prune -af || true
