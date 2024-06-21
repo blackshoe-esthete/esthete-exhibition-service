@@ -1,9 +1,13 @@
 name: cicd for exhibition-service
 on:
   push:
-    branches: [ test ]
+    branches:
+        - main
+        - test
   pull_request:
-    branches: [ test ]
+    branches:
+        - main
+        - test
   workflow_dispatch:
 
 env:
@@ -74,9 +78,9 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           envs: GITHUB_SHA,NEXT_EXHIBITION_VER
           script: |
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sudo docker stop ${{ env.IMAGE_NAME }} || true
             sudo docker rm ${{ env.IMAGE_NAME }} || true
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sudo docker run -d --name ${{ env.IMAGE_NAME }} --network esthete-network -p 8030:8030 \
                 -e DB_HOST='${{ secrets.DB_HOST }}' \
                 -e DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
@@ -94,6 +98,9 @@ jobs:
                 -e S3_PROFILE_DIRECTORY='${{ secrets.S3_PROFILE_DIRECTORY }}' \
                 -e S3_REGION='${{ secrets.S3_REGION }}' \
                 -e S3_EXHIBITION_PHOTO_DIRECTORY='${{ secrets.S3_EXHIBITION_PHOTO_DIRECTORY }}' \
+                -e GCP_GEOCODING_API_KEY='${{ secrets.GCP_GEOCODING_API_KEY }}' \
+                -e EUREKA_HOST='${{ secrets.EUREKA_HOST }}' \ 
+                -e INSTANCE_HOST='${{ secrets.HOST_TEST_DNS }}' \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sleep 15
             sudo docker image prune -af || true

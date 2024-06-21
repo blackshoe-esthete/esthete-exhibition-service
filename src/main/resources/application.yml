@@ -2,6 +2,8 @@ server:
   port: 8030
 
 spring:
+  application:
+      name: exhibition-service
   datasource:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${INITIAL_DB}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=utf8&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -65,3 +67,13 @@ spring:
 
 services:
   geo-coding-service: https://maps.googleapis.com/maps/api/geocode
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOST}:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    hostname: ${INSTANCE_HOST}
