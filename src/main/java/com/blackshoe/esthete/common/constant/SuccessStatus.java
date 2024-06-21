@@ -27,6 +27,7 @@ public enum SuccessStatus implements BaseCode {
     GET_EXHIBITIONS_IN_MAP(HttpStatus.OK, "200", "클러스터에 해당하는 전시 리스트 조회를 성공했습니다."),
     GET_RECOMMEND_EXHIBITIONS(HttpStatus.OK, "200", "개인 추천 전시회 조회에 성공했습니다."),
     GET_ISOLATION_EXHIBITIONS(HttpStatus.OK, "200", "소외 전시회 조회에 성공했습니다."),
+    GET_TAG_EXHIBITIONS(HttpStatus.OK, "200", "태그 선택 전시회 조회에 성공했습니다."),
     ;
 
     private final HttpStatus httpStatus;
