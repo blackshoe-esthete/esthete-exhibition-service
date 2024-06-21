@@ -1,20 +1,19 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Table(name = "exhibitions")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Exhibition {
+public class Exhibition extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exhibitions_id")
@@ -38,10 +37,6 @@ public class Exhibition {
 
     @Column(name = "view_count")
     private Long viewCount;
-
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, length = 20)
-    private LocalDateTime createdAt;
 
     @PrePersist
     public void updateExhibitionId() {

@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -50,7 +48,6 @@ public class UserServiceImpl implements UserService {
             // 프로필 사진 DB 생성
             profileUrl = ProfileUrl.builder()
                     .user(user)
-                    .profileUrlId(UUID.randomUUID())
                     .cloudfrontUrl(cloudFrontUrl)
                     .s3Url(s3Url)
                     .build();

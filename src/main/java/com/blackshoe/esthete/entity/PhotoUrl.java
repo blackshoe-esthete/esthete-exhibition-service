@@ -44,7 +44,6 @@ public class PhotoUrl {
         this.s3Url = s3Url;
     }
 
-
     public void setPhoto(Photo photo){
         this.photo = photo;
     }

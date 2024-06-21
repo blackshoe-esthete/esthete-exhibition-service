@@ -16,14 +16,14 @@ public class View {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "photos_id", foreignKey = @ForeignKey(name = "views_fk_photos_id"))
-    private Photo photo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exhibitions_id", foreignKey = @ForeignKey(name = "views_fk_exhibitions_id"))
     private Exhibition exhibition;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "views_fk_users_id"))
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photos_id", foreignKey = @ForeignKey(name = "views_fk_photos_id"))
+    private Photo photo;
 }

@@ -1,5 +1,6 @@
 package com.blackshoe.esthete.entity;
 
+import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Table(name = "exhibitions_tags")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExhibitionTag {
+public class ExhibitionTag extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exhibitions_tags_id")
