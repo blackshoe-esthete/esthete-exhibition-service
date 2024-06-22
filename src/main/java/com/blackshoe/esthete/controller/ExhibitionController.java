@@ -133,4 +133,14 @@ public class ExhibitionController {
         MainHomeDto.ExhibitionDetailResponse exhibitionDetailResponse = exhibitionService.getExhibitionDetails(authorizationHeader, exhibitionId);
         return ApiResponse.onSuccess(SuccessStatus.GET_TAG_EXHIBITION_DETAILS, exhibitionDetailResponse);
     }
+
+    // 전시회 댓글 등록 API
+    @PostMapping("/comments")
+    public ResponseEntity<ApiResponse<SuccessStatus>> addComments(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody MainHomeDto.CommentRequest commentRequest) {
+
+        exhibitionService.addComments(authorizationHeader, commentRequest);
+        return ApiResponse.onSuccess(SuccessStatus.ADD_COMMENTS);
+    }
 }

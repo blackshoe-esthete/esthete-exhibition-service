@@ -22,4 +22,5 @@ public interface ExhibitionService {
     List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions();
     List<MainHomeDto.ExhibitionResponse> getExhibitionsByTag(String tagName);
     MainHomeDto.ExhibitionDetailResponse getExhibitionDetails(String authorizationHeader, String exhibitionId);
+    void addComments(String authorizationHeader, MainHomeDto.CommentRequest commentRequest);
 }
