@@ -89,4 +89,14 @@ public class MyGalleryController {
         MyGalleryDto.AuthorIntroductionResponse authorIntroductionResponse = myGalleryService.getAuthorDetails(authorizationHeader, userId);
         return ApiResponse.onSuccess(SuccessStatus.GET_AUTHOR_INTRODUCTIONS, authorIntroductionResponse);
     }
+
+    // 전시를 전체 조회하는 API
+    @GetMapping(value = {"/exhibitions/{user_id}", "/exhibitions"})
+    public ResponseEntity<ApiResponse<List<MyGalleryDto.ExhibitionResponse>>> getAllExhibitions(
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
+            @PathVariable(name = "user_id", required = false) String userId) {
+
+        List<MyGalleryDto.ExhibitionResponse> exhibitionResponses = myGalleryService.getAllExhibitions(authorizationHeader, userId);
+        return ApiResponse.onSuccess(SuccessStatus.GET_ALL_EXHIBITIONS, exhibitionResponses);
+    }
 }
