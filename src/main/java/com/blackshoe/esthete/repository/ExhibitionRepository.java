@@ -121,4 +121,6 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
     Optional<List<Exhibition>> findTop6ByOrderByViewCountAsc();
 
     Optional<List<Exhibition>> findAllByUser(User user);
+
+    Boolean existsByUserId(Long userId);
 }
