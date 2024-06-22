@@ -91,4 +91,14 @@ public class MainHomeDto {
                     .collect(Collectors.toList());
         }
     }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class CommentRequest {
+        private String exhibitionId;
+        private String content;
+    }
 }
