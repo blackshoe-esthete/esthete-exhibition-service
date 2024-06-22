@@ -66,4 +66,6 @@ public class Exhibition extends BaseEntity {
     public void increaseViewCount() {
         this.viewCount++;
     }
+
+    public void setCloudfrontUrl(String thumbnailUrl){this.thumbnailUrl = thumbnailUrl;}
 }

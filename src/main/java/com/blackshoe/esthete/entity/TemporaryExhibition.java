@@ -75,4 +75,6 @@ public class TemporaryExhibition extends BaseEntity {
         this.title = title;
         this.description = description;
     }
+
+    public void setCloudfrontUrl(String thumbnailUrl) {this.thumbnailUrl = thumbnailUrl;}
 }
