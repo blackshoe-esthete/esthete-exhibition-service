@@ -59,4 +59,14 @@ public class MyGalleryController {
         List<MyGalleryDto.TemporaryExhibitionResponse> temporaryExhibitionResponses = myGalleryService.getTemporaryExhibitions(authorizationHeader);
         return ApiResponse.onSuccess(SuccessStatus.GET_ALL_TEMPORARY_EXHIBITIONS, temporaryExhibitionResponses);
     }
+
+    // 임시저장 전시회를 상세 조회하는 API
+    @GetMapping("/temp-exhibitions/{temp_exhibitions_id}")
+    public ResponseEntity<ApiResponse<MyGalleryDto.TemporaryExhibitionDetailResponse>> getTemporaryExhibitionDetails(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("temp_exhibitions_id") String tempExhibitionId) {
+
+        MyGalleryDto.TemporaryExhibitionDetailResponse temporaryExhibitionDetailResponse = myGalleryService.getTemporaryExhibitionDetails(authorizationHeader, tempExhibitionId);
+        return ApiResponse.onSuccess(SuccessStatus.GET_ALL_TEMPORARY_EXHIBITION_DETAIL, temporaryExhibitionDetailResponse);
+    }
 }

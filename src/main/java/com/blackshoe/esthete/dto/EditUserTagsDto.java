@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,10 +17,11 @@ public class EditUserTagsDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class TagList {
-        private List<String> tags;
+        private List<String> tagList;
 
         public static TagList of(List<Tag> tags) {
             List<String> tagNames = tags.stream()

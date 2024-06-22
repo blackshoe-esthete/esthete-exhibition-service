@@ -21,9 +21,11 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MyGalleryServiceImpl implements MyGalleryService {
     private final UserTagRepository userTagRepository;
@@ -31,7 +33,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final TemporaryExhibitionRepository temporaryExhibitionRepository;
     private final JwtUtil jwtUtil;
 
-    // 사용자의 태그 목록을 수정하는 메서드
+    // 사용자 태그 목록 수정 메서드
     @Override
     @Transactional
     public EditUserTagsDto.TagList editUserTags(String authorizationHeader, EditUserTagsDto.TagList tagList) {
@@ -68,12 +70,22 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         return tagList;
     }
 
-    // 임시 저장 전시회를 전체 조회하는 메서드
+    // 임시 저장 전시회 전체 조회 메서드
     @Override
     public List<MyGalleryDto.TemporaryExhibitionResponse> getTemporaryExhibitions(String authorizationHeader) {
         User user = jwtUtil.getUserFromHeader(authorizationHeader);
         List<TemporaryExhibition> temporaryExhibitions = temporaryExhibitionRepository.findAllByUserOrderByCreatedAtDesc(user)
                 .orElseThrow(() -> new MyGalleryException(MyGalleryErrorResult.FAIL_TO_GET_TEMPORARY_EXHIBITIONS));
         return MyGalleryDto.TemporaryExhibitionResponse.of(temporaryExhibitions);
+    }
+
+    // 임시 저장 전시회 상세 조회 메서드
+    @Override
+    public MyGalleryDto.TemporaryExhibitionDetailResponse getTemporaryExhibitionDetails(String authorizationHeader, String tempExhibitionId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        TemporaryExhibition temporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(UUID.fromString(tempExhibitionId))
+                .orElseThrow(() -> new MyGalleryException(MyGalleryErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION));
+
+        return MyGalleryDto.TemporaryExhibitionDetailResponse.of(temporaryExhibition);
     }
 }

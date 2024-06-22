@@ -2,7 +2,6 @@ package com.blackshoe.esthete.dto;
 
 import com.blackshoe.esthete.entity.ExhibitionLocation;
 import com.blackshoe.esthete.entity.Photo;
-import com.blackshoe.esthete.entity.PhotoUrl;
 import com.blackshoe.esthete.entity.TemporaryExhibition;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
