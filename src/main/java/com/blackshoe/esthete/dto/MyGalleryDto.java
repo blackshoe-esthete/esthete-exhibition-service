@@ -1,9 +1,6 @@
 package com.blackshoe.esthete.dto;
 
-import com.blackshoe.esthete.entity.ExhibitionLocation;
-import com.blackshoe.esthete.entity.Photo;
-import com.blackshoe.esthete.entity.TemporaryExhibition;
-import com.blackshoe.esthete.entity.User;
+import com.blackshoe.esthete.entity.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -144,6 +141,33 @@ public class MyGalleryDto {
 
         public void updateFollow(boolean isFollowed) {
             this.isFollowed = isFollowed;
+        }
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ExhibitionResponse {
+        private UUID exhibitionId;
+        private String thumbnailUrl;
+        private String title;
+        private String date;
+
+        public static ExhibitionResponse of(Exhibition exhibition) {
+            return ExhibitionResponse.builder()
+                    .exhibitionId(exhibition.getExhibitionId())
+                    .thumbnailUrl(exhibition.getThumbnailUrl())
+                    .title(exhibition.getTitle())
+                    .date(exhibition.getCreatedAt().format(DATE_FORMATTER))
+                    .build();
+        }
+
+        public static List<ExhibitionResponse> of(List<Exhibition> exhibitions) {
+            return exhibitions.stream()
+                    .map(ExhibitionResponse::of)
+                    .collect(Collectors.toList());
         }
     }
 }
