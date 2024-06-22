@@ -19,6 +19,8 @@ public enum SuccessStatus implements BaseCode {
     UPLOAD_EXHIBITION_PHOTO(HttpStatus.OK, "201", "전시 사진 추가에 성공했습니다."),
     UPLOAD_EXHIBITION(HttpStatus.CREATED, "201", "전시 제작에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITIONS(HttpStatus.OK, "200", "임시저장 전시 전체 조회에 성공했습니다."),
+    GET_ALL_TEMPORARY_EXHIBITION_DETAIL(HttpStatus.OK, "200", "임시저장 전시 상세 조회에 성공했습니다."),
+    REMOVE_TEMPORARY_EXHIBITION(HttpStatus.OK, "200", "임시저장 전시 삭제에 성공했습니다."),
     // Exhibition
     SEARCH_ALL_EXHIBITION(HttpStatus.OK, "200", "전체 전시 검색에 성공했습니다."),
     SEARCH_EXHIBITION_BY_KEYWORD(HttpStatus.OK, "200", "전시 검색에 성공했습니다."),
@@ -29,6 +31,11 @@ public enum SuccessStatus implements BaseCode {
     GET_RECOMMEND_EXHIBITIONS(HttpStatus.OK, "200", "개인 추천 전시회 조회에 성공했습니다."),
     GET_ISOLATION_EXHIBITIONS(HttpStatus.OK, "200", "소외 전시회 조회에 성공했습니다."),
     GET_TAG_EXHIBITIONS(HttpStatus.OK, "200", "태그 선택 전시회 조회에 성공했습니다."),
+    GET_TAG_EXHIBITION_DETAILS(HttpStatus.OK, "200", "전시회 상세 조회에 성공했습니다."),
+    ADD_COMMENTS(HttpStatus.CREATED, "201", "댓글 등록에 성공했습니다."),
+    GET_ALL_COMMENTS(HttpStatus.OK, "200", "댓글 전체 조회에 성공했습니다."),
+    ADD_LIKE_TO_COMMENT(HttpStatus.CREATED, "200", "댓글 좋아요 등록에 성공했습니다."),
+    REMOVE_LIKE_TO_COMMENT(HttpStatus.CREATED, "200", "댓글 좋아요 취소에 성공했습니다."),
     ;
 
     private final HttpStatus httpStatus;

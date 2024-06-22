@@ -22,7 +22,7 @@ public class PhotoUrl {
     @JoinColumn(name = "photos_id", foreignKey = @ForeignKey(name = "photos_urls_fk_photos_id"))
     private Photo photo;
 
-    @Column(name = "photos_uuid", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "photos_urls_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID photoUrlId;
 
     @Column(name = "img_url", nullable = false)
