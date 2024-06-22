@@ -134,6 +134,15 @@ public class ExhibitionController {
         return ApiResponse.onSuccess(SuccessStatus.GET_TAG_EXHIBITION_DETAILS, exhibitionDetailResponse);
     }
 
+    // 전시회 댓글 전체 조회 API
+    @GetMapping("/comments/{exhibition_id}")
+    public ResponseEntity<ApiResponse<List<MainHomeDto.CommentResponse>>> getAllComments(
+            @PathVariable("exhibition_id") String exhibitionId) {
+
+        List<MainHomeDto.CommentResponse> commentResponses = exhibitionService.getAllComments(exhibitionId);
+        return ApiResponse.onSuccess(SuccessStatus.GET_ALL_COMMENTS, commentResponses);
+    }
+
     // 전시회 댓글 등록 API
     @PostMapping("/comments")
     public ResponseEntity<ApiResponse<SuccessStatus>> addComments(

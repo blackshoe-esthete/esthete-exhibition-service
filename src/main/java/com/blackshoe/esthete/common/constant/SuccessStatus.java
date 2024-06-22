@@ -33,6 +33,7 @@ public enum SuccessStatus implements BaseCode {
     GET_TAG_EXHIBITIONS(HttpStatus.OK, "200", "태그 선택 전시회 조회에 성공했습니다."),
     GET_TAG_EXHIBITION_DETAILS(HttpStatus.OK, "200", "전시회 상세 조회에 성공했습니다."),
     ADD_COMMENTS(HttpStatus.OK, "200", "댓글 등록에 성공했습니다."),
+    GET_ALL_COMMENTS(HttpStatus.OK, "200", "댓글 전체 조회에 성공했습니다."),
     ;
 
     private final HttpStatus httpStatus;

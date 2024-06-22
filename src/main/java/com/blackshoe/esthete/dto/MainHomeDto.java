@@ -1,7 +1,9 @@
 package com.blackshoe.esthete.dto;
 
+import com.blackshoe.esthete.entity.Comment;
 import com.blackshoe.esthete.entity.Exhibition;
 import com.blackshoe.esthete.entity.Photo;
+import com.blackshoe.esthete.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -100,5 +102,30 @@ public class MainHomeDto {
     public static class CommentRequest {
         private String exhibitionId;
         private String content;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class CommentResponse {
+        private String commentId;
+        private String name;
+        private String date;
+        private String profileUrl;
+        private String content;
+        private Boolean isLike;
+
+        public static CommentResponse of(Comment comment, User user) {
+            return CommentResponse.builder()
+                    .commentId(String.valueOf(comment.getCommentId()))
+                    .name(user.getNickname())
+                    .date(comment.getCreatedAt().format(DATE_FORMATTER))
+                    .profileUrl(user.getProfileUrl().getCloudfrontUrl())
+                    .content(comment.getContent())
+                    .isLike(comment.getIsLike())
+                    .build();
+        }
     }
 }
