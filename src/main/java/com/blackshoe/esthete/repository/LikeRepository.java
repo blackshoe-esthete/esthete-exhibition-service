@@ -13,4 +13,6 @@ public interface LikeRepository extends JpaRepository<Like,Long> {
     Optional<Like> findByUserIdAndExhibitionId(UUID userId, UUID exhibitionId);
 
     List<Like> findAllByUserId(UUID userId);
+
+    boolean existsByExhibitionId(UUID exhibitionId);
 }
