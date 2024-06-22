@@ -12,6 +12,7 @@ public enum MyGalleryErrorResult implements BaseErrorCode {
     FAIL_TO_GET_TEMPORARY_EXHIBITIONS(HttpStatus.NOT_FOUND, "404", "임시저장 전시회를 불러오는 데 실패했습니다."),
     NOT_FOUND_TEMPORARY_EXHIBITION(HttpStatus.NOT_FOUND, "404", "존재하지 않는 임시저장 전시회입니다."),
     UNAUTHORIZED_TEMPORARY_EXHIBITION(HttpStatus.UNAUTHORIZED, "401", "사용자의 임시저장 전시회가 아닙니다."),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "400", "올바른 요청이 아닙니다."),
     ;
 
     private final HttpStatus httpStatus;
