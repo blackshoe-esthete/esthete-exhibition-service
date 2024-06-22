@@ -25,10 +25,6 @@ public class ExhibitionLocation extends BaseEntity {
     @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "exhibitions_locations_fk_temporary_exhibitions_id"))
     private TemporaryExhibition temporaryExhibition;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "exhibitions_locations_fk_users_id"))
-    private User user;
-
     @Column(name = "longitude", nullable = false, length = 20)
     private Double longitude;
 

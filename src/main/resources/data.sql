@@ -28,6 +28,7 @@ INSERT INTO tags (tags_uuid, name) VALUES
 
 ON DUPLICATE KEY UPDATE tags_uuid = tags_uuid;
 
+
 -- 디폴트 유저 삽입
 INSERT INTO users (users_id, users_uuid, nickname, email, role, gender, introduce, biography, created_at, updated_at, view_count, support_count) VALUES
     (1, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), 'test_user', 'hsh111366@naver.com', 'USER', 'MALE', '안녕하세요.', '', NOW(), NOW(), 0, 10),
@@ -36,6 +37,7 @@ INSERT INTO users (users_id, users_uuid, nickname, email, role, gender, introduc
     (4, UNHEX(REPLACE('86a93e29-0f46-4a65-9c49-7fbf7c13e9f2', '-', '')), 'test_user4', 'fpdogsj44@naver.com', 'USER', 'FEMALE', '즐거워요.', '', NOW(), NOW(), 0, 100),
     (5, UNHEX(REPLACE('4d4be043-5d57-45eb-a3fb-dc48e5e452b0', '-', '')), 'test_user5', 'sfas46587@naver.com', 'USER', 'MALE', '화가나요.', '', NOW(), NOW(), 0, 1)
     ON DUPLICATE KEY UPDATE users_uuid = users_uuid;
+
 
 -- 디폴트 임시저장 전시 삽입
 INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbnail_url, title, description, created_at) VALUES
@@ -46,15 +48,33 @@ INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbna
     ON DUPLICATE KEY UPDATE temporary_exhibitions_uuid = temporary_exhibitions_uuid;
 
 
-# -- 디폴트 임시저장 전시 사진 삽입
-# INSERT INTO temporary_exhibitions_photos (temporary_exhibitions_id, img_url, s3_url, created_at) VALUES
-#     (1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', NOW()),
-#     (1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg', NOW()),
-#     (1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', NOW())
-#     ON DUPLICATE KEY UPDATE temporary_exhibitions_photos_id = temporary_exhibitions_photos_id;
+-- 디폴트 임시저장 전시 장소 삽입
+INSERT INTO exhibitions_locations (exhibitions_locations_id, temporary_exhibitions_id, longitude, latitude, state, city, town) VALUES
+     (1, 1, 25.4, 21.4, '서울특별시', '은평구', '갈현동'),
+     (2, 2, 127.5, 13.2, '서울특별시', '용산구', '후암동'),
+     (3, 3, 40.3, 67.8, '서울특별시', '서대문구', '홍제동'),
+     (4, 4, 87.5, 11.5, '서울특별시', '종로구', '인사동')
+    ON DUPLICATE KEY UPDATE exhibitions_locations_id = exhibitions_locations_id;
+
+-- 디폴트 임시저장 전시 사진 삽입
+INSERT INTO photos (photos_id, temporary_exhibitions_id, photos_uuid, filters_uuid, gray_scale) VALUES
+     (1, 1, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d479', '-', '')), UNHEX(REPLACE('d290f1ee-6c54-4b01-90e6-d701748f0851', '-', '')), -10.2),
+     (2, 2, UNHEX(REPLACE('9c2c279b-35e4-4bda-b788-6bb5d99f6c91', '-', '')), UNHEX(REPLACE('a76893b5-2365-477b-99b0-faff74b111a5', '-', '')), -10.2),
+     (3, 3, UNHEX(REPLACE('ebee8bf8-87e7-41f6-8f60-d6e1ad2f2a22', '-', '')), UNHEX(REPLACE('bf256710-5c56-4696-9676-2c93edc9df17', '-', '')), -10.2),
+     (4, 4, UNHEX(REPLACE('4c566ef8-57e7-4397-91a1-dcfb7a058d6f', '-', '')), UNHEX(REPLACE('98798c76-3c3b-4f3d-8fd1-abc1ff2bce1c', '-', '')), -10.2)
+    ON DUPLICATE KEY UPDATE photos_id = photos_id;
+
+
+ -- 디폴트 임시저장 전시 사진 URL 삽입
+ INSERT INTO photos_urls (photos_urls_id, photos_id, photos_urls_uuid, img_url, s3_url) VALUES
+     (1, 1, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d480', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
+     (2, 2, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d481', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg'),
+     (3, 3, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d482', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg'),
+     (4, 4, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d483', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg')
+     ON DUPLICATE KEY UPDATE photos_urls_id = photos_urls_id;
+
 
 -- 디폴트 전시 삽입
-
 INSERT INTO exhibitions (created_at, exhibitions_id, users_id, view_count, exhibitions_uuid, title, description, thumbnail_url) VALUES
     (NOW(), 1, 1, 203, UNHEX(REPLACE('d8265394-573e-4d5e-baf0-8b75fe10896e', '-', '')), '겨울', '혼자여행', '썸네일 url이라고 생각하세요'),
     (NOW(), 2, 2, 152, UNHEX(REPLACE('b35b9358-df1d-4d9c-b362-cb51e94e5e25', '-', '')), '겨울1', '혼자여행', '썸네일 url이라고 생각하세요'),
@@ -72,6 +92,34 @@ INSERT INTO exhibitions (created_at, exhibitions_id, users_id, view_count, exhib
     (NOW(), 14, 1, 0, UNHEX(REPLACE('7ea6b1a6-b6c0-4731-87e1-f4844cca01d3', '-', '')), '코', '코날비', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/7ea6b1a6-b6c0-4731-87e1-f4844cca01d3/exhibition-photos/9d19ca4a-4372-40fb-9b67-733df0e4a9bd.jpg'),
     (NOW(), 15, 1, 77, UNHEX(REPLACE('6422e443-fedd-4f94-ae26-6e4fa9b58860', '-', '')), '입', '입마개', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/6422e443-fedd-4f94-ae26-6e4fa9b58860/exhibition-photos/b342c93a-02fb-4ef0-a12c-f2949501e6fd.jpg')
     ON DUPLICATE KEY UPDATE exhibitions_id = exhibitions_id;
+    
+    
+-- 디폴트 전시 태그 삽입
+INSERT INTO exhibitions_tags (exhibitions_tags_id, exhibitions_id, temporary_exhibitions_id, tags_id)
+VALUES
+    (1, 1, 1, 1),
+    (2, 1, 1, 3),
+    (3, 1, 1, 13),
+    (4, 2, 1, 2),
+    (5, 2, 1, 4),
+    (6, 2, 1, 12),
+    (7, 3, 1, 5),
+    (8, 3, 2, 8),
+    (9, 3, 2, 25),
+    (10, 4, 2, 24),
+    (11, 4, 2, 11),
+    (12, 4, 2, 9),
+    (13, 5, 3, 15),
+    (14, 5, 3, 2),
+    (15, 5, 3, 5),
+    (16, 6, 3, 21),
+    (17, 6, 4, 20),
+    (18, 6, 4, 10),
+    (19, 7, 4, 6),
+    (20, 7, 4, 7),
+    (21, 7, 4, 14)
+    ON DUPLICATE KEY UPDATE exhibitions_tags_id = exhibitions_tags_id;
+
 
 -- 디폴트 전시 위치 삽입
 INSERT INTO exhibitions_locations (latitude, longitude, exhibitions_id, exhibitions_locations_id, city, state, town) VALUES
@@ -85,27 +133,8 @@ INSERT INTO exhibitions_locations (latitude, longitude, exhibitions_id, exhibiti
                                                                                                                         (35.907757, 127.766922, 15, 8, 'Muju Seolcheon-myeon', 'Jeollabuk-do', '808-3 Samgong-ri')
 ON DUPLICATE KEY UPDATE exhibitions_locations_id = exhibitions_locations_id;
 
--- 디폴트 전시 태그 삽입
-INSERT INTO exhibitions_tags (exhibitions_id, exhibitions_tags_id, tags_id) VALUES
-                                                                            (8, 1, 1),
-                                                                            (8, 2, 12),
-                                                                            (9, 3, 1),
-                                                                            (9, 4, 12),
-                                                                            (10, 5, 1),
-                                                                            (10, 6, 12),
-                                                                            (11, 7, 1),
-                                                                            (11, 8, 12),
-                                                                            (12, 9, 1),
-                                                                            (12, 10, 12),
-                                                                            (13, 11, 1),
-                                                                            (13, 12, 12),
-                                                                            (14, 13, 1),
-                                                                            (14, 14, 12),
-                                                                            (15, 15, 1),
-                                                                            (15, 16, 12)
-ON DUPLICATE KEY UPDATE exhibitions_tags_id = exhibitions_tags_id;
 
--- 사진
+-- 디폴트 사진 삽입
 INSERT INTO photos (gray_scale, created_at, exhibitions_id, photos_id, filter_uuid, photos_uuid) VALUE
     (2.5, NOW(), 8, 1, UNHEX(REPLACE('bc2ae5f7-b8cf-4468-baf5-6969c43d0e4a', '-', '')), UNHEX(REPLACE('e275b6d8-4cc2-4b38-9f89-426f7bf3f1ed', '-', ''))),
     (3.5, NOW(), 9, 2, UNHEX(REPLACE('bc2ae5f7-b8cf-4468-baf5-6969c43d0e4a', '-', '')), UNHEX(REPLACE('a9db8cfe-f866-4d3d-b377-5ecf689ad91f', '-', ''))),
@@ -118,7 +147,8 @@ INSERT INTO photos (gray_scale, created_at, exhibitions_id, photos_id, filter_uu
 
 ON DUPLICATE KEY UPDATE photos_id = photos_id;
 
--- 사진 주소
+
+-- 디폴트 사진 URL 
 INSERT INTO photos_urls (photos_id, photos_urls_id, photos_uuid, img_url, s3_url) VALUE
     (1, 1, UNHEX(REPLACE('f1211ab4-70be-4906-8a86-1a05aeab632a', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', 'https://esthete-bucket.s3.amazonaws.com/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
     (2, 2, UNHEX(REPLACE('21b9d229-5939-4568-a5dd-e63106d18d18', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/31216ebf-27a5-4013-bedf-06642401f332/exhibition-photos/98e80855-83ac-4912-8119-373c797924a6.jpg', 'https://esthete-bucket.s3.amazonaws.com/exhibition/31216ebf-27a5-4013-bedf-06642401f332/exhibition-photos/98e80855-83ac-4912-8119-373c797924a6.jpg'),
