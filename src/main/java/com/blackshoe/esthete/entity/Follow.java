@@ -3,6 +3,7 @@ package com.blackshoe.esthete.entity;
 import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,10 @@ public class Follow extends BaseEntity {
 
     @Column(columnDefinition = "BINARY(16)", name = "follower_uuid", nullable = false)
     private UUID followerId;
+
+    @Builder
+    public Follow(User user, UUID followerId) {
+        this.user = user;
+        this.followerId = followerId;
+    }
 }
