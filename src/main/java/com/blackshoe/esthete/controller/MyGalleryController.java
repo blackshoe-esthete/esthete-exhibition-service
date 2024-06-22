@@ -170,4 +170,14 @@ public class MyGalleryController {
         myGalleryService.addFollow(authorizationHeader, userId);
         return ApiResponse.onSuccess(SuccessStatus.ADD_FOLLOW);
     }
+
+    // 팔로우를 취소하는 API
+    @DeleteMapping("/action-follow/{user_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> removeFollow(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("user_id") String userId) {
+
+        myGalleryService.removeFollow(authorizationHeader, userId);
+        return ApiResponse.onSuccess(SuccessStatus.REMOVE_FOLLOW);
+    }
 }
