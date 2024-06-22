@@ -154,19 +154,29 @@ public class MyGalleryDto {
         private String thumbnailUrl;
         private String title;
         private String date;
+        private Boolean isLiked;
 
-        public static ExhibitionResponse of(Exhibition exhibition) {
+        public static ExhibitionResponse of(Exhibition exhibition, boolean isLiked) {
             return ExhibitionResponse.builder()
                     .exhibitionId(exhibition.getExhibitionId())
                     .thumbnailUrl(exhibition.getThumbnailUrl())
                     .title(exhibition.getTitle())
                     .date(exhibition.getCreatedAt().format(DATE_FORMATTER))
+                    .isLiked(isLiked)
                     .build();
         }
 
-        public static List<ExhibitionResponse> of(List<Exhibition> exhibitions) {
+        public static ExhibitionResponse of(Exhibition exhibition) {
+            return of(exhibition, false);
+        }
+
+        public static List<ExhibitionResponse> of(List<Exhibition> exhibitions, List<Like> likes) {
             return exhibitions.stream()
-                    .map(ExhibitionResponse::of)
+                    .map(exhibition -> {
+                        boolean isLiked = likes.stream()
+                                .anyMatch(like -> like.getExhibitionId().equals(exhibition.getExhibitionId()));
+                        return ExhibitionResponse.of(exhibition, isLiked);
+                    })
                     .collect(Collectors.toList());
         }
     }

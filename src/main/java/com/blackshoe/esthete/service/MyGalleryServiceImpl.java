@@ -23,6 +23,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final ExhibitionRepository exhibitionRepository;
     private final TemporaryExhibitionRepository temporaryExhibitionRepository;
     private final FollowRepository followRepository;
+    private final LikeRepository likeRepository;
     private final JwtUtil jwtUtil;
 
     // 사용자 태그 목록 수정 메서드
@@ -115,16 +116,26 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     @Override
     public List<MyGalleryDto.ExhibitionResponse> getAllExhibitions(String authorizationHeader, String userId) {
         String userType = determineUserType(authorizationHeader, userId);
-        User user = switch (userType) {
-            case "OWNER" -> jwtUtil.getUserFromHeader(authorizationHeader);
-            case "OTHER", "GUEST" -> userRepository.findByUserId(UUID.fromString(userId))
-                    .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
-            default -> throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
-        };
+        User user;
+        List<Like> likes = null;
+
+        switch (userType) {
+            case "OWNER":
+                user = jwtUtil.getUserFromHeader(authorizationHeader);
+                break;
+            case "OTHER":
+            case "GUEST":
+                user = userRepository.findByUserId(UUID.fromString(userId))
+                        .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+                likes = likeRepository.findAllByUserId(UUID.fromString(userId));
+                break;
+            default:
+                throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        }
 
         List<Exhibition> exhibitions = exhibitionRepository.findAllByUser(user)
                 .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
-        return MyGalleryDto.ExhibitionResponse.of(exhibitions);
+        return MyGalleryDto.ExhibitionResponse.of(exhibitions, likes);
     }
 
     // 유저 타입을 결정하는 메서드
