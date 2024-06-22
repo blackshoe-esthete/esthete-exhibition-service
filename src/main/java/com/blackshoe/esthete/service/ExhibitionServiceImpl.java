@@ -72,7 +72,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .photographerId(author.getUserId())
                 .photographerName(author.getNickname())
                 .photographerIntroduction(author.getIntroduce())
-                .supportCount(author.getSupportCount())
+                .supportCount(author.getFollowerCount())
                 .build());
     }
 
@@ -85,7 +85,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .photographerId(author.getUserId())
                 .photographerName(author.getNickname())
                 .photographerIntroduction(author.getIntroduce())
-                .supportCount(author.getSupportCount())
+                .supportCount(author.getFollowerCount())
                 .build());
     }
 
@@ -219,6 +219,9 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
         if (commentRequest.getContent().length() > 50) {
             throw new ExhibitionException(ExhibitionErrorResult.CONTENT_OVER_LIMIT_LENGTH);
+        }
+        if (exhibitionRepository.existsByUserId(user.getId())) {
+            throw new ExhibitionException(ExhibitionErrorResult.CANNOT_COMMENT_ON_OWN_POST);
         }
         Comment comment = Comment.builder()
                 .exhibition(exhibition)
