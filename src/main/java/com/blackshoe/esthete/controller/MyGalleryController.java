@@ -108,4 +108,14 @@ public class MyGalleryController {
         List<MyGalleryDto.LikeExhibitionResponse> exhibitionResponses = myGalleryService.getLikeExhibitions(authorizationHeader);
         return ApiResponse.onSuccess(SuccessStatus.GET_LIKE_EXHIBITIONS, exhibitionResponses);
     }
+
+    // 좋아요 전시를 등록하는 API
+    @PostMapping("/exhibitions/likes/{exhibition_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> addLikeToExhibition(
+            @RequestHeader(name = "Authorization") String authorizationHeader,
+            @PathVariable("exhibition_id") String exhibitionId) {
+
+        myGalleryService.addLikeToExhibition(authorizationHeader, exhibitionId);
+        return ApiResponse.onSuccess(SuccessStatus.ADD_LIKE_TO_EXHIBITION);
+    }
 }
