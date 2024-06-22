@@ -69,4 +69,14 @@ public class MyGalleryController {
         MyGalleryDto.TemporaryExhibitionDetailResponse temporaryExhibitionDetailResponse = myGalleryService.getTemporaryExhibitionDetails(authorizationHeader, tempExhibitionId);
         return ApiResponse.onSuccess(SuccessStatus.GET_ALL_TEMPORARY_EXHIBITION_DETAIL, temporaryExhibitionDetailResponse);
     }
+
+    // 임시저장 전시회를 삭제하는 API
+    @DeleteMapping("/temp-exhibitions/{temp_exhibitions_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> removeTemporaryExhibition(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("temp_exhibitions_id") String tempExhibitionId) {
+
+        myGalleryService.removeTemporaryExhibition(authorizationHeader, tempExhibitionId);
+        return ApiResponse.onSuccess(SuccessStatus.REMOVE_TEMPORARY_EXHIBITION);
+    }
 }

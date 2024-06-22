@@ -20,6 +20,7 @@ public enum SuccessStatus implements BaseCode {
     UPLOAD_EXHIBITION(HttpStatus.CREATED, "201", "전시 제작에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITIONS(HttpStatus.OK, "200", "임시저장 전시 전체 조회에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITION_DETAIL(HttpStatus.OK, "200", "임시저장 전시 상세 조회에 성공했습니다."),
+    REMOVE_TEMPORARY_EXHIBITION(HttpStatus.OK, "200", "임시저장 전시 삭제에 성공했습니다."),
     // Exhibition
     SEARCH_ALL_EXHIBITION(HttpStatus.OK, "200", "전체 전시 검색에 성공했습니다."),
     SEARCH_EXHIBITION_BY_KEYWORD(HttpStatus.OK, "200", "전시 검색에 성공했습니다."),

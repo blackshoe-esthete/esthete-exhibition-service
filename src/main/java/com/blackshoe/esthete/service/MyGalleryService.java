@@ -9,4 +9,5 @@ public interface MyGalleryService {
     EditUserTagsDto.TagList editUserTags(String authorizationHeader, EditUserTagsDto.TagList tagList);
     List<MyGalleryDto.TemporaryExhibitionResponse> getTemporaryExhibitions(String authorizationHeader);
     MyGalleryDto.TemporaryExhibitionDetailResponse getTemporaryExhibitionDetails(String authorizationHeader, String tempExhibitionId);
+    void removeTemporaryExhibition(String authorizationHeader, String tempExhibitionId);
 }
