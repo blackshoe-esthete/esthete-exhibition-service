@@ -15,4 +15,5 @@ public interface MyGalleryService {
     List<MyGalleryDto.LikeExhibitionResponse> getLikeExhibitions(String authorizationHeader);
     void addLikeToExhibition(String authorizationHeader, String exhibitionId);
     void removeLikeToExhibition(String authorizationHeader, String exhibitionId);
+    void removeExhibition(String authorizationHeader, String exhibitionId);
 }

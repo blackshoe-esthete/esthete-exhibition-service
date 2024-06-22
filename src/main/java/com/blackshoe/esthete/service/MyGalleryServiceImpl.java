@@ -193,6 +193,15 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         exhibitionRepository.save(exhibition);
     }
 
+    // 내 전시를 삭제하는 메서드
+    @Override
+    public void removeExhibition(String authorizationHeader, String exhibitionId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Exhibition exhibition = exhibitionRepository.findByUserAndExhibitionId(user, UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        exhibitionRepository.delete(exhibition);
+    }
+
     // 유저 타입을 결정하는 메서드
     private String determineUserType(String authorizationHeader, String userId) {
         if (!Objects.isNull(authorizationHeader) && !Objects.isNull(userId)) {
