@@ -22,6 +22,7 @@ public enum SuccessStatus implements BaseCode {
     GET_ALL_EXHIBITIONS(HttpStatus.OK, "200", "전시 전체 조회에 성공했습니다."),
     GET_LIKE_EXHIBITIONS(HttpStatus.OK, "200", "좋아요 전시 조회에 성공했습니다."),
     ADD_LIKE_TO_EXHIBITION(HttpStatus.CREATED, "201", "전시 좋아요 등록에 성공했습니다."),
+    REMOVE_LIKE_TO_EXHIBITION(HttpStatus.OK, "200", "전시 좋아요 취소에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITIONS(HttpStatus.OK, "200", "임시저장 전시 전체 조회에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITION_DETAIL(HttpStatus.OK, "200", "임시저장 전시 상세 조회에 성공했습니다."),
     REMOVE_TEMPORARY_EXHIBITION(HttpStatus.OK, "200", "임시저장 전시 삭제에 성공했습니다."),
