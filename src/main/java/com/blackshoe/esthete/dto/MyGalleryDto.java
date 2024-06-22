@@ -3,6 +3,7 @@ package com.blackshoe.esthete.dto;
 import com.blackshoe.esthete.entity.ExhibitionLocation;
 import com.blackshoe.esthete.entity.Photo;
 import com.blackshoe.esthete.entity.TemporaryExhibition;
+import com.blackshoe.esthete.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -113,6 +114,36 @@ public class MyGalleryDto {
                     .city(exhibitionLocation.getCity())
                     .town(exhibitionLocation.getTown())
                     .build();
+        }
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class AuthorIntroductionResponse {
+        private String name;
+        private String introduce;
+        private String biography;
+        private String profileUrl;
+        private Long followerCount;
+        private Long followingCount;
+        private Boolean isFollowed;
+
+        public static AuthorIntroductionResponse of(User user) {
+            return AuthorIntroductionResponse.builder()
+                    .name(user.getNickname())
+                    .introduce(user.getIntroduce())
+                    .biography(user.getBiography())
+                    .profileUrl(user.getProfileUrl().getCloudfrontUrl())
+                    .followerCount(user.getFollowerCount())
+                    .followingCount(user.getFollowingCount())
+                    .build();
+        }
+
+        public void updateFollow(boolean isFollowed) {
+            this.isFollowed = isFollowed;
         }
     }
 }

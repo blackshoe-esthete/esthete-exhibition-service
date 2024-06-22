@@ -72,7 +72,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .photographerId(author.getUserId())
                 .photographerName(author.getNickname())
                 .photographerIntroduction(author.getIntroduce())
-                .supportCount(author.getSupportCount())
+                .supportCount(author.getFollowerCount())
                 .build());
     }
 
@@ -85,7 +85,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .photographerId(author.getUserId())
                 .photographerName(author.getNickname())
                 .photographerIntroduction(author.getIntroduce())
-                .supportCount(author.getSupportCount())
+                .supportCount(author.getFollowerCount())
                 .build());
     }
 

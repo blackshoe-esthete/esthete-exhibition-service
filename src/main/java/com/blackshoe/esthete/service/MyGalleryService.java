@@ -10,4 +10,5 @@ public interface MyGalleryService {
     List<MyGalleryDto.TemporaryExhibitionResponse> getTemporaryExhibitions(String authorizationHeader);
     MyGalleryDto.TemporaryExhibitionDetailResponse getTemporaryExhibitionDetails(String authorizationHeader, String tempExhibitionId);
     void removeTemporaryExhibition(String authorizationHeader, String tempExhibitionId);
+    MyGalleryDto.AuthorIntroductionResponse getAuthorDetails(String authorizationHeader, String userId);
 }
