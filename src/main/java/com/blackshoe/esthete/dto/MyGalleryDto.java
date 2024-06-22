@@ -180,4 +180,32 @@ public class MyGalleryDto {
                     .collect(Collectors.toList());
         }
     }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class LikeExhibitionResponse {
+        private UUID exhibitionId;
+        private String thumbnailUrl;
+        private String title;
+        private String date;
+        private Boolean isLiked;
+
+        public static LikeExhibitionResponse of(Exhibition exhibition) {
+            return LikeExhibitionResponse.builder()
+                    .exhibitionId(exhibition.getExhibitionId())
+                    .thumbnailUrl(exhibition.getThumbnailUrl())
+                    .title(exhibition.getTitle())
+                    .date(exhibition.getCreatedAt().format(DATE_FORMATTER))
+                    .build();
+        }
+
+        public static List<LikeExhibitionResponse> of(List<Exhibition> exhibitions) {
+            return exhibitions.stream()
+                    .map(LikeExhibitionResponse::of)
+                    .collect(Collectors.toList());
+        }
+    }
 }

@@ -99,4 +99,13 @@ public class MyGalleryController {
         List<MyGalleryDto.ExhibitionResponse> exhibitionResponses = myGalleryService.getAllExhibitions(authorizationHeader, userId);
         return ApiResponse.onSuccess(SuccessStatus.GET_ALL_EXHIBITIONS, exhibitionResponses);
     }
+
+    // 좋아요 전시를 조회하는 API
+    @GetMapping("/exhibitions/likes")
+    public ResponseEntity<ApiResponse<List<MyGalleryDto.LikeExhibitionResponse>>> getLikeExhibitions(
+            @RequestHeader(name = "Authorization") String authorizationHeader) {
+
+        List<MyGalleryDto.LikeExhibitionResponse> exhibitionResponses = myGalleryService.getLikeExhibitions(authorizationHeader);
+        return ApiResponse.onSuccess(SuccessStatus.GET_LIKE_EXHIBITIONS, exhibitionResponses);
+    }
 }

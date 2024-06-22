@@ -138,6 +138,18 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         return MyGalleryDto.ExhibitionResponse.of(exhibitions, likes);
     }
 
+    // 좋아요 전시를 조회하는 메서드
+    @Override
+    public List<MyGalleryDto.LikeExhibitionResponse> getLikeExhibitions(String authorizationHeader) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        List<Like> likes = likeRepository.findAllByUserId(user.getUserId());
+        List<Exhibition> exhibitions = likes.stream()
+                .map(like -> exhibitionRepository.findByExhibitionId(like.getExhibitionId())
+                        .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION)))
+                .toList();
+        return MyGalleryDto.LikeExhibitionResponse.of(exhibitions);
+    }
+
     // 유저 타입을 결정하는 메서드
     private String determineUserType(String authorizationHeader, String userId) {
         if (!Objects.isNull(authorizationHeader) && !Objects.isNull(userId)) {
