@@ -16,6 +16,7 @@ public enum MyGalleryErrorResult implements BaseErrorCode {
     IS_ALREADY_LIKED(HttpStatus.CONFLICT, "409", "이미 좋아요를 누른 전시회입니다."),
     IS_ALREADY_NOT_LIKED(HttpStatus.CONFLICT, "409", "이미 좋아요가 없는 전시회입니다."),
     CANNOT_LIKE_ON_OWN_EXHIBITION(HttpStatus.BAD_REQUEST, "400", "본인 전시회에는 좋아요를 누를 수 없습니다."),
+    FAIL_TO_GET_FOLLOWS(HttpStatus.NOT_FOUND, "404", "팔로우 목록을 불러오는 데 실패했습니다."),
     ;
 
     private final HttpStatus httpStatus;
