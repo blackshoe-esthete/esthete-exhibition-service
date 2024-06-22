@@ -1,9 +1,6 @@
 package com.blackshoe.esthete.dto;
 
-import com.blackshoe.esthete.entity.Comment;
-import com.blackshoe.esthete.entity.Exhibition;
-import com.blackshoe.esthete.entity.Photo;
-import com.blackshoe.esthete.entity.User;
+import com.blackshoe.esthete.entity.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -49,20 +46,24 @@ public class MainHomeDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ExhibitionDetailResponse {
         private String title;
+        private String description;
         private String date;
         private String author;
         private String authorProfileUrl;
         private String thumbnailUrl;
         private List<PhotoResponse> photos;
+        private MainHomeDto.LocationResponse location;
 
         public static ExhibitionDetailResponse of(Exhibition exhibition) {
             return ExhibitionDetailResponse.builder()
                     .title(exhibition.getTitle())
+                    .description(exhibition.getDescription())
                     .date(exhibition.getCreatedAt().format(DATE_FORMATTER))
                     .author(exhibition.getUser().getNickname())
                     .authorProfileUrl(exhibition.getUser().getProfileUrl().getCloudfrontUrl())
                     .thumbnailUrl(exhibition.getThumbnailUrl())
                     .photos(PhotoResponse.of(exhibition.getPhotos()))
+                    .location(MainHomeDto.LocationResponse.of(exhibition.getExhibitionLocation()))
                     .build();
         }
     }
@@ -125,6 +126,29 @@ public class MainHomeDto {
                     .profileUrl(user.getProfileUrl().getCloudfrontUrl())
                     .content(comment.getContent())
                     .isLike(comment.getIsLike())
+                    .build();
+        }
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class LocationResponse {
+        private Double longitude;
+        private Double latitude;
+        private String state;
+        private String city;
+        private String town;
+
+        public static MainHomeDto.LocationResponse of(ExhibitionLocation exhibitionLocation) {
+            return MainHomeDto.LocationResponse.builder()
+                    .longitude(exhibitionLocation.getLongitude())
+                    .latitude(exhibitionLocation.getLatitude())
+                    .state(exhibitionLocation.getState())
+                    .city(exhibitionLocation.getCity())
+                    .town(exhibitionLocation.getTown())
                     .build();
         }
     }
