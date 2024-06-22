@@ -14,6 +14,7 @@ public enum ExhibitionErrorResult implements BaseErrorCode {
     NOT_FOUND_TEMPORARY_EXHIBITION_TAG(HttpStatus.NOT_FOUND, "404", "임시저장 전시에서 태그를 찾을 수 없습니다."),
     NOT_FOUND_TAG(HttpStatus.NOT_FOUND, "404", "존재하지 않는 태그입니다."),
     NOT_FOUND_EXHIBITION(HttpStatus.NOT_FOUND, "404", "존재하지 않는 전시입니다."),
+    NOT_FOUND_EXHIBITIONS(HttpStatus.NOT_FOUND, "404", "전체 전시회를 가져오는 데 실패했습니다."),
     NOT_FOUND_EXHIBITION_LOCATION(HttpStatus.NOT_FOUND, "404", "전시 위치가 존재하지 않습니다."),
     INVALID_EXHIBITION_PHOTO_IMG_SIZE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 전시 사진입니다."),
     EXHIBITION_PHOTO_IMG_UPLOAD_FAILED(HttpStatus.BAD_REQUEST, "400", "전시 사진 S3 업로드 실패했습니다."),
@@ -23,6 +24,8 @@ public enum ExhibitionErrorResult implements BaseErrorCode {
     INVALID_SORT_TYPE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 정렬 타입입니다."),
     FAIL_TO_GET_SIX_EXHIBITIONS(HttpStatus.NOT_FOUND, "404", "전시회 6개를 가져오는 데 실패했습니다."),
     CONTENT_OVER_LIMIT_LENGTH(HttpStatus.BAD_REQUEST, "400", "컨텐츠가 50자를 넘습니다."),
+    IS_NOT_USERS_COMMENT(HttpStatus.BAD_REQUEST, "400", "해당 유저 전시회에 달린 댓글이 아닙니다."),
+    IS_ALREADY_LIKED(HttpStatus.CONFLICT, "409", "이미 좋아요 된 댓글입니다."),
     ;
 
     private final HttpStatus httpStatus;
