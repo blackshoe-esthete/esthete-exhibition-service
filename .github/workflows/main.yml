@@ -69,7 +69,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
           platforms: linux/arm64
-#
+
       - name: Deploy to test server
         uses: appleboy/ssh-action@master
         with:
@@ -82,25 +82,25 @@ jobs:
             sudo docker rm ${{ env.IMAGE_NAME }} || true
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sudo docker run -d --name ${{ env.IMAGE_NAME }} --network esthete-network -p 8030:8030 \
-                -e DB_HOST='${{ secrets.DB_HOST }}' \
-                -e DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
-                -e DB_PORT='${{ secrets.DB_PORT }}' \
-                -e SPRING_DATASOURCE_DDL_AUTO='${{ secrets.SPRING_DATASOURCE_DDL_AUTO }}' \
-                -e DB_USERNAME='${{ secrets.DB_USERNAME }}' \
-                -e INITIAL_DB='${{ secrets.INITIAL_DB }}' \
-                -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
-                -e AWS_ACCESS_KEY='${{ secrets.AWS_ACCESS_KEY }}' \
-                -e AWS_SECRET_KEY='${{ secrets.AWS_SECRET_KEY }}' \
-                -e CLOUDFRONT_DISTRIBUTION_DOMAIN='${{ secrets.CLOUDFRONT_DISTRIBUTION_DOMAIN }}' \
-                -e S3_BUCKET='${{ secrets.S3_BUCKET }}' \
-                -e S3_ROOT_DIRECTORY='${{ secrets.S3_ROOT_DIRECTORY }}' \
-                -e S3_USER_DIRECTORY='${{ secrets.S3_USER_DIRECTORY }}' \
-                -e S3_PROFILE_DIRECTORY='${{ secrets.S3_PROFILE_DIRECTORY }}' \
-                -e S3_REGION='${{ secrets.S3_REGION }}' \
-                -e S3_EXHIBITION_PHOTO_DIRECTORY='${{ secrets.S3_EXHIBITION_PHOTO_DIRECTORY }}' \
-                -e GCP_GEOCODING_API_KEY='${{ secrets.GCP_GEOCODING_API_KEY }}' \
-                -e EUREKA_HOST='${{ secrets.EUREKA_HOST }}' \ 
-                -e INSTANCE_HOST='${{ secrets.HOST_TEST_DNS }}' \
+                -e DB_HOST=${{ secrets.DB_HOST }} \
+                -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+                -e DB_PORT=${{ secrets.DB_PORT }} \
+                -e SPRING_DATASOURCE_DDL_AUTO=${{ secrets.SPRING_DATASOURCE_DDL_AUTO }} \
+                -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+                -e INITIAL_DB=${{ secrets.INITIAL_DB }} \
+                -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+                -e AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} \
+                -e AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
+                -e CLOUDFRONT_DISTRIBUTION_DOMAIN=${{ secrets.CLOUDFRONT_DISTRIBUTION_DOMAIN }} \
+                -e S3_BUCKET=${{ secrets.S3_BUCKET }} \
+                -e S3_ROOT_DIRECTORY=${{ secrets.S3_ROOT_DIRECTORY }} \
+                -e S3_USER_DIRECTORY=${{ secrets.S3_USER_DIRECTORY }} \
+                -e S3_PROFILE_DIRECTORY=${{ secrets.S3_PROFILE_DIRECTORY }} \
+                -e S3_REGION=${{ secrets.S3_REGION }} \
+                -e S3_EXHIBITION_PHOTO_DIRECTORY=${{ secrets.S3_EXHIBITION_PHOTO_DIRECTORY }} \
+                -e GCP_GEOCODING_API_KEY=${{ secrets.GCP_GEOCODING_API_KEY }} \
+                -e EUREKA_HOST=${{ secrets.EUREKA_HOST }} \
+                -e INSTANCE_HOST=${{ secrets.HOST_TEST_DNS }} \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sleep 15
             sudo docker image prune -af || true
