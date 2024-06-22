@@ -74,9 +74,9 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           envs: GITHUB_SHA,NEXT_EXHIBITION_VER
           script: |
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sudo docker stop ${{ env.IMAGE_NAME }} || true
             sudo docker rm ${{ env.IMAGE_NAME }} || true
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_EXHIBITION_VER }}
             sudo docker run -d --name ${{ env.IMAGE_NAME }} --network esthete-network -p 8030:8030 \
                 -e DB_HOST='${{ secrets.DB_HOST }}' \
                 -e DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
