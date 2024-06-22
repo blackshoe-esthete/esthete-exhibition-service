@@ -26,6 +26,8 @@ public enum ExhibitionErrorResult implements BaseErrorCode {
     CONTENT_OVER_LIMIT_LENGTH(HttpStatus.BAD_REQUEST, "400", "컨텐츠가 50자를 넘습니다."),
     IS_NOT_USERS_COMMENT(HttpStatus.BAD_REQUEST, "400", "해당 유저 전시회에 달린 댓글이 아닙니다."),
     IS_ALREADY_LIKED(HttpStatus.CONFLICT, "409", "이미 좋아요 된 댓글입니다."),
+    IS_NOT_LIKED(HttpStatus.BAD_REQUEST, "400", "좋아요 된 댓글이 아닙니다."),
+    NOT_FOUND_LIKE(HttpStatus.NOT_FOUND, "404", "좋아요 내역을 찾을 수 없습니다."),
     ;
 
     private final HttpStatus httpStatus;

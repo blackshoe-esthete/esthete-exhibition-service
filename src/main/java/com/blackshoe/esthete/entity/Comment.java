@@ -47,4 +47,8 @@ public class Comment extends BaseEntity {
     public void addLike() {
         this.isLike = true;
     }
+
+    public void removeLike() {
+        this.isLike = false;
+    }
 }

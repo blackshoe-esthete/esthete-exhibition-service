@@ -263,4 +263,38 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .build();
         likeRepository.save(like);
     }
+
+    // 댓글 좋아요 취소 메서드
+    @Override
+    public void removeLikeToComment(String authorizationHeader, String commentId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        List<Exhibition> exhibitions = exhibitionRepository.findAllByUser(user)
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
+
+        // 해당 유저의 전시회에 달린 댓글인지 확인
+        Comment comment = null;
+        UUID exhibitionId = null;
+        for (Exhibition exhibition : exhibitions) {
+            Optional<Comment> optionalComment = exhibition.getComments().stream()
+                    .filter(c -> c.getCommentId().equals(UUID.fromString(commentId)))
+                    .findFirst();
+            if (optionalComment.isPresent()) {
+                comment = optionalComment.get();
+                exhibitionId = exhibition.getExhibitionId();
+                break;
+            }
+        }
+        if (Objects.isNull(comment)) {
+            throw new ExhibitionException(ExhibitionErrorResult.IS_NOT_USERS_COMMENT);
+        }
+        if (!comment.getIsLike()) {
+            throw new ExhibitionException(ExhibitionErrorResult.IS_NOT_LIKED);
+        }
+
+        comment.removeLike();
+        commentRepository.save(comment);
+        Like like = likeRepository.findByUserIdAndExhibitionId(user.getUserId(), exhibitionId)
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_LIKE));
+        likeRepository.delete(like);
+    }
 }

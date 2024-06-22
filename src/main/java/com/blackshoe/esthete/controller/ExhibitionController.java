@@ -153,7 +153,7 @@ public class ExhibitionController {
         return ApiResponse.onSuccess(SuccessStatus.ADD_COMMENTS);
     }
 
-    // 전시회 댓글 좋아요 API
+    // 전시회 댓글 좋아요 등록 API
     @PostMapping("/comments/like/{comment_id}")
     public ResponseEntity<ApiResponse<SuccessStatus>> addLikeToComment(
             @RequestHeader("Authorization") String authorizationHeader,
@@ -161,5 +161,15 @@ public class ExhibitionController {
 
         exhibitionService.addLikeToComment(authorizationHeader, commentId);
         return ApiResponse.onSuccess(SuccessStatus.ADD_LIKE_TO_COMMENT);
+    }
+
+    // 전시회 댓글 좋아요 취소 API
+    @DeleteMapping("/comments/like/{comment_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> removeLikeToComment(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("comment_id") String commentId) {
+
+        exhibitionService.removeLikeToComment(authorizationHeader, commentId);
+        return ApiResponse.onSuccess(SuccessStatus.REMOVE_LIKE_TO_COMMENT);
     }
 }
