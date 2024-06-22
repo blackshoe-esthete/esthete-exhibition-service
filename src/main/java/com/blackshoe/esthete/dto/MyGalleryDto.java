@@ -1,8 +1,6 @@
 package com.blackshoe.esthete.dto;
 
-import com.blackshoe.esthete.entity.ExhibitionLocation;
-import com.blackshoe.esthete.entity.Photo;
-import com.blackshoe.esthete.entity.TemporaryExhibition;
+import com.blackshoe.esthete.entity.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -113,6 +111,101 @@ public class MyGalleryDto {
                     .city(exhibitionLocation.getCity())
                     .town(exhibitionLocation.getTown())
                     .build();
+        }
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class AuthorIntroductionResponse {
+        private String name;
+        private String introduce;
+        private String biography;
+        private String profileUrl;
+        private Long followerCount;
+        private Long followingCount;
+        private Boolean isFollowed;
+
+        public static AuthorIntroductionResponse of(User user) {
+            return AuthorIntroductionResponse.builder()
+                    .name(user.getNickname())
+                    .introduce(user.getIntroduce())
+                    .biography(user.getBiography())
+                    .profileUrl(user.getProfileUrl().getCloudfrontUrl())
+                    .followerCount(user.getFollowerCount())
+                    .followingCount(user.getFollowingCount())
+                    .build();
+        }
+
+        public void updateFollow(boolean isFollowed) {
+            this.isFollowed = isFollowed;
+        }
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ExhibitionResponse {
+        private UUID exhibitionId;
+        private String thumbnailUrl;
+        private String title;
+        private String date;
+        private Boolean isLiked;
+
+        public static ExhibitionResponse of(Exhibition exhibition, boolean isLiked) {
+            return ExhibitionResponse.builder()
+                    .exhibitionId(exhibition.getExhibitionId())
+                    .thumbnailUrl(exhibition.getThumbnailUrl())
+                    .title(exhibition.getTitle())
+                    .date(exhibition.getCreatedAt().format(DATE_FORMATTER))
+                    .isLiked(isLiked)
+                    .build();
+        }
+
+        public static ExhibitionResponse of(Exhibition exhibition) {
+            return of(exhibition, false);
+        }
+
+        public static List<ExhibitionResponse> of(List<Exhibition> exhibitions, List<Like> likes) {
+            return exhibitions.stream()
+                    .map(exhibition -> {
+                        boolean isLiked = likes.stream()
+                                .anyMatch(like -> like.getExhibitionId().equals(exhibition.getExhibitionId()));
+                        return ExhibitionResponse.of(exhibition, isLiked);
+                    })
+                    .collect(Collectors.toList());
+        }
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class LikeExhibitionResponse {
+        private UUID exhibitionId;
+        private String thumbnailUrl;
+        private String title;
+        private String date;
+        private Boolean isLiked;
+
+        public static LikeExhibitionResponse of(Exhibition exhibition) {
+            return LikeExhibitionResponse.builder()
+                    .exhibitionId(exhibition.getExhibitionId())
+                    .thumbnailUrl(exhibition.getThumbnailUrl())
+                    .title(exhibition.getTitle())
+                    .date(exhibition.getCreatedAt().format(DATE_FORMATTER))
+                    .build();
+        }
+
+        public static List<LikeExhibitionResponse> of(List<Exhibition> exhibitions) {
+            return exhibitions.stream()
+                    .map(LikeExhibitionResponse::of)
+                    .collect(Collectors.toList());
         }
     }
 }
