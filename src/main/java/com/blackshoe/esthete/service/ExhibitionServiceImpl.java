@@ -8,10 +8,7 @@ import com.blackshoe.esthete.dto.ExhibitionClusteringDto;
 import com.blackshoe.esthete.dto.MainHomeDto;
 import com.blackshoe.esthete.dto.SearchExhibitionDto;
 import com.blackshoe.esthete.entity.*;
-import com.blackshoe.esthete.exception.ExhibitionErrorResult;
-import com.blackshoe.esthete.exception.ExhibitionException;
-import com.blackshoe.esthete.exception.TagErrorResult;
-import com.blackshoe.esthete.exception.TagException;
+import com.blackshoe.esthete.exception.*;
 import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -198,7 +196,22 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         return MainHomeDto.ExhibitionDetailResponse.of(exhibition);
     }
 
-    // 전시회 댓글 등록 메서드
+    // 댓글 전체 조회 메서드
+    @Override
+    public List<MainHomeDto.CommentResponse> getAllComments(String exhibitionId) {
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        List<Comment> comments = commentRepository.findAllByExhibition(exhibition);
+        return comments.stream()
+                .map(comment -> {
+                    User user = userRepository.findByUserId(comment.getUserId())
+                            .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER)); // Comment와 User의 관계가 있다고 가정
+                    return MainHomeDto.CommentResponse.of(comment, user);
+                })
+                .collect(Collectors.toList());
+    }
+
+    // 댓글 등록 메서드
     @Override
     public void addComments(String authorizationHeader, MainHomeDto.CommentRequest commentRequest) {
         User user = jwtUtil.getUserFromHeader(authorizationHeader);
