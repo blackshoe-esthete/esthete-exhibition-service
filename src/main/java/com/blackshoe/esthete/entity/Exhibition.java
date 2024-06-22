@@ -51,9 +51,6 @@ public class Exhibition extends BaseEntity {
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> likes;
-
     @PrePersist
     public void updateExhibitionId() {
         if (this.exhibitionId == null) {

@@ -4,6 +4,7 @@ import com.blackshoe.esthete.common.vo.ExhibitionAddressFilter;
 import com.blackshoe.esthete.common.vo.ExhibitionPointFilter;
 import com.blackshoe.esthete.dto.ExhibitionClusteringDto;
 import com.blackshoe.esthete.entity.Exhibition;
+import com.blackshoe.esthete.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -115,7 +116,9 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationStateAndCityAndTown(
             @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
   
-    List<Exhibition> findTop6ByOrderByViewCountDesc();
+    Optional<List<Exhibition>> findTop6ByOrderByViewCountDesc();
 
-    List<Exhibition> findTop6ByOrderByViewCountAsc();
+    Optional<List<Exhibition>> findTop6ByOrderByViewCountAsc();
+
+    Optional<List<Exhibition>> findAllByUser(User user);
 }

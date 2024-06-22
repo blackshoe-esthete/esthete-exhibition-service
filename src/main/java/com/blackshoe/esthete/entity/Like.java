@@ -3,6 +3,7 @@ package com.blackshoe.esthete.entity;
 import com.blackshoe.esthete.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,10 +19,15 @@ public class Like extends BaseEntity {
     @Column(name = "likes_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exhibitions_id", foreignKey = @ForeignKey(name = "likes_fk_exhibitions_id"))
-    private Exhibition exhibition;
-
     @Column(columnDefinition = "BINARY(16)", name = "users_uuid", nullable = false)
     private UUID userId;
+
+    @Column(columnDefinition = "BINARY(16)", name = "exhibitions_uuid", nullable = false)
+    private UUID exhibitionId;
+
+    @Builder
+    public Like(UUID userId, UUID exhibitionId) {
+        this.userId = userId;
+        this.exhibitionId = exhibitionId;
+    }
 }
