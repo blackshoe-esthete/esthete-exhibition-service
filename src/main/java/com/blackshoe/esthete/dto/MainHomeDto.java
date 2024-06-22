@@ -1,6 +1,7 @@
 package com.blackshoe.esthete.dto;
 
 import com.blackshoe.esthete.entity.Exhibition;
+import com.blackshoe.esthete.entity.Photo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -8,11 +9,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class MainHomeDto {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     @Builder
     @Getter
     @AllArgsConstructor
@@ -32,6 +36,58 @@ public class MainHomeDto {
         public static List<ExhibitionResponse> of(List<Exhibition> exhibitions) {
             return exhibitions.stream()
                     .map(ExhibitionResponse::of)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ExhibitionDetailResponse {
+        private String title;
+        private String date;
+        private String author;
+        private String authorProfileUrl;
+        private String thumbnailUrl;
+        private List<PhotoResponse> photos;
+
+        public static ExhibitionDetailResponse of(Exhibition exhibition) {
+            return ExhibitionDetailResponse.builder()
+                    .title(exhibition.getTitle())
+                    .date(exhibition.getCreatedAt().format(DATE_FORMATTER))
+                    .author(exhibition.getUser().getNickname())
+                    .authorProfileUrl(exhibition.getUser().getProfileUrl().getCloudfrontUrl())
+                    .thumbnailUrl(exhibition.getThumbnailUrl())
+                    .photos(PhotoResponse.of(exhibition.getPhotos()))
+                    .build();
+        }
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class PhotoResponse {
+        private UUID photoId;
+        private UUID filterId;
+        private Float grayScale;
+        private String photoUrl;
+
+        public static PhotoResponse of(Photo photo) {
+            return PhotoResponse.builder()
+                    .photoId(photo.getPhotoId())
+                    .filterId(photo.getFilterId())
+                    .grayScale(photo.getGrayScale())
+                    .photoUrl(photo.getPhotoUrl().getCloudfrontUrl())
+                    .build();
+        }
+
+        public static List<PhotoResponse> of(List<Photo> photos) {
+            return photos.stream()
+                    .map(MainHomeDto.PhotoResponse::of)
                     .collect(Collectors.toList());
         }
     }

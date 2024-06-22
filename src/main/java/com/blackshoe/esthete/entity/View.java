@@ -2,6 +2,7 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,4 +27,11 @@ public class View {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photos_id", foreignKey = @ForeignKey(name = "views_fk_photos_id"))
     private Photo photo;
+
+    @Builder
+    public View(Exhibition exhibition, User user, Photo photo) {
+        this.exhibition = exhibition;
+        this.user = user;
+        this.photo = photo;
+    }
 }

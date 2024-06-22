@@ -116,11 +116,21 @@ public class ExhibitionController {
     }
 
     // 태그 선택 전시회 조회 API
-    @GetMapping("/{tag_name}")
+    @GetMapping("/tags/{tag_name}")
     public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getExhibitionsByTag(
             @PathVariable("tag_name") String tagName) {
 
         List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getExhibitionsByTag(tagName);
         return ApiResponse.onSuccess(SuccessStatus.GET_TAG_EXHIBITIONS, exhibitionResponses);
+    }
+
+    // 전시회 상세 조회 API
+    @GetMapping("/details/{exhibition_id}")
+    public ResponseEntity<ApiResponse<MainHomeDto.ExhibitionDetailResponse>> getExhibitionDetails(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+            @PathVariable("exhibition_id") String exhibitionId) {
+
+        MainHomeDto.ExhibitionDetailResponse exhibitionDetailResponse = exhibitionService.getExhibitionDetails(authorizationHeader, exhibitionId);
+        return ApiResponse.onSuccess(SuccessStatus.GET_TAG_EXHIBITION_DETAILS, exhibitionDetailResponse);
     }
 }

@@ -7,18 +7,12 @@ import com.blackshoe.esthete.common.vo.ExhibitionPointFilter;
 import com.blackshoe.esthete.dto.ExhibitionClusteringDto;
 import com.blackshoe.esthete.dto.MainHomeDto;
 import com.blackshoe.esthete.dto.SearchExhibitionDto;
-import com.blackshoe.esthete.entity.Exhibition;
-import com.blackshoe.esthete.entity.ExhibitionTag;
-import com.blackshoe.esthete.entity.Tag;
-import com.blackshoe.esthete.entity.User;
+import com.blackshoe.esthete.entity.*;
 import com.blackshoe.esthete.exception.ExhibitionErrorResult;
 import com.blackshoe.esthete.exception.ExhibitionException;
 import com.blackshoe.esthete.exception.TagErrorResult;
 import com.blackshoe.esthete.exception.TagException;
-import com.blackshoe.esthete.repository.ExhibitionRepository;
-import com.blackshoe.esthete.repository.ExhibitionTagRepository;
-import com.blackshoe.esthete.repository.TagRepository;
-import com.blackshoe.esthete.repository.UserRepository;
+import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,18 +25,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ExhibitionServiceImpl implements ExhibitionService{
     private final ExhibitionRepository exhibitionRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final ExhibitionTagRepository exhibitionTagRepository;
+    private final ViewRepository viewRepository;
     private final JwtUtil jwtUtil;
 
     @Override
-    @Transactional
     public Page<SearchExhibitionDto.SearchExhibitionResponse> searchAllExhibition(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "viewCount"));
         Page<Exhibition> findAllList = exhibitionRepository.findAll(pageRequest);
@@ -57,7 +53,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<SearchExhibitionDto.SearchExhibitionResponse> searchExhibition(String exhibitionKeyword, int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "viewCount"));
         Page<Exhibition> findByKeywordList = exhibitionRepository.findByTitleContaining(exhibitionKeyword, pageRequest);
@@ -72,7 +67,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<SearchExhibitionDto.SearchAuthorResponse> searchAllAuthor(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "supportCount"));
         Page<User> allUser = userRepository.findAll(pageRequest);
@@ -86,7 +80,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthor(String authorKeyword, int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "supportCount"));
         Page<User> findAuthorList = userRepository.findByNicknameContaining(authorKeyword, pageRequest);
@@ -100,7 +93,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> getTop10ByUserLocationGroupBy(ExhibitionPointFilter exhibitionLocationFilter, ExhibitionLocationGroupType exhibitionLocationGroupType){
        Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> markedRegionGroupResponse;
 
@@ -120,7 +112,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> readByAddress(ExhibitionAddressFilter exhibitionAddressFilter, Integer page, Integer size, Sort sortBy){
         Pageable pageable = PageRequest.of(page, size, sortBy);
 
@@ -145,7 +136,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
   
     // 개인 추천 전시회 조회 메서드
     @Override
-    @Transactional
     public List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader) {
         List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc();
         if (Objects.isNull(exhibitions) || exhibitions.size() < 6) {
@@ -172,7 +162,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     // 태그 선택 전시회 조회 메서드
     @Override
-    @Transactional
     public List<MainHomeDto.ExhibitionResponse> getExhibitionsByTag(String tagName) {
         Tag tag = tagRepository.findByName(tagName)
                 .orElseThrow(() -> new TagException(TagErrorResult.NOT_FOUND_TAG));
@@ -186,5 +175,25 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         }
         // 추후 추천 알고리즘 적용 예정, 현재는 단순히 태그가 포함되어 있으면 반환
         return MainHomeDto.ExhibitionResponse.of(exhibitions);
+    }
+
+    // 전시회 상세 조회 메서드
+    @Override
+    public MainHomeDto.ExhibitionDetailResponse getExhibitionDetails(String authorizationHeader, String exhibitionId) {
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+
+        if (!Objects.isNull(authorizationHeader)) {
+            User user = jwtUtil.getUserFromHeader(authorizationHeader);
+            // 조회수++
+            exhibition.increaseViewCount();
+            exhibitionRepository.save(exhibition);
+            View view = View.builder()
+                    .exhibition(exhibition)
+                    .user(user)
+                    .build();
+            viewRepository.save(view);
+        }
+        return MainHomeDto.ExhibitionDetailResponse.of(exhibition);
     }
 }
