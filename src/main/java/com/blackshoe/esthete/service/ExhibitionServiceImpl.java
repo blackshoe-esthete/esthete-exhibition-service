@@ -36,6 +36,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     private final TagRepository tagRepository;
     private final ExhibitionTagRepository exhibitionTagRepository;
     private final ViewRepository viewRepository;
+    private final CommentRepository commentRepository;
     private final JwtUtil jwtUtil;
 
     @Override
@@ -195,5 +196,22 @@ public class ExhibitionServiceImpl implements ExhibitionService{
             viewRepository.save(view);
         }
         return MainHomeDto.ExhibitionDetailResponse.of(exhibition);
+    }
+
+    // 전시회 댓글 등록 메서드
+    @Override
+    public void addComments(String authorizationHeader, MainHomeDto.CommentRequest commentRequest) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(commentRequest.getExhibitionId()))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        if (commentRequest.getContent().length() > 50) {
+            throw new ExhibitionException(ExhibitionErrorResult.CONTENT_OVER_LIMIT_LENGTH);
+        }
+        Comment comment = Comment.builder()
+                .exhibition(exhibition)
+                .userId(user.getUserId())
+                .content(commentRequest.getContent())
+                .build();
+        commentRepository.save(comment);
     }
 }
