@@ -58,22 +58,22 @@ INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbna
 
 
 -- 디폴트 전시 삽입
-INSERT INTO exhibitions (created_at, exhibitions_id, users_id, view_count, exhibitions_uuid, title, description, thumbnail_url) VALUES
-    (NOW(), 1, 1, 203, UNHEX(REPLACE('d8265394-573e-4d5e-baf0-8b75fe10896e', '-', '')), '겨울', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
-    (NOW(), 2, 2, 152, UNHEX(REPLACE('b35b9358-df1d-4d9c-b362-cb51e94e5e25', '-', '')), '겨울1', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
-    (NOW(), 3, 3, 313, UNHEX(REPLACE('5f2e2f9d-0411-437e-91e5-7922a35b1044', '-', '')), '가울', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
-    (NOW(), 4, 2, 22, UNHEX(REPLACE('d61d5f71-f5bc-4ab3-92c8-62b1de207102', '-', '')), '가울1', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
-    (NOW(), 5, 2, 15, UNHEX(REPLACE('74148b2b-9f0e-4650-8e94-3ec6ccde34a6', '-', '')), '봄', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
-    (NOW(), 6, 3, 1000, UNHEX(REPLACE('f5f16b49-12ac-4745-aac5-4b1b269eabcb', '-', '')), '봄1', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
-    (NOW(), 7, 2, 123, UNHEX(REPLACE('a3087e10-7da2-4760-a82d-d80c4397e0e1', '-', '')), '봄2', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
-    (NOW(), 8, 1, 456, UNHEX(REPLACE('35519784-ce74-443b-8665-d1c00cafa6f5', '-', '')), '태양', '태양노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
-    (NOW(), 9, 1, 78, UNHEX(REPLACE('31216ebf-27a5-4013-bedf-06642401f332', '-', '')), '구름', '구름노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/31216ebf-27a5-4013-bedf-06642401f332/exhibition-photos/98e80855-83ac-4912-8119-373c797924a6.jpg'),
-    (NOW(), 10, 1, 41, UNHEX(REPLACE('2c8221cf-ea0b-442e-a49e-cd02e4af3ca8', '-', '')), '바람', '바람노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/2c8221cf-ea0b-442e-a49e-cd02e4af3ca8/exhibition-photos/38584504-e55f-40de-afeb-7ae754efe347.jpg'),
-    (NOW(), 11, 1, 22, UNHEX(REPLACE('93dbf19e-6d22-4e3d-8a3b-c04b233bea38', '-', '')), '불', '붉은노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/93dbf19e-6d22-4e3d-8a3b-c04b233bea38/exhibition-photos/b9854f00-2b2f-4ce1-ab5e-3d2c83fd5568.jpg'),
-    (NOW(), 12, 1, 123, UNHEX(REPLACE('0e7cb02a-0750-4f4b-b3ad-bb1aaf5577bd', '-', '')), '꽃', '꽃가루', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/0e7cb02a-0750-4f4b-b3ad-bb1aaf5577bd/exhibition-photos/86efe632-c2ff-430e-a936-32ad1de6d083.jpg'),
-    (NOW(), 13, 1, 6, UNHEX(REPLACE('61110976-0977-4393-8234-1ed9fd510cf3', '-', '')), '말', '말피', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/61110976-0977-4393-8234-1ed9fd510cf3/exhibition-photos/e0a53ff2-5032-4e3e-bc05-42e3013fa8b2.jpg'),
-    (NOW(), 14, 1, 0, UNHEX(REPLACE('7ea6b1a6-b6c0-4731-87e1-f4844cca01d3', '-', '')), '코', '코날비', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/7ea6b1a6-b6c0-4731-87e1-f4844cca01d3/exhibition-photos/9d19ca4a-4372-40fb-9b67-733df0e4a9bd.jpg'),
-    (NOW(), 15, 1, 77, UNHEX(REPLACE('6422e443-fedd-4f94-ae26-6e4fa9b58860', '-', '')), '입', '입마개', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/6422e443-fedd-4f94-ae26-6e4fa9b58860/exhibition-photos/b342c93a-02fb-4ef0-a12c-f2949501e6fd.jpg')
+INSERT INTO exhibitions (created_at, exhibitions_id, users_id, view_count, like_count, exhibitions_uuid, title, description, thumbnail_url) VALUES
+    (NOW(), 1, 1, 203, 205, UNHEX(REPLACE('d8265394-573e-4d5e-baf0-8b75fe10896e', '-', '')), '겨울', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 2, 2, 152, 155, UNHEX(REPLACE('b35b9358-df1d-4d9c-b362-cb51e94e5e25', '-', '')), '겨울1', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 3, 3, 313, 216, UNHEX(REPLACE('5f2e2f9d-0411-437e-91e5-7922a35b1044', '-', '')), '가을1', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 4, 2, 22, 12, UNHEX(REPLACE('d61d5f71-f5bc-4ab3-92c8-62b1de207102', '-', '')), '가을2', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 5, 2, 15, 10, UNHEX(REPLACE('74148b2b-9f0e-4650-8e94-3ec6ccde34a6', '-', '')), '봄', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 6, 3, 1000, 562, UNHEX(REPLACE('f5f16b49-12ac-4745-aac5-4b1b269eabcb', '-', '')), '봄1', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 7, 2, 123, 120, UNHEX(REPLACE('a3087e10-7da2-4760-a82d-d80c4397e0e1', '-', '')), '봄2', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 8, 1, 456, 423, UNHEX(REPLACE('35519784-ce74-443b-8665-d1c00cafa6f5', '-', '')), '태양', '태양노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 9, 1, 78, 55, UNHEX(REPLACE('31216ebf-27a5-4013-bedf-06642401f332', '-', '')), '구름', '구름노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/31216ebf-27a5-4013-bedf-06642401f332/exhibition-photos/98e80855-83ac-4912-8119-373c797924a6.jpg'),
+    (NOW(), 10, 1, 41, 40, UNHEX(REPLACE('2c8221cf-ea0b-442e-a49e-cd02e4af3ca8', '-', '')), '바람', '바람노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/2c8221cf-ea0b-442e-a49e-cd02e4af3ca8/exhibition-photos/38584504-e55f-40de-afeb-7ae754efe347.jpg'),
+    (NOW(), 11, 1, 22, 20, UNHEX(REPLACE('93dbf19e-6d22-4e3d-8a3b-c04b233bea38', '-', '')), '불', '붉은노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/93dbf19e-6d22-4e3d-8a3b-c04b233bea38/exhibition-photos/b9854f00-2b2f-4ce1-ab5e-3d2c83fd5568.jpg'),
+    (NOW(), 12, 1, 123, 120, UNHEX(REPLACE('0e7cb02a-0750-4f4b-b3ad-bb1aaf5577bd', '-', '')), '꽃', '꽃가루', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/0e7cb02a-0750-4f4b-b3ad-bb1aaf5577bd/exhibition-photos/86efe632-c2ff-430e-a936-32ad1de6d083.jpg'),
+    (NOW(), 13, 1, 6, 4, UNHEX(REPLACE('61110976-0977-4393-8234-1ed9fd510cf3', '-', '')), '말', '말피', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/61110976-0977-4393-8234-1ed9fd510cf3/exhibition-photos/e0a53ff2-5032-4e3e-bc05-42e3013fa8b2.jpg'),
+    (NOW(), 14, 1, 0, 0, UNHEX(REPLACE('7ea6b1a6-b6c0-4731-87e1-f4844cca01d3', '-', '')), '코', '코날비', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/7ea6b1a6-b6c0-4731-87e1-f4844cca01d3/exhibition-photos/9d19ca4a-4372-40fb-9b67-733df0e4a9bd.jpg'),
+    (NOW(), 15, 1, 77, 50, UNHEX(REPLACE('6422e443-fedd-4f94-ae26-6e4fa9b58860', '-', '')), '입', '입마개', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/6422e443-fedd-4f94-ae26-6e4fa9b58860/exhibition-photos/b342c93a-02fb-4ef0-a12c-f2949501e6fd.jpg')
     ON DUPLICATE KEY UPDATE exhibitions_id = exhibitions_id;
     
     
@@ -107,14 +107,14 @@ VALUES
 -- 디폴트 전시 위치 삽입
 INSERT INTO exhibitions_locations (exhibitions_locations_id, exhibitions_id, temporary_exhibitions_id, longitude, latitude, state, city, town)
 VALUES
-    (1, 8, NULL, 127.003594, 37.55805, 'Seoul', 'Jung District', '173-6 Jangchung-dong 2(i)-ga'),
-    (2, 9, NULL, 126.9985627, 37.5592871, 'Seoul', 'Jung District', '30 Pildong-ro 1-gil'),
-    (3, 10, NULL, 127.006229, 37.561343, 'Seoul', 'Jung District', '56-77 Jangchung-dong 1(il)-gal'),
-    (4, 11, NULL, 127.005911, 37.56148, 'Seoul', 'Jung District', '57-9 Jangchung-dong 1(il)-ga'),
-    (5, 12, NULL, 127.010989, 37.551993, 'Seoul', 'Jung District', '372-85 Sindang-dong'),
-    (6, 13, NULL, 126.995965, 37.560144, 'Seoul', 'Jung District', '16 Pildong-ro'),
-    (7, 14, NULL, 127.1662, 37.601581, 'Gyeonggi-do', 'Namyangju-sit', '산1041-2 Jigeum-dong'),
-    (8, 15, NULL, 127.766922, 35.907757, 'Jeollabuk-do', 'Muju Seolcheon-myeon', '808-3 Samgong-ri'),
+    (1, 1, NULL, 127.003594, 37.55805, 'Seoul', 'Jung District', '173-6 Jangchung-dong 2(i)-ga'),
+    (2, 2, NULL, 126.9985627, 37.5592871, 'Seoul', 'Jung District', '30 Pildong-ro 1-gil'),
+    (3, 3, NULL, 127.006229, 37.561343, 'Seoul', 'Jung District', '56-77 Jangchung-dong 1(il)-gal'),
+    (4, 4, NULL, 127.005911, 37.56148, 'Seoul', 'Jung District', '57-9 Jangchung-dong 1(il)-ga'),
+    (5, 5, NULL, 127.010989, 37.551993, 'Seoul', 'Jung District', '372-85 Sindang-dong'),
+    (6, 6, NULL, 126.995965, 37.560144, 'Seoul', 'Jung District', '16 Pildong-ro'),
+    (7, 7, NULL, 127.1662, 37.601581, 'Gyeonggi-do', 'Namyangju-sit', '산1041-2 Jigeum-dong'),
+    (8, 8, NULL, 127.766922, 35.907757, 'Jeollabuk-do', 'Muju Seolcheon-myeon', '808-3 Samgong-ri'),
     -- 임시 저장
     (9, NULL, 1, 25.4, 21.4, '서울특별시', '은평구', '갈현동'),
     (10, NULL, 2, 127.5, 13.2, '서울특별시', '용산구', '후암동'),
