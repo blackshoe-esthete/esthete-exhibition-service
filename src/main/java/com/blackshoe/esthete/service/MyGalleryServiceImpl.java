@@ -2,10 +2,7 @@ package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.dto.EditUserTagsDto;
 import com.blackshoe.esthete.dto.MyGalleryDto;
-import com.blackshoe.esthete.entity.Tag;
-import com.blackshoe.esthete.entity.TemporaryExhibition;
-import com.blackshoe.esthete.entity.User;
-import com.blackshoe.esthete.entity.UserTag;
+import com.blackshoe.esthete.entity.*;
 import com.blackshoe.esthete.exception.*;
 import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.util.JwtUtil;
@@ -23,6 +20,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final UserRepository userRepository;
     private final UserTagRepository userTagRepository;
     private final TagRepository tagRepository;
+    private final ExhibitionRepository exhibitionRepository;
     private final TemporaryExhibitionRepository temporaryExhibitionRepository;
     private final FollowRepository followRepository;
     private final JwtUtil jwtUtil;
@@ -111,6 +109,22 @@ public class MyGalleryServiceImpl implements MyGalleryService {
             authorIntroductionResponse.updateFollow(isFollowed);
         }
         return authorIntroductionResponse;
+    }
+
+    // 전시를 전체 조회하는 메서드
+    @Override
+    public List<MyGalleryDto.ExhibitionResponse> getAllExhibitions(String authorizationHeader, String userId) {
+        String userType = determineUserType(authorizationHeader, userId);
+        User user = switch (userType) {
+            case "OWNER" -> jwtUtil.getUserFromHeader(authorizationHeader);
+            case "OTHER", "GUEST" -> userRepository.findByUserId(UUID.fromString(userId))
+                    .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+            default -> throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        };
+
+        List<Exhibition> exhibitions = exhibitionRepository.findAllByUser(user)
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
+        return MyGalleryDto.ExhibitionResponse.of(exhibitions);
     }
 
     // 유저 타입을 결정하는 메서드
