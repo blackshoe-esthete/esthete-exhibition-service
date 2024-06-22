@@ -79,4 +79,14 @@ public class MyGalleryController {
         myGalleryService.removeTemporaryExhibition(authorizationHeader, tempExhibitionId);
         return ApiResponse.onSuccess(SuccessStatus.REMOVE_TEMPORARY_EXHIBITION);
     }
+
+    // 작가 소개를 조회하는 API
+    @GetMapping(value = {"/authors/{user_id}", "/authors"})
+    public ResponseEntity<ApiResponse<MyGalleryDto.AuthorIntroductionResponse>> getAuthorDetails(
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
+            @PathVariable(name = "user_id", required = false) String userId) {
+
+        MyGalleryDto.AuthorIntroductionResponse authorIntroductionResponse = myGalleryService.getAuthorDetails(authorizationHeader, userId);
+        return ApiResponse.onSuccess(SuccessStatus.GET_AUTHOR_INTRODUCTIONS, authorIntroductionResponse);
+    }
 }

@@ -6,31 +6,25 @@ import com.blackshoe.esthete.entity.Tag;
 import com.blackshoe.esthete.entity.TemporaryExhibition;
 import com.blackshoe.esthete.entity.User;
 import com.blackshoe.esthete.entity.UserTag;
-import com.blackshoe.esthete.exception.MyGalleryErrorResult;
-import com.blackshoe.esthete.exception.MyGalleryException;
-import com.blackshoe.esthete.exception.TagErrorResult;
-import com.blackshoe.esthete.exception.TagException;
-import com.blackshoe.esthete.repository.TagRepository;
-import com.blackshoe.esthete.repository.TemporaryExhibitionRepository;
-import com.blackshoe.esthete.repository.UserTagRepository;
+import com.blackshoe.esthete.exception.*;
+import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MyGalleryServiceImpl implements MyGalleryService {
+    private final UserRepository userRepository;
     private final UserTagRepository userTagRepository;
     private final TagRepository tagRepository;
     private final TemporaryExhibitionRepository temporaryExhibitionRepository;
+    private final FollowRepository followRepository;
     private final JwtUtil jwtUtil;
 
     // 사용자 태그 목록 수정 메서드
@@ -96,5 +90,39 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         TemporaryExhibition temporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(UUID.fromString(tempExhibitionId))
                 .orElseThrow(() -> new MyGalleryException(MyGalleryErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION));
         temporaryExhibitionRepository.delete(temporaryExhibition);
+    }
+
+    // 작가 소개 조회 메서드
+    @Override
+    public MyGalleryDto.AuthorIntroductionResponse getAuthorDetails(String authorizationHeader, String userId) {
+        String userType = determineUserType(authorizationHeader, userId);
+        User user = switch (userType) {
+            case "OWNER" -> jwtUtil.getUserFromHeader(authorizationHeader);
+            case "OTHER", "GUEST" -> userRepository.findByUserId(UUID.fromString(userId))
+                    .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+            default -> throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        };
+
+        MyGalleryDto.AuthorIntroductionResponse authorIntroductionResponse = MyGalleryDto.AuthorIntroductionResponse.of(user);
+        // 타인인 경우 팔로우 여부 확인
+        if (userType.equals("OTHER")) {
+            User ownUser = jwtUtil.getUserFromHeader(authorizationHeader);
+            boolean isFollowed = followRepository.existsByUserAndFollowerId(user, ownUser.getUserId());
+            authorIntroductionResponse.updateFollow(isFollowed);
+        }
+        return authorIntroductionResponse;
+    }
+
+    // 유저 타입을 결정하는 메서드
+    private String determineUserType(String authorizationHeader, String userId) {
+        if (!Objects.isNull(authorizationHeader) && !Objects.isNull(userId)) {
+            return "OTHER"; // 회원이 타인의 프로필 조회
+        } else if (!Objects.isNull(authorizationHeader)) {
+            return "OWNER"; // 회원이 자신의 프로필 조회
+        } else if (!Objects.isNull(userId)) {
+            return "GUEST"; // 비회원이 타인의 프로필 조회
+        } else {
+            throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        }
     }
 }
