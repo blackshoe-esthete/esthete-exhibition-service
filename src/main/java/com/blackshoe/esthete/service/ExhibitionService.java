@@ -24,4 +24,5 @@ public interface ExhibitionService {
     MainHomeDto.ExhibitionDetailResponse getExhibitionDetails(String authorizationHeader, String exhibitionId);
     List<MainHomeDto.CommentResponse> getAllComments(String exhibitionId);
     void addComments(String authorizationHeader, MainHomeDto.CommentRequest commentRequest);
+    void addLikeToComment(String authorizationHeader, String commentId);
 }

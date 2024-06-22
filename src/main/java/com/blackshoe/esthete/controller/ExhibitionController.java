@@ -152,4 +152,14 @@ public class ExhibitionController {
         exhibitionService.addComments(authorizationHeader, commentRequest);
         return ApiResponse.onSuccess(SuccessStatus.ADD_COMMENTS);
     }
+
+    // 전시회 댓글 좋아요 API
+    @PostMapping("/comments/like/{comment_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> addLikeToComment(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("comment_id") String commentId) {
+
+        exhibitionService.addLikeToComment(authorizationHeader, commentId);
+        return ApiResponse.onSuccess(SuccessStatus.ADD_LIKE_TO_COMMENT);
+    }
 }
