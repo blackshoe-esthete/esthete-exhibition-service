@@ -17,4 +17,5 @@ public interface MyGalleryService {
     void removeLikeToExhibition(String authorizationHeader, String exhibitionId);
     void removeExhibition(String authorizationHeader, String exhibitionId);
     List<MyGalleryDto.FollowerResponse> getFollowers(String authorizationHeader, String userId, String keyword);
+    void addFollow(String authorizationHeader, String userId);
 }

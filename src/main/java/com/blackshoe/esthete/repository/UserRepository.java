@@ -16,6 +16,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("SELECT u FROM User u WHERE u.userId = :userId")
     Optional<User> findByUserId(UUID userId);
     Page<User> findByNicknameContaining(String nickname, PageRequest pageRequest);
-    @Query("SELECT u FROM User u WHERE u.userId IN (SELECT f.followerId FROM Follow f WHERE f.user.userId = :userId) AND u.nickname LIKE %:keyword%")
-    List<User> findFollowersByUserIdAndKeyword(UUID userId, String keyword);
+    @Query("SELECT u FROM User u WHERE u.userId IN (SELECT f.followerId FROM Follow f WHERE f.user = :user) AND u.nickname LIKE %:keyword%")
+    List<User> findFollowersByUserAndKeyword(User user, String keyword);
 }

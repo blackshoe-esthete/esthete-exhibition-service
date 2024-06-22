@@ -149,4 +149,14 @@ public class MyGalleryController {
         List<MyGalleryDto.FollowerResponse> followerResponses =  myGalleryService.getFollowers(authorizationHeader, userId, keyword);
         return ApiResponse.onSuccess(SuccessStatus.GET_FOLLOWERS, followerResponses);
     }
+
+    // 팔로우를 등록하는 API
+    @PostMapping("/action-follow/{user_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> addFollow(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("user_id") String userId) {
+
+        myGalleryService.addFollow(authorizationHeader, userId);
+        return ApiResponse.onSuccess(SuccessStatus.ADD_FOLLOW);
+    }
 }
