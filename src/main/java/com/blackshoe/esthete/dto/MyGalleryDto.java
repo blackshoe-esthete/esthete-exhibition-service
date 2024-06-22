@@ -208,4 +208,31 @@ public class MyGalleryDto {
                     .collect(Collectors.toList());
         }
     }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class FollowerResponse {
+        private UUID userId;
+        private String profileUrl;
+        private String name;
+        private String introduce;
+
+        public static FollowerResponse of(User user) {
+            return FollowerResponse.builder()
+                    .userId(user.getUserId())
+                    .profileUrl(user.getProfileUrl().getCloudfrontUrl())
+                    .name(user.getNickname())
+                    .introduce(user.getIntroduce())
+                    .build();
+        }
+
+        public static List<FollowerResponse> of(List<User> users) {
+            return users.stream()
+                    .map(FollowerResponse::of)
+                    .collect(Collectors.toList());
+        }
+    }
 }

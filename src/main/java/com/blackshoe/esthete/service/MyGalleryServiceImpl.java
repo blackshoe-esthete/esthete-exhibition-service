@@ -202,6 +202,55 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         exhibitionRepository.delete(exhibition);
     }
 
+    // 팔로워를 조회하는 메서드
+    @Override
+    public List<MyGalleryDto.FollowerResponse> getFollowers(String authorizationHeader, String userId, String keyword) {
+        String userType = determineUserType(authorizationHeader, userId);
+        if (Objects.isNull(keyword)) {
+            keyword = "";
+        }
+        User user;
+
+        switch (userType) {
+            case "OWNER":
+                user = jwtUtil.getUserFromHeader(authorizationHeader);
+                break;
+            case "OTHER":
+            case "GUEST":
+                user = userRepository.findByUserId(UUID.fromString(userId))
+                        .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+                break;
+            default:
+                throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        }
+
+        List<User> followers = userRepository.findFollowersByUserAndKeyword(user, keyword);
+        return MyGalleryDto.FollowerResponse.of(followers);
+    }
+
+    // 팔로우를 등록하는 메서드
+    @Override
+    public void addFollow(String authorizationHeader, String userId) {
+        User follower = jwtUtil.getUserFromHeader(authorizationHeader);
+        if (String.valueOf(follower.getUserId()).equals(userId)) {
+            throw new MyGalleryException(MyGalleryErrorResult.CANNOT_FOLLOW_ON_OWN);
+        }
+        User user = userRepository.findByUserId(UUID.fromString(userId))
+                .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+        if (followRepository.existsByUserAndFollowerId(user, follower.getUserId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_ALREADY_FOLLOWED);
+        }
+
+        Follow follow = Follow.builder()
+                .user(user)
+                .followerId(follower.getUserId())
+                .build();
+        user.increaseFollowerCount();
+        follower.increaseFollowingCount();
+        userRepository.save(user);
+        followRepository.save(follow);
+    }
+
     // 유저 타입을 결정하는 메서드
     private String determineUserType(String authorizationHeader, String userId) {
         if (!Objects.isNull(authorizationHeader) && !Objects.isNull(userId)) {
