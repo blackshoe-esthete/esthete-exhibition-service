@@ -16,8 +16,11 @@ public enum SuccessStatus implements BaseCode {
     EDIT_USER_TAGS(HttpStatus.OK, "200", "선호 태그 수정에 성공했습니다."),
     EDIT_USER_PROFILE_IMG(HttpStatus.OK, "200", "프로필 사진 수정에 성공했습니다."),
     EDIT_USER_PROFILE_INFOS(HttpStatus.OK, "200", "프로필 정보 수정에 성공했습니다."),
-    UPLOAD_EXHIBITION_PHOTO(HttpStatus.OK, "201", "전시 사진 추가에 성공했습니다."),
+    UPLOAD_EXHIBITION_PHOTO(HttpStatus.CREATED, "201", "전시 사진 추가에 성공했습니다."),
     UPLOAD_EXHIBITION(HttpStatus.CREATED, "201", "전시 제작에 성공했습니다."),
+    GET_AUTHOR_INTRODUCTIONS(HttpStatus.OK, "200", "작가 소개 조회에 성공했습니다."),
+    GET_ALL_EXHIBITIONS(HttpStatus.OK, "200", "전시 전체 조회에 성공했습니다."),
+    GET_LIKE_EXHIBITIONS(HttpStatus.OK, "200", "좋아요 전시 조회에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITIONS(HttpStatus.OK, "200", "임시저장 전시 전체 조회에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITION_DETAIL(HttpStatus.OK, "200", "임시저장 전시 상세 조회에 성공했습니다."),
     REMOVE_TEMPORARY_EXHIBITION(HttpStatus.OK, "200", "임시저장 전시 삭제에 성공했습니다."),
@@ -34,8 +37,8 @@ public enum SuccessStatus implements BaseCode {
     GET_TAG_EXHIBITION_DETAILS(HttpStatus.OK, "200", "전시회 상세 조회에 성공했습니다."),
     ADD_COMMENTS(HttpStatus.CREATED, "201", "댓글 등록에 성공했습니다."),
     GET_ALL_COMMENTS(HttpStatus.OK, "200", "댓글 전체 조회에 성공했습니다."),
-    ADD_LIKE_TO_COMMENT(HttpStatus.CREATED, "200", "댓글 좋아요 등록에 성공했습니다."),
-    REMOVE_LIKE_TO_COMMENT(HttpStatus.CREATED, "200", "댓글 좋아요 취소에 성공했습니다."),
+    ADD_LIKE_TO_COMMENT(HttpStatus.CREATED, "201", "댓글 좋아요 등록에 성공했습니다."),
+    REMOVE_LIKE_TO_COMMENT(HttpStatus.OK, "200", "댓글 좋아요 취소에 성공했습니다."),
     ;
 
     private final HttpStatus httpStatus;

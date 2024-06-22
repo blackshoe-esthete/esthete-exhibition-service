@@ -47,8 +47,11 @@ public class User extends BaseEntity {
     @Column(name = "view_count")
     private Long viewCount;
 
-    @Column(name = "support_count")
-    private Long supportCount;
+    @Column(name = "follower_count")
+    private Long followerCount;
+
+    @Column(name = "following_count")
+    private Long followingCount;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ProfileUrl profileUrl;
@@ -63,8 +66,20 @@ public class User extends BaseEntity {
         this.viewCount++;
     }
 
-    public void increaseSupportCount() {
-        this.supportCount++;
+    public void increaseFollowerCount() {
+        this.followerCount++;
+    }
+
+    public void decreaseFollowerCount() {
+        this.followerCount--;
+    }
+
+    public void increaseFollowingCount() {
+        this.followingCount++;
+    }
+
+    public void decreaseFollowingCount() {
+        this.followingCount--;
     }
 
     public void updateUserProfile(String nickname, String introduce, String biography) {

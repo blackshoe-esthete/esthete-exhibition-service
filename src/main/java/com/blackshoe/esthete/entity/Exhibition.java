@@ -45,6 +45,9 @@ public class Exhibition extends BaseEntity {
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExhibitionTag> exhibitionTags;
 
+    @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ExhibitionLocation exhibitionLocation;
+
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<View> views;
 
