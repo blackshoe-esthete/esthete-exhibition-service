@@ -27,6 +27,7 @@ public enum SuccessStatus implements BaseCode {
     GET_FOLLOWERS(HttpStatus.OK, "200", "팔로워 조회에 성공했습니다."),
     GET_FOLLOWINGS(HttpStatus.OK, "200", "팔로잉 조회에 성공했습니다."),
     ADD_FOLLOW(HttpStatus.CREATED, "201", "팔로우 등록에 성공했습니다."),
+    REMOVE_FOLLOW(HttpStatus.OK, "200", "팔로우 취소에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITIONS(HttpStatus.OK, "200", "임시저장 전시 전체 조회에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITION_DETAIL(HttpStatus.OK, "200", "임시저장 전시 상세 조회에 성공했습니다."),
     REMOVE_TEMPORARY_EXHIBITION(HttpStatus.OK, "200", "임시저장 전시 삭제에 성공했습니다."),

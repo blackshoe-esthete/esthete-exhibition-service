@@ -183,7 +183,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
             throw new MyGalleryException(MyGalleryErrorResult.CANNOT_LIKE_ON_OWN_EXHIBITION);
         }
         if (!likeRepository.existsByExhibitionId(exhibition.getExhibitionId())) {
-            throw new MyGalleryException(MyGalleryErrorResult.IS_ALREADY_NOT_LIKED);
+            throw new MyGalleryException(MyGalleryErrorResult.IS_NOT_LIKED);
         }
 
         Like like = likeRepository.findByUserIdAndExhibitionId(user.getUserId(), exhibition.getExhibitionId())
@@ -274,7 +274,30 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         user.increaseFollowerCount();
         follower.increaseFollowingCount();
         userRepository.save(user);
+        userRepository.save(follower);
         followRepository.save(follow);
+    }
+
+    // 팔로우를 취소하는 메서드
+    @Override
+    public void removeFollow(String authorizationHeader, String userId) {
+        User follower = jwtUtil.getUserFromHeader(authorizationHeader);
+        if (String.valueOf(follower.getUserId()).equals(userId)) {
+            throw new MyGalleryException(MyGalleryErrorResult.CANNOT_FOLLOW_ON_OWN);
+        }
+        User user = userRepository.findByUserId(UUID.fromString(userId))
+                .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+        if (!followRepository.existsByUserAndFollowerId(user, follower.getUserId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_NOT_FOLLOWED);
+        }
+
+        Follow follow = followRepository.findByUserAndFollowerId(user, follower.getUserId())
+                .orElseThrow(() -> new MyGalleryException(MyGalleryErrorResult.NOT_FOUND_FOLLOWER));
+        follower.decreaseFollowingCount();
+        user.decreaseFollowerCount();
+        userRepository.save(follower);
+        userRepository.save(user);
+        followRepository.delete(follow);
     }
 
     // 유저 타입을 결정하는 메서드
