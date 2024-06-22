@@ -28,6 +28,7 @@ INSERT INTO tags (tags_uuid, name) VALUES
 
 ON DUPLICATE KEY UPDATE tags_uuid = tags_uuid;
 
+
 -- 디폴트 유저 삽입
 INSERT INTO users (users_id, users_uuid, nickname, email, role, gender, introduce, biography, created_at, updated_at, view_count, support_count) VALUES
     (1, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), 'test_user', 'hsh111366@naver.com', 'USER', 'MALE', '안녕하세요.', '', NOW(), NOW(), 0, 10),
@@ -36,6 +37,7 @@ INSERT INTO users (users_id, users_uuid, nickname, email, role, gender, introduc
     (4, UNHEX(REPLACE('86a93e29-0f46-4a65-9c49-7fbf7c13e9f2', '-', '')), 'test_user4', 'fpdogsj44@naver.com', 'USER', 'FEMALE', '즐거워요.', '', NOW(), NOW(), 0, 100),
     (5, UNHEX(REPLACE('4d4be043-5d57-45eb-a3fb-dc48e5e452b0', '-', '')), 'test_user5', 'sfas46587@naver.com', 'USER', 'MALE', '화가나요.', '', NOW(), NOW(), 0, 1)
     ON DUPLICATE KEY UPDATE users_uuid = users_uuid;
+
 
 -- 디폴트 임시저장 전시 삽입
 INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbnail_url, title, description, created_at) VALUES
@@ -46,12 +48,31 @@ INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbna
     ON DUPLICATE KEY UPDATE temporary_exhibitions_uuid = temporary_exhibitions_uuid;
 
 
-# -- 디폴트 임시저장 전시 사진 삽입
-# INSERT INTO temporary_exhibitions_photos (temporary_exhibitions_id, img_url, s3_url, created_at) VALUES
-#     (1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', NOW()),
-#     (1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg', NOW()),
-#     (1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', NOW())
-#     ON DUPLICATE KEY UPDATE temporary_exhibitions_photos_id = temporary_exhibitions_photos_id;
+-- 디폴트 임시저장 전시 장소 삽입
+INSERT INTO exhibitions_locations (exhibitions_locations_id, temporary_exhibitions_id, longitude, latitude, state, city, town) VALUES
+     (1, 1, 25.4, 21.4, '서울특별시', '은평구', '갈현동'),
+     (2, 2, 127.5, 13.2, '서울특별시', '용산구', '후암동'),
+     (3, 3, 40.3, 67.8, '서울특별시', '서대문구', '홍제동'),
+     (4, 4, 87.5, 11.5, '서울특별시', '종로구', '인사동')
+    ON DUPLICATE KEY UPDATE exhibitions_locations_id = exhibitions_locations_id;
+
+-- 디폴트 임시저장 전시 사진 삽입
+INSERT INTO photos (photos_id, temporary_exhibitions_id, photos_uuid, filters_uuid, gray_scale) VALUES
+     (1, 1, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d479', '-', '')), UNHEX(REPLACE('d290f1ee-6c54-4b01-90e6-d701748f0851', '-', '')), -10.2),
+     (2, 2, UNHEX(REPLACE('9c2c279b-35e4-4bda-b788-6bb5d99f6c91', '-', '')), UNHEX(REPLACE('a76893b5-2365-477b-99b0-faff74b111a5', '-', '')), -10.2),
+     (3, 3, UNHEX(REPLACE('ebee8bf8-87e7-41f6-8f60-d6e1ad2f2a22', '-', '')), UNHEX(REPLACE('bf256710-5c56-4696-9676-2c93edc9df17', '-', '')), -10.2),
+     (4, 4, UNHEX(REPLACE('4c566ef8-57e7-4397-91a1-dcfb7a058d6f', '-', '')), UNHEX(REPLACE('98798c76-3c3b-4f3d-8fd1-abc1ff2bce1c', '-', '')), -10.2)
+    ON DUPLICATE KEY UPDATE photos_id = photos_id;
+
+
+ -- 디폴트 임시저장 전시 사진 URL 삽입
+ INSERT INTO photos_urls (photos_urls_id, photos_id, photos_urls_uuid, img_url, s3_url) VALUES
+     (1, 1, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d480', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
+     (2, 2, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d481', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg'),
+     (3, 3, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d482', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg'),
+     (4, 4, UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d483', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg')
+     ON DUPLICATE KEY UPDATE photos_urls_id = photos_urls_id;
+
 
 -- 디폴트 전시 삽입
 INSERT INTO exhibitions (exhibitions_id, users_id, view_count, exhibitions_uuid, title, description, thumbnail_url) VALUES
@@ -66,28 +87,29 @@ INSERT INTO exhibitions (exhibitions_id, users_id, view_count, exhibitions_uuid,
     (9, 3, 56, UNHEX(REPLACE('ce7d48b4-ef0e-4c6d-bb74-b8be6d9f2874', '-', '')), '대구', '혼자여행', '썸네일 url이라고 생각하세요')
     ON DUPLICATE KEY UPDATE exhibitions_id = exhibitions_id;
 
+
 -- 디폴트 전시 태그 삽입
-INSERT INTO exhibitions_tags (exhibitions_tags_id, exhibitions_id, tags_id)
+INSERT INTO exhibitions_tags (exhibitions_tags_id, exhibitions_id, temporary_exhibitions_id, tags_id)
 VALUES
-    (1, 1, 1),
-    (2, 1, 3),
-    (3, 1, 13),
-    (4, 2, 2),
-    (5, 2, 4),
-    (6, 2, 12),
-    (7, 3, 5),
-    (8, 3, 8),
-    (9, 3, 25),
-    (10, 4, 24),
-    (11, 4, 11),
-    (12, 4, 9),
-    (13, 5, 15),
-    (14, 5, 2),
-    (15, 5, 5),
-    (16, 6, 21),
-    (17, 6, 20),
-    (18, 6, 10),
-    (19, 7, 6),
-    (20, 7, 7),
-    (21, 7, 14)
+    (1, 1, 1, 1),
+    (2, 1, 1, 3),
+    (3, 1, 1, 13),
+    (4, 2, 1, 2),
+    (5, 2, 1, 4),
+    (6, 2, 1, 12),
+    (7, 3, 1, 5),
+    (8, 3, 2, 8),
+    (9, 3, 2, 25),
+    (10, 4, 2, 24),
+    (11, 4, 2, 11),
+    (12, 4, 2, 9),
+    (13, 5, 3, 15),
+    (14, 5, 3, 2),
+    (15, 5, 3, 5),
+    (16, 6, 3, 21),
+    (17, 6, 4, 20),
+    (18, 6, 4, 10),
+    (19, 7, 4, 6),
+    (20, 7, 4, 7),
+    (21, 7, 4, 14)
     ON DUPLICATE KEY UPDATE exhibitions_tags_id = exhibitions_tags_id;
