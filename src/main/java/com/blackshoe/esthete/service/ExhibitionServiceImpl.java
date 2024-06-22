@@ -220,6 +220,9 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         if (commentRequest.getContent().length() > 50) {
             throw new ExhibitionException(ExhibitionErrorResult.CONTENT_OVER_LIMIT_LENGTH);
         }
+        if (exhibitionRepository.existsByUserId(user.getId())) {
+            throw new ExhibitionException(ExhibitionErrorResult.CANNOT_COMMENT_ON_OWN_POST);
+        }
         Comment comment = Comment.builder()
                 .exhibition(exhibition)
                 .userId(user.getUserId())

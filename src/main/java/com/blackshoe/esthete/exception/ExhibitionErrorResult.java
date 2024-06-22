@@ -24,6 +24,7 @@ public enum ExhibitionErrorResult implements BaseErrorCode {
     INVALID_SORT_TYPE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 정렬 타입입니다."),
     FAIL_TO_GET_SIX_EXHIBITIONS(HttpStatus.NOT_FOUND, "404", "전시회 6개를 가져오는 데 실패했습니다."),
     CONTENT_OVER_LIMIT_LENGTH(HttpStatus.BAD_REQUEST, "400", "컨텐츠가 50자를 넘습니다."),
+    CANNOT_COMMENT_ON_OWN_POST(HttpStatus.BAD_REQUEST, "400", "본인 게시물에는 댓글을 달 수 없습니다."),
     IS_NOT_USERS_COMMENT(HttpStatus.BAD_REQUEST, "400", "해당 유저 전시회에 달린 댓글이 아닙니다."),
     IS_ALREADY_LIKED(HttpStatus.CONFLICT, "409", "이미 좋아요 된 댓글입니다."),
     IS_NOT_LIKED(HttpStatus.BAD_REQUEST, "400", "좋아요 된 댓글이 아닙니다."),
