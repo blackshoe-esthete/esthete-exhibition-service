@@ -1,6 +1,8 @@
 package com.blackshoe.esthete.service.kafka;
 
 import com.blackshoe.esthete.dto.KafkaDto;
+import com.blackshoe.esthete.entity.User;
+import com.blackshoe.esthete.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class KafkaUserInfoConsumerServiceImpl implements KafkaUserInfoConsumerService{
     private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
 
     @Override
-    @KafkaListener(topics = "user-create")
+    @KafkaListener(topics = "exhibition-user-create")
     @Transactional
     public void createUser(String payload, Acknowledgment acknowledgment) {
         log.info("received payload='{}'", payload);
@@ -27,6 +30,17 @@ public class KafkaUserInfoConsumerServiceImpl implements KafkaUserInfoConsumerSe
             userInfoDto = objectMapper.readValue(payload, KafkaDto.UserInfo.class);
         } catch (Exception e) {
             log.error("Error while converting json string to user object", e);
+        }
+
+        if (userInfoDto != null) {
+            User user = User.builder()
+                    .userId(userInfoDto.getUserId())
+                    .nickname(userInfoDto.getNickname())
+                    .email(userInfoDto.getEmail())
+                    .gender(userInfoDto.getGender())
+                    .build();
+
+            userRepository.save(user);
         }
 
         log.info("User info : {}", userInfoDto);

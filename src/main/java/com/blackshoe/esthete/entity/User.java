@@ -5,9 +5,11 @@ import com.blackshoe.esthete.common.constant.Gender;
 import com.blackshoe.esthete.common.constant.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -48,6 +50,14 @@ public class User extends BaseEntity {
 
     @Column(name = "support_count")
     private Long supportCount;
+
+    @Builder
+    public User(UUID userId, String nickname, String email, Gender gender){
+        this.userId = userId;
+        this.nickname = nickname;
+        this.email = email;
+        this.gender = gender;
+    }
 
     public void increaseViewCount() {
         this.viewCount++;
