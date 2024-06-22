@@ -188,4 +188,6 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
     Boolean existsByUserId(Long userId);
 
     Boolean existsByUserAndExhibitionId(User user, UUID exhibitionId);
+
+    Optional<Exhibition> findByUserAndExhibitionId(User user, UUID exhibitionId);
 }

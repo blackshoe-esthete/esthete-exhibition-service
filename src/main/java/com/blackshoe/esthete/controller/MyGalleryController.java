@@ -128,4 +128,14 @@ public class MyGalleryController {
         myGalleryService.removeLikeToExhibition(authorizationHeader, exhibitionId);
         return ApiResponse.onSuccess(SuccessStatus.REMOVE_LIKE_TO_EXHIBITION);
     }
+
+    // 내 전시를 삭제하는 API
+    @DeleteMapping("/exhibitions/{exhibition_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> removeExhibition(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("exhibition_id") String exhibitionId) {
+
+        myGalleryService.removeExhibition(authorizationHeader, exhibitionId);
+        return ApiResponse.onSuccess(SuccessStatus.REMOVE_EXHIBITION);
+    }
 }
