@@ -30,11 +30,14 @@ public class Photo extends BaseEntity {
     @Column(name = "photos_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID photoId;
 
-    @Column(name = "filters_uuid")
+    @Column(name = "filters_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID filterId;
 
     @Column(name = "gray_scale")
     private Float grayScale;
+
+    @OneToOne(mappedBy = "photo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PhotoUrl photoUrl;
 
     @PrePersist
     public void updatePhotoId() {

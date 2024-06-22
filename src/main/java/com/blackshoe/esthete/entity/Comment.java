@@ -23,6 +23,9 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "exhibitions_id", foreignKey = @ForeignKey(name = "comments_fk_exhibitions_id"))
     private Exhibition exhibition;
 
+    @Column(name = "comments_uuid", columnDefinition = "BINARY(16)", unique = true)
+    private UUID commentId;
+
     @Column(columnDefinition = "BINARY(16)", name = "users_uuid", nullable = false)
     private UUID userId;
 
@@ -35,6 +38,7 @@ public class Comment extends BaseEntity {
     @Builder
     public Comment(Exhibition exhibition, UUID userId, String content) {
         this.exhibition = exhibition;
+        this.commentId = UUID.randomUUID();
         this.userId = userId;
         this.content = content;
         this.isLike = false;
