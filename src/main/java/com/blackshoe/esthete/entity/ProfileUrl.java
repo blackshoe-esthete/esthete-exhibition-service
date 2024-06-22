@@ -17,7 +17,7 @@ public class ProfileUrl extends BaseEntity {
     @Column(name = "profile_urls_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "profile_urls_fk_users_id"))
     private User user;
 

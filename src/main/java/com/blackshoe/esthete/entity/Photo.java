@@ -6,9 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -26,17 +24,20 @@ public class Photo extends BaseEntity {
     private Exhibition exhibition;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "photos_fk_temporary_temporary_exhibitions_id"))
+    @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "photos_fk_temporary_exhibitions_id"))
     private TemporaryExhibition temporaryExhibition;
 
     @Column(name = "photos_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID photoId;
 
-    @Column(name = "filter_uuid")
+    @Column(name = "filters_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID filterId;
 
     @Column(name = "gray_scale")
     private Float grayScale;
+
+    @OneToOne(mappedBy = "photo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PhotoUrl photoUrl;
 
     @PrePersist
     public void updatePhotoId() {

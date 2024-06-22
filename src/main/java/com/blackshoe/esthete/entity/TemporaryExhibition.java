@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -37,6 +38,15 @@ public class TemporaryExhibition extends BaseEntity {
 
     @Column(name = "view_count")
     private Long viewCount;
+
+    @OneToOne(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ExhibitionLocation exhibitionLocation;
+
+    @OneToMany(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExhibitionTag> exhibitionTags;
+
+    @OneToMany(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Photo> photos;
 
     @PrePersist
     public void updateTemporaryExhibitionId() {

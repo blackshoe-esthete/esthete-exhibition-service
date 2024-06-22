@@ -7,18 +7,9 @@ import com.blackshoe.esthete.common.vo.ExhibitionPointFilter;
 import com.blackshoe.esthete.dto.ExhibitionClusteringDto;
 import com.blackshoe.esthete.dto.MainHomeDto;
 import com.blackshoe.esthete.dto.SearchExhibitionDto;
-import com.blackshoe.esthete.entity.Exhibition;
-import com.blackshoe.esthete.entity.ExhibitionTag;
-import com.blackshoe.esthete.entity.Tag;
-import com.blackshoe.esthete.entity.User;
-import com.blackshoe.esthete.exception.ExhibitionErrorResult;
-import com.blackshoe.esthete.exception.ExhibitionException;
-import com.blackshoe.esthete.exception.TagErrorResult;
-import com.blackshoe.esthete.exception.TagException;
-import com.blackshoe.esthete.repository.ExhibitionRepository;
-import com.blackshoe.esthete.repository.ExhibitionTagRepository;
-import com.blackshoe.esthete.repository.TagRepository;
-import com.blackshoe.esthete.repository.UserRepository;
+import com.blackshoe.esthete.entity.*;
+import com.blackshoe.esthete.exception.*;
+import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,21 +19,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ExhibitionServiceImpl implements ExhibitionService{
     private final ExhibitionRepository exhibitionRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final ExhibitionTagRepository exhibitionTagRepository;
+    private final ViewRepository viewRepository;
+    private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
     private final JwtUtil jwtUtil;
 
     @Override
-    @Transactional
     public Page<SearchExhibitionDto.SearchExhibitionResponse> searchAllExhibition(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "viewCount"));
         Page<Exhibition> findAllList = exhibitionRepository.findAll(pageRequest);
@@ -57,7 +50,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<SearchExhibitionDto.SearchExhibitionResponse> searchExhibition(String exhibitionKeyword, int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "viewCount"));
         Page<Exhibition> findByKeywordList = exhibitionRepository.findByTitleContaining(exhibitionKeyword, pageRequest);
@@ -72,7 +64,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<SearchExhibitionDto.SearchAuthorResponse> searchAllAuthor(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "supportCount"));
         Page<User> allUser = userRepository.findAll(pageRequest);
@@ -86,7 +77,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthor(String authorKeyword, int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "supportCount"));
         Page<User> findAuthorList = userRepository.findByNicknameContaining(authorKeyword, pageRequest);
@@ -100,7 +90,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> getTop10ByUserLocationGroupBy(ExhibitionPointFilter exhibitionLocationFilter, ExhibitionLocationGroupType exhibitionLocationGroupType){
        Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> markedRegionGroupResponse;
 
@@ -120,7 +109,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     }
 
     @Override
-    @Transactional
     public Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> readByAddress(ExhibitionAddressFilter exhibitionAddressFilter, Integer page, Integer size, Sort sortBy){
         Pageable pageable = PageRequest.of(page, size, sortBy);
 
@@ -145,10 +133,10 @@ public class ExhibitionServiceImpl implements ExhibitionService{
   
     // 개인 추천 전시회 조회 메서드
     @Override
-    @Transactional
     public List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader) {
-        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc();
-        if (Objects.isNull(exhibitions) || exhibitions.size() < 6) {
+        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc()
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
+        if (exhibitions.size() < 6) {
             throw new ExhibitionException(ExhibitionErrorResult.FAIL_TO_GET_SIX_EXHIBITIONS);
         }
         if (!Objects.isNull(authorizationHeader)) {
@@ -163,8 +151,9 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     // 소외 전시회 조회 메서드
     @Override
     public List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions() {
-        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountAsc();
-        if (Objects.isNull(exhibitions) || exhibitions.size() < 6) {
+        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountAsc()
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
+        if (exhibitions.size() < 6) {
             throw new ExhibitionException(ExhibitionErrorResult.FAIL_TO_GET_SIX_EXHIBITIONS);
         }
         return MainHomeDto.ExhibitionResponse.of(exhibitions);
@@ -172,7 +161,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     // 태그 선택 전시회 조회 메서드
     @Override
-    @Transactional
     public List<MainHomeDto.ExhibitionResponse> getExhibitionsByTag(String tagName) {
         Tag tag = tagRepository.findByName(tagName)
                 .orElseThrow(() -> new TagException(TagErrorResult.NOT_FOUND_TAG));
@@ -186,5 +174,127 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         }
         // 추후 추천 알고리즘 적용 예정, 현재는 단순히 태그가 포함되어 있으면 반환
         return MainHomeDto.ExhibitionResponse.of(exhibitions);
+    }
+
+    // 전시회 상세 조회 메서드
+    @Override
+    public MainHomeDto.ExhibitionDetailResponse getExhibitionDetails(String authorizationHeader, String exhibitionId) {
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+
+        if (!Objects.isNull(authorizationHeader)) {
+            User user = jwtUtil.getUserFromHeader(authorizationHeader);
+            // 조회수++
+            exhibition.increaseViewCount();
+            exhibitionRepository.save(exhibition);
+            View view = View.builder()
+                    .exhibition(exhibition)
+                    .user(user)
+                    .build();
+            viewRepository.save(view);
+        }
+        return MainHomeDto.ExhibitionDetailResponse.of(exhibition);
+    }
+
+    // 댓글 전체 조회 메서드
+    @Override
+    public List<MainHomeDto.CommentResponse> getAllComments(String exhibitionId) {
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        List<Comment> comments = commentRepository.findAllByExhibition(exhibition);
+        return comments.stream()
+                .map(comment -> {
+                    User user = userRepository.findByUserId(comment.getUserId())
+                            .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER)); // Comment와 User의 관계가 있다고 가정
+                    return MainHomeDto.CommentResponse.of(comment, user);
+                })
+                .collect(Collectors.toList());
+    }
+
+    // 댓글 등록 메서드
+    @Override
+    public void addComments(String authorizationHeader, MainHomeDto.CommentRequest commentRequest) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(commentRequest.getExhibitionId()))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        if (commentRequest.getContent().length() > 50) {
+            throw new ExhibitionException(ExhibitionErrorResult.CONTENT_OVER_LIMIT_LENGTH);
+        }
+        Comment comment = Comment.builder()
+                .exhibition(exhibition)
+                .userId(user.getUserId())
+                .content(commentRequest.getContent())
+                .build();
+        commentRepository.save(comment);
+    }
+
+    // 댓글 좋아요 등록 메서드
+    @Override
+    public void addLikeToComment(String authorizationHeader, String commentId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        List<Exhibition> exhibitions = exhibitionRepository.findAllByUser(user)
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
+
+        // 해당 유저의 전시회에 달린 댓글인지 확인
+        Comment comment = null;
+        UUID exhibitionId = null;
+        for (Exhibition exhibition : exhibitions) {
+            Optional<Comment> optionalComment = exhibition.getComments().stream()
+                    .filter(c -> c.getCommentId().equals(UUID.fromString(commentId)))
+                    .findFirst();
+            if (optionalComment.isPresent()) {
+                comment = optionalComment.get();
+                exhibitionId = exhibition.getExhibitionId();
+                break;
+            }
+        }
+        if (Objects.isNull(comment)) {
+            throw new ExhibitionException(ExhibitionErrorResult.IS_NOT_USERS_COMMENT);
+        }
+        if (comment.getIsLike()) {
+            throw new ExhibitionException(ExhibitionErrorResult.IS_ALREADY_LIKED);
+        }
+
+        comment.addLike();
+        commentRepository.save(comment);
+        Like like = Like.builder()
+                .userId(user.getUserId())
+                .exhibitionId(exhibitionId)
+                .build();
+        likeRepository.save(like);
+    }
+
+    // 댓글 좋아요 취소 메서드
+    @Override
+    public void removeLikeToComment(String authorizationHeader, String commentId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        List<Exhibition> exhibitions = exhibitionRepository.findAllByUser(user)
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
+
+        // 해당 유저의 전시회에 달린 댓글인지 확인
+        Comment comment = null;
+        UUID exhibitionId = null;
+        for (Exhibition exhibition : exhibitions) {
+            Optional<Comment> optionalComment = exhibition.getComments().stream()
+                    .filter(c -> c.getCommentId().equals(UUID.fromString(commentId)))
+                    .findFirst();
+            if (optionalComment.isPresent()) {
+                comment = optionalComment.get();
+                exhibitionId = exhibition.getExhibitionId();
+                break;
+            }
+        }
+        if (Objects.isNull(comment)) {
+            throw new ExhibitionException(ExhibitionErrorResult.IS_NOT_USERS_COMMENT);
+        }
+        if (!comment.getIsLike()) {
+            throw new ExhibitionException(ExhibitionErrorResult.IS_NOT_LIKED);
+        }
+
+        comment.removeLike();
+        commentRepository.save(comment);
+        Like like = likeRepository.findByUserIdAndExhibitionId(user.getUserId(), exhibitionId)
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_LIKE));
+        likeRepository.delete(like);
     }
 }
