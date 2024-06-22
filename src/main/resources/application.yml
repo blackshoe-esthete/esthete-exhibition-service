@@ -39,6 +39,8 @@ spring:
       database: 1
   jwt:
     secret: ${JWT_SECRET}
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
   cloud:
     aws:
       credentials:
@@ -59,11 +61,11 @@ spring:
     gcp:
       geo-coding:
         api-key: ${GCP_GEOCODING_API_KEY}
-    servlet:
-      multipart:
-        resolve-lazily: true
-        max-file-size: 50MB
-        max-request-size: 150MB
+  servlet:
+    multipart:
+      resolve-lazily: true
+      max-file-size: 50MB
+      max-request-size: 150MB
 
 services:
   geo-coding-service: https://maps.googleapis.com/maps/api/geocode
