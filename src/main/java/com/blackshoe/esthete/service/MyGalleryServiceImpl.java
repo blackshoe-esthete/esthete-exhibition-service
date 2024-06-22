@@ -173,6 +173,26 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         exhibitionRepository.save(exhibition);
     }
 
+    // 전시 좋아요 취소 메서드
+    @Override
+    public void removeLikeToExhibition(String authorizationHeader, String exhibitionId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        if (exhibitionRepository.existsByUserAndExhibitionId(user, exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.CANNOT_LIKE_ON_OWN_EXHIBITION);
+        }
+        if (!likeRepository.existsByExhibitionId(exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_ALREADY_NOT_LIKED);
+        }
+
+        Like like = likeRepository.findByUserIdAndExhibitionId(user.getUserId(), exhibition.getExhibitionId())
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_LIKE_EXHIBITION));
+        likeRepository.delete(like);
+        exhibition.decreaseLikeCount();
+        exhibitionRepository.save(exhibition);
+    }
+
     // 유저 타입을 결정하는 메서드
     private String determineUserType(String authorizationHeader, String userId) {
         if (!Objects.isNull(authorizationHeader) && !Objects.isNull(userId)) {
