@@ -88,4 +88,13 @@ public class MyGalleryServiceImpl implements MyGalleryService {
 
         return MyGalleryDto.TemporaryExhibitionDetailResponse.of(temporaryExhibition);
     }
+
+    // 임시 저장 전시회 삭제 메서드
+    @Override
+    public void removeTemporaryExhibition(String authorizationHeader, String tempExhibitionId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        TemporaryExhibition temporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(UUID.fromString(tempExhibitionId))
+                .orElseThrow(() -> new MyGalleryException(MyGalleryErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION));
+        temporaryExhibitionRepository.delete(temporaryExhibition);
+    }
 }
