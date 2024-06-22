@@ -117,7 +117,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     public List<MyGalleryDto.ExhibitionResponse> getAllExhibitions(String authorizationHeader, String userId) {
         String userType = determineUserType(authorizationHeader, userId);
         User user;
-        List<Like> likes = null;
+        List<Like> likes = new ArrayList<>();
 
         switch (userType) {
             case "OWNER":
@@ -127,7 +127,8 @@ public class MyGalleryServiceImpl implements MyGalleryService {
             case "GUEST":
                 user = userRepository.findByUserId(UUID.fromString(userId))
                         .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
-                likes = likeRepository.findAllByUserId(UUID.fromString(userId));
+                UUID existUserId = UUID.fromString(jwtUtil.getUserIdFromToken(jwtUtil.getTokenFromHeader(authorizationHeader)));
+                likes = likeRepository.findAllByUserId(existUserId);
                 break;
             default:
                 throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
@@ -148,6 +149,57 @@ public class MyGalleryServiceImpl implements MyGalleryService {
                         .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION)))
                 .toList();
         return MyGalleryDto.LikeExhibitionResponse.of(exhibitions);
+    }
+
+    // 전시 좋아요 등록 메서드
+    @Override
+    public void addLikeToExhibition(String authorizationHeader, String exhibitionId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        if (exhibitionRepository.existsByUserAndExhibitionId(user, exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.CANNOT_LIKE_ON_OWN_EXHIBITION);
+        }
+        if (likeRepository.existsByExhibitionId(exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_ALREADY_LIKED);
+        }
+
+        Like like = Like.builder()
+                .userId(user.getUserId())
+                .exhibitionId(exhibition.getExhibitionId())
+                .build();
+        likeRepository.save(like);
+        exhibition.increaseLikeCount();
+        exhibitionRepository.save(exhibition);
+    }
+
+    // 전시 좋아요 취소 메서드
+    @Override
+    public void removeLikeToExhibition(String authorizationHeader, String exhibitionId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        if (exhibitionRepository.existsByUserAndExhibitionId(user, exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.CANNOT_LIKE_ON_OWN_EXHIBITION);
+        }
+        if (!likeRepository.existsByExhibitionId(exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_ALREADY_NOT_LIKED);
+        }
+
+        Like like = likeRepository.findByUserIdAndExhibitionId(user.getUserId(), exhibition.getExhibitionId())
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_LIKE_EXHIBITION));
+        likeRepository.delete(like);
+        exhibition.decreaseLikeCount();
+        exhibitionRepository.save(exhibition);
+    }
+
+    // 내 전시를 삭제하는 메서드
+    @Override
+    public void removeExhibition(String authorizationHeader, String exhibitionId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Exhibition exhibition = exhibitionRepository.findByUserAndExhibitionId(user, UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        exhibitionRepository.delete(exhibition);
     }
 
     // 유저 타입을 결정하는 메서드

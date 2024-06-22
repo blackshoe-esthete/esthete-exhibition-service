@@ -48,7 +48,7 @@ public class MainHomeDto {
         private String title;
         private String description;
         private String date;
-        private String author;
+        private String authorName;
         private String authorProfileUrl;
         private String thumbnailUrl;
         private List<PhotoResponse> photos;
@@ -59,7 +59,7 @@ public class MainHomeDto {
                     .title(exhibition.getTitle())
                     .description(exhibition.getDescription())
                     .date(exhibition.getCreatedAt().format(DATE_FORMATTER))
-                    .author(exhibition.getUser().getNickname())
+                    .authorName(exhibition.getUser().getNickname())
                     .authorProfileUrl(exhibition.getUser().getProfileUrl().getCloudfrontUrl())
                     .thumbnailUrl(exhibition.getThumbnailUrl())
                     .photos(PhotoResponse.of(exhibition.getPhotos()))

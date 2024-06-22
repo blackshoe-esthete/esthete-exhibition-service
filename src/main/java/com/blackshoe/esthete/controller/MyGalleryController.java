@@ -103,9 +103,39 @@ public class MyGalleryController {
     // 좋아요 전시를 조회하는 API
     @GetMapping("/exhibitions/likes")
     public ResponseEntity<ApiResponse<List<MyGalleryDto.LikeExhibitionResponse>>> getLikeExhibitions(
-            @RequestHeader(name = "Authorization") String authorizationHeader) {
+            @RequestHeader("Authorization") String authorizationHeader) {
 
         List<MyGalleryDto.LikeExhibitionResponse> exhibitionResponses = myGalleryService.getLikeExhibitions(authorizationHeader);
         return ApiResponse.onSuccess(SuccessStatus.GET_LIKE_EXHIBITIONS, exhibitionResponses);
+    }
+
+    // 전시 좋아요를 등록하는 API
+    @PostMapping("/exhibitions/likes/{exhibition_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> addLikeToExhibition(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("exhibition_id") String exhibitionId) {
+
+        myGalleryService.addLikeToExhibition(authorizationHeader, exhibitionId);
+        return ApiResponse.onSuccess(SuccessStatus.ADD_LIKE_TO_EXHIBITION);
+    }
+
+    // 전시 좋아요를 취소하는 API
+    @DeleteMapping("/exhibitions/likes/{exhibition_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> removeLikeToExhibition(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("exhibition_id") String exhibitionId) {
+
+        myGalleryService.removeLikeToExhibition(authorizationHeader, exhibitionId);
+        return ApiResponse.onSuccess(SuccessStatus.REMOVE_LIKE_TO_EXHIBITION);
+    }
+
+    // 내 전시를 삭제하는 API
+    @DeleteMapping("/exhibitions/{exhibition_id}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> removeExhibition(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("exhibition_id") String exhibitionId) {
+
+        myGalleryService.removeExhibition(authorizationHeader, exhibitionId);
+        return ApiResponse.onSuccess(SuccessStatus.REMOVE_EXHIBITION);
     }
 }

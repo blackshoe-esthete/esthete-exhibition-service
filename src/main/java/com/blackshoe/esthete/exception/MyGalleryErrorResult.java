@@ -13,6 +13,9 @@ public enum MyGalleryErrorResult implements BaseErrorCode {
     NOT_FOUND_TEMPORARY_EXHIBITION(HttpStatus.NOT_FOUND, "404", "존재하지 않는 임시저장 전시회입니다."),
     UNAUTHORIZED_TEMPORARY_EXHIBITION(HttpStatus.UNAUTHORIZED, "401", "사용자의 임시저장 전시회가 아닙니다."),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "400", "올바른 요청이 아닙니다."),
+    IS_ALREADY_LIKED(HttpStatus.CONFLICT, "409", "이미 좋아요를 누른 전시회입니다."),
+    IS_ALREADY_NOT_LIKED(HttpStatus.CONFLICT, "409", "이미 좋아요가 없는 전시회입니다."),
+    CANNOT_LIKE_ON_OWN_EXHIBITION(HttpStatus.BAD_REQUEST, "400", "본인 전시회에는 좋아요를 누를 수 없습니다."),
     ;
 
     private final HttpStatus httpStatus;

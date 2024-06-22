@@ -39,6 +39,9 @@ public class Exhibition extends BaseEntity {
     @Column(name = "view_count")
     private Long viewCount;
 
+    @Column(name = "like_count")
+    private Long likeCount;
+
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photos;
 
@@ -68,6 +71,7 @@ public class Exhibition extends BaseEntity {
         this.title = title;
         this.description = description;
         this.viewCount = 0L;
+        this.likeCount = 0L;
     }
 
     public void setUser(User user){
@@ -81,6 +85,14 @@ public class Exhibition extends BaseEntity {
 
     public void increaseViewCount() {
         this.viewCount++;
+    }
+
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        this.likeCount--;
     }
 
     public void setCloudfrontUrl(String thumbnailUrl){this.thumbnailUrl = thumbnailUrl;}

@@ -13,4 +13,7 @@ public interface MyGalleryService {
     MyGalleryDto.AuthorIntroductionResponse getAuthorDetails(String authorizationHeader, String userId);
     List<MyGalleryDto.ExhibitionResponse> getAllExhibitions(String authorizationHeader, String userId);
     List<MyGalleryDto.LikeExhibitionResponse> getLikeExhibitions(String authorizationHeader);
+    void addLikeToExhibition(String authorizationHeader, String exhibitionId);
+    void removeLikeToExhibition(String authorizationHeader, String exhibitionId);
+    void removeExhibition(String authorizationHeader, String exhibitionId);
 }
