@@ -138,4 +138,15 @@ public class MyGalleryController {
         myGalleryService.removeExhibition(authorizationHeader, exhibitionId);
         return ApiResponse.onSuccess(SuccessStatus.REMOVE_EXHIBITION);
     }
+
+    // 팔로워를 조회하는 API
+    @GetMapping("/followers")
+    public ResponseEntity<ApiResponse<List<MyGalleryDto.FollowerResponse>>> getFollowers(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam(name = "user_id", required = false) String userId,
+            @RequestParam(name = "keyword", required = false) String keyword) {
+
+        List<MyGalleryDto.FollowerResponse> followerResponses =  myGalleryService.getFollowers(authorizationHeader, userId, keyword);
+        return ApiResponse.onSuccess(SuccessStatus.GET_FOLLOWERS, followerResponses);
+    }
 }

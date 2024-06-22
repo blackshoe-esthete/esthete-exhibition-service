@@ -202,6 +202,29 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         exhibitionRepository.delete(exhibition);
     }
 
+    // 팔로워를 조회하는 메서드
+    @Override
+    public List<MyGalleryDto.FollowerResponse> getFollowers(String authorizationHeader, String userId, String keyword) {
+        String userType = determineUserType(authorizationHeader, userId);
+        User user;
+
+        switch (userType) {
+            case "OWNER":
+                user = jwtUtil.getUserFromHeader(authorizationHeader);
+                break;
+            case "OTHER":
+            case "GUEST":
+                user = userRepository.findByUserId(UUID.fromString(userId))
+                        .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+                break;
+            default:
+                throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        }
+
+        List<User> followers = userRepository.findFollowersByUserIdAndKeyword(user.getUserId(), keyword);
+        return MyGalleryDto.FollowerResponse.of(followers);
+    }
+
     // 유저 타입을 결정하는 메서드
     private String determineUserType(String authorizationHeader, String userId) {
         if (!Objects.isNull(authorizationHeader) && !Objects.isNull(userId)) {
