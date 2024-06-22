@@ -2,35 +2,28 @@ package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.dto.EditUserTagsDto;
 import com.blackshoe.esthete.dto.MyGalleryDto;
-import com.blackshoe.esthete.entity.Tag;
-import com.blackshoe.esthete.entity.TemporaryExhibition;
-import com.blackshoe.esthete.entity.User;
-import com.blackshoe.esthete.entity.UserTag;
-import com.blackshoe.esthete.exception.MyGalleryErrorResult;
-import com.blackshoe.esthete.exception.MyGalleryException;
-import com.blackshoe.esthete.exception.TagErrorResult;
-import com.blackshoe.esthete.exception.TagException;
-import com.blackshoe.esthete.repository.TagRepository;
-import com.blackshoe.esthete.repository.TemporaryExhibitionRepository;
-import com.blackshoe.esthete.repository.UserTagRepository;
+import com.blackshoe.esthete.entity.*;
+import com.blackshoe.esthete.exception.*;
+import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MyGalleryServiceImpl implements MyGalleryService {
+    private final UserRepository userRepository;
     private final UserTagRepository userTagRepository;
     private final TagRepository tagRepository;
+    private final ExhibitionRepository exhibitionRepository;
     private final TemporaryExhibitionRepository temporaryExhibitionRepository;
+    private final FollowRepository followRepository;
+    private final LikeRepository likeRepository;
     private final JwtUtil jwtUtil;
 
     // 사용자 태그 목록 수정 메서드
@@ -96,5 +89,120 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         TemporaryExhibition temporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(UUID.fromString(tempExhibitionId))
                 .orElseThrow(() -> new MyGalleryException(MyGalleryErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION));
         temporaryExhibitionRepository.delete(temporaryExhibition);
+    }
+
+    // 작가 소개 조회 메서드
+    @Override
+    public MyGalleryDto.AuthorIntroductionResponse getAuthorDetails(String authorizationHeader, String userId) {
+        String userType = determineUserType(authorizationHeader, userId);
+        User user = switch (userType) {
+            case "OWNER" -> jwtUtil.getUserFromHeader(authorizationHeader);
+            case "OTHER", "GUEST" -> userRepository.findByUserId(UUID.fromString(userId))
+                    .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+            default -> throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        };
+
+        MyGalleryDto.AuthorIntroductionResponse authorIntroductionResponse = MyGalleryDto.AuthorIntroductionResponse.of(user);
+        // 타인인 경우 팔로우 여부 확인
+        if (userType.equals("OTHER")) {
+            User ownUser = jwtUtil.getUserFromHeader(authorizationHeader);
+            boolean isFollowed = followRepository.existsByUserAndFollowerId(user, ownUser.getUserId());
+            authorIntroductionResponse.updateFollow(isFollowed);
+        }
+        return authorIntroductionResponse;
+    }
+
+    // 전시를 전체 조회하는 메서드
+    @Override
+    public List<MyGalleryDto.ExhibitionResponse> getAllExhibitions(String authorizationHeader, String userId) {
+        String userType = determineUserType(authorizationHeader, userId);
+        User user;
+        List<Like> likes = new ArrayList<>();
+
+        switch (userType) {
+            case "OWNER":
+                user = jwtUtil.getUserFromHeader(authorizationHeader);
+                break;
+            case "OTHER":
+            case "GUEST":
+                user = userRepository.findByUserId(UUID.fromString(userId))
+                        .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+                UUID existUserId = UUID.fromString(jwtUtil.getUserIdFromToken(jwtUtil.getTokenFromHeader(authorizationHeader)));
+                likes = likeRepository.findAllByUserId(existUserId);
+                break;
+            default:
+                throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        }
+
+        List<Exhibition> exhibitions = exhibitionRepository.findAllByUser(user)
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
+        return MyGalleryDto.ExhibitionResponse.of(exhibitions, likes);
+    }
+
+    // 좋아요 전시를 조회하는 메서드
+    @Override
+    public List<MyGalleryDto.LikeExhibitionResponse> getLikeExhibitions(String authorizationHeader) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        List<Like> likes = likeRepository.findAllByUserId(user.getUserId());
+        List<Exhibition> exhibitions = likes.stream()
+                .map(like -> exhibitionRepository.findByExhibitionId(like.getExhibitionId())
+                        .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION)))
+                .toList();
+        return MyGalleryDto.LikeExhibitionResponse.of(exhibitions);
+    }
+
+    // 전시 좋아요 등록 메서드
+    @Override
+    public void addLikeToExhibition(String authorizationHeader, String exhibitionId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        if (exhibitionRepository.existsByUserAndExhibitionId(user, exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.CANNOT_LIKE_ON_OWN_EXHIBITION);
+        }
+        if (likeRepository.existsByExhibitionId(exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_ALREADY_LIKED);
+        }
+
+        Like like = Like.builder()
+                .userId(user.getUserId())
+                .exhibitionId(exhibition.getExhibitionId())
+                .build();
+        likeRepository.save(like);
+        exhibition.increaseLikeCount();
+        exhibitionRepository.save(exhibition);
+    }
+
+    // 전시 좋아요 취소 메서드
+    @Override
+    public void removeLikeToExhibition(String authorizationHeader, String exhibitionId) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        if (exhibitionRepository.existsByUserAndExhibitionId(user, exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.CANNOT_LIKE_ON_OWN_EXHIBITION);
+        }
+        if (!likeRepository.existsByExhibitionId(exhibition.getExhibitionId())) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_ALREADY_NOT_LIKED);
+        }
+
+        Like like = likeRepository.findByUserIdAndExhibitionId(user.getUserId(), exhibition.getExhibitionId())
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_LIKE_EXHIBITION));
+        likeRepository.delete(like);
+        exhibition.decreaseLikeCount();
+        exhibitionRepository.save(exhibition);
+    }
+
+    // 유저 타입을 결정하는 메서드
+    private String determineUserType(String authorizationHeader, String userId) {
+        if (!Objects.isNull(authorizationHeader) && !Objects.isNull(userId)) {
+            return "OTHER"; // 회원이 타인의 프로필 조회
+        } else if (!Objects.isNull(authorizationHeader)) {
+            return "OWNER"; // 회원이 자신의 프로필 조회
+        } else if (!Objects.isNull(userId)) {
+            return "GUEST"; // 비회원이 타인의 프로필 조회
+        } else {
+            throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        }
     }
 }
