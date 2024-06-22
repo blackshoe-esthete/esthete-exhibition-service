@@ -150,6 +150,17 @@ public class MyGalleryController {
         return ApiResponse.onSuccess(SuccessStatus.GET_FOLLOWERS, followerResponses);
     }
 
+    // 팔로잉을 조회하는 API
+    @GetMapping("/followings")
+    public ResponseEntity<ApiResponse<List<MyGalleryDto.FollowingResponse>>> getFollowings(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam(name = "user_id", required = false) String userId,
+            @RequestParam(name = "keyword", required = false) String keyword) {
+
+        List<MyGalleryDto.FollowingResponse> followingResponses =  myGalleryService.getFollowings(authorizationHeader, userId, keyword);
+        return ApiResponse.onSuccess(SuccessStatus.GET_FOLLOWINGS, followingResponses);
+    }
+
     // 팔로우를 등록하는 API
     @PostMapping("/action-follow/{user_id}")
     public ResponseEntity<ApiResponse<SuccessStatus>> addFollow(

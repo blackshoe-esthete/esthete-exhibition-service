@@ -228,6 +228,32 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         return MyGalleryDto.FollowerResponse.of(followers);
     }
 
+    // 팔로잉을 조회하는 메서드
+    @Override
+    public List<MyGalleryDto.FollowingResponse> getFollowings(String authorizationHeader, String userId, String keyword) {
+        String userType = determineUserType(authorizationHeader, userId);
+        if (Objects.isNull(keyword)) {
+            keyword = "";
+        }
+        User user;
+
+        switch (userType) {
+            case "OWNER":
+                user = jwtUtil.getUserFromHeader(authorizationHeader);
+                break;
+            case "OTHER":
+            case "GUEST":
+                user = userRepository.findByUserId(UUID.fromString(userId))
+                        .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+                break;
+            default:
+                throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
+        }
+
+        List<User> followings = userRepository.findFollowingsByUserAndKeyword(user.getUserId(), keyword);
+        return MyGalleryDto.FollowingResponse.of(followings);
+    }
+
     // 팔로우를 등록하는 메서드
     @Override
     public void addFollow(String authorizationHeader, String userId) {
