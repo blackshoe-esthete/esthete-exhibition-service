@@ -13,20 +13,13 @@ import java.util.List;
 
 public interface ExhibitionService {
     Page<SearchExhibitionDto.SearchExhibitionResponse> searchAllExhibition(int page, int size);
-
     Page<SearchExhibitionDto.SearchExhibitionResponse> searchExhibition(String exhibitionKeyword, int page, int size);
-
     Page<SearchExhibitionDto.SearchAuthorResponse> searchAllAuthor(int page, int size);
-
     Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthor(String authorKeyword, int page, int size);
-
     Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> getTop10ByUserLocationGroupBy(ExhibitionPointFilter exhibitionLocationFilter, ExhibitionLocationGroupType exhibitionLocationGroupType);
-
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> readByAddress(ExhibitionAddressFilter exhibitionAddressFilter, Integer page, Integer size, Sort sortBy);
-
     List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader);
-
     List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions();
-
     List<MainHomeDto.ExhibitionResponse> getExhibitionsByTag(String tagName);
+    MainHomeDto.ExhibitionDetailResponse getExhibitionDetails(String authorizationHeader, String exhibitionId);
 }
