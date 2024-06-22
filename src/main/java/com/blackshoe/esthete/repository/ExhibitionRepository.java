@@ -29,10 +29,29 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
         return findByUserLocationGroupByState(exhibitionPointFilter, PageRequest.of(0, 10));
     }
 
+//    @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
+//            "count(el), " +
+//            "el.state, " +
+//            "el.exhibition.thumbnailUrl) " +
+//            "FROM ExhibitionLocation el " +
+//            "WHERE el.latitude " +
+//            "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
+//            "AND :#{#exhibitionPointFilter.latitude + #exhibitionPointFilter.latitudeDelta} " +
+//            "AND el.longitude " +
+//            "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
+//            "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
+//            "GROUP BY el.state, el.exhibition.thumbnailUrl " +
+//            "ORDER BY count(el) DESC")
+//    Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByState(
+//            @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
+
     @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
             "count(el), " +
             "el.state, " +
-            "el.exhibition.thumbnailUrl) " +
+            "(SELECT e.thumbnailUrl FROM ExhibitionLocation el2 " +
+            "JOIN el2.exhibition e " +
+            "WHERE el2.state = el.state " +
+            "ORDER BY el2.exhibition.viewCount DESC LIMIT 1)) " +
             "FROM ExhibitionLocation el " +
             "WHERE el.latitude " +
             "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
@@ -40,21 +59,42 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.longitude " +
             "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
             "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
-            "GROUP BY el.state, el.exhibition.thumbnailUrl " +
+            "GROUP BY el.state " +
             "ORDER BY count(el) DESC")
     Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByState(
             @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
+
 
 
     default Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findTop10ByUserLocationGroupByCity(ExhibitionPointFilter exhibitionPointFilter) {
         return findByUserLocationGroupByCity(exhibitionPointFilter, PageRequest.of(0, 10));
     }
 
+//    @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
+//            "count(el), " +
+//            "el.state, " +
+//            "el.city, " +
+//            "el.exhibition.thumbnailUrl) " +
+//            "FROM ExhibitionLocation el " +
+//            "WHERE el.latitude " +
+//            "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
+//            "AND :#{#exhibitionPointFilter.latitude + #exhibitionPointFilter.latitudeDelta} " +
+//            "AND el.longitude " +
+//            "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
+//            "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
+//            "GROUP BY el.state, el.city, el.exhibition.thumbnailUrl " +
+//            "ORDER BY count(el) DESC")
+//    Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByCity(
+//            @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
+
     @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
             "count(el), " +
             "el.state, " +
             "el.city, " +
-            "el.exhibition.thumbnailUrl) " +
+            "(SELECT e.thumbnailUrl FROM ExhibitionLocation el2 " +
+            "JOIN el2.exhibition e " +
+            "WHERE el2.state = el.state AND el2.city = el.city " +
+            "ORDER BY el2.exhibition.createdAt DESC LIMIT 1)) " +
             "FROM ExhibitionLocation el " +
             "WHERE el.latitude " +
             "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
@@ -62,22 +102,44 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.longitude " +
             "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
             "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
-            "GROUP BY el.state, el.city, el.exhibition.thumbnailUrl " +
+            "GROUP BY el.state, el.city " +
             "ORDER BY count(el) DESC")
     Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByCity(
             @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
+
 
 
     default Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findTop10ByUserLocationGroupByTown(ExhibitionPointFilter exhibitionLocationFilter){
         return findByUserLocationGroupByTown(exhibitionLocationFilter, PageRequest.of(0, 10));
     }
 
+//    @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
+//            "count(el), " +
+//            "el.state, " +
+//            "el.city, " +
+//            "el.town, " +
+//            "el.exhibition.thumbnailUrl) " +
+//            "FROM ExhibitionLocation el " +
+//            "WHERE el.latitude " +
+//            "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
+//            "AND :#{#exhibitionPointFilter.latitude + #exhibitionPointFilter.latitudeDelta} " +
+//            "AND el.longitude " +
+//            "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
+//            "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
+//            "GROUP BY el.state, el.city, el.town, el.exhibition.thumbnailUrl " +
+//            "ORDER BY count(el) DESC")
+//    Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByTown(
+//            @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
+
     @Query(value = "SELECT new com.blackshoe.esthete.dto.ExhibitionClusteringDto$MarkedRegionGroupResponse(" +
             "count(el), " +
             "el.state, " +
             "el.city, " +
             "el.town, " +
-            "el.exhibition.thumbnailUrl) " +
+            "(SELECT e.thumbnailUrl FROM ExhibitionLocation el2 " +
+            "JOIN el2.exhibition e " +
+            "WHERE el2.state = el.state AND el2.city = el.city AND el2.town = el.town " +
+            "ORDER BY el2.exhibition.createdAt DESC LIMIT 1)) " +
             "FROM ExhibitionLocation el " +
             "WHERE el.latitude " +
             "BETWEEN :#{#exhibitionPointFilter.latitude - #exhibitionPointFilter.latitudeDelta} " +
@@ -85,10 +147,11 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.longitude " +
             "BETWEEN :#{#exhibitionPointFilter.longitude - #exhibitionPointFilter.longitudeDelta} " +
             "AND :#{#exhibitionPointFilter.longitude + #exhibitionPointFilter.longitudeDelta} " +
-            "GROUP BY el.state, el.city, el.town, el.exhibition.thumbnailUrl " +
+            "GROUP BY el.state, el.city, el.town " +
             "ORDER BY count(el) DESC")
     Page<ExhibitionClusteringDto.MarkedRegionGroupResponse> findByUserLocationGroupByTown(
             @Param("exhibitionPointFilter") ExhibitionPointFilter exhibitionPointFilter, Pageable pageable);
+
 
 
     //클러스터된 전시 리스트 가져오는 메소드
@@ -121,4 +184,10 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
     Optional<List<Exhibition>> findTop6ByOrderByViewCountAsc();
 
     Optional<List<Exhibition>> findAllByUser(User user);
+
+    Boolean existsByUserId(Long userId);
+
+    Boolean existsByUserAndExhibitionId(User user, UUID exhibitionId);
+
+    Optional<Exhibition> findByUserAndExhibitionId(User user, UUID exhibitionId);
 }
