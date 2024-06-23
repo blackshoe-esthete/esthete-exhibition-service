@@ -176,6 +176,19 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         return MainHomeDto.ExhibitionResponse.of(exhibitions);
     }
 
+    // 주변 전시회 조회 메서드
+    @Override
+    public List<MainHomeDto.ExhibitionResponse> getNearByExhibitions(String authorizationHeader, Double longitude, Double latitude) {
+        if (Math.abs(longitude) > 180) {
+            throw new ExhibitionException(ExhibitionErrorResult.INVALID_LONGITUDE);
+        }
+        if (Math.abs(latitude) > 90) {
+            throw new ExhibitionException(ExhibitionErrorResult.INVALID_LATITUDE);
+        }
+        List<Exhibition> exhibitions = exhibitionRepository.findTop6NearestExhibitions(latitude, longitude, PageRequest.of(0, 6));
+        return MainHomeDto.ExhibitionResponse.of(exhibitions);
+    }
+
     // 선호 작가 조회 메서드
     @Override
     public List<MainHomeDto.AuthorResponse> getPreferAuthors(String authorizationHeader) {

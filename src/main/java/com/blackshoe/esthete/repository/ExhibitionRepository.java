@@ -5,6 +5,7 @@ import com.blackshoe.esthete.common.vo.ExhibitionPointFilter;
 import com.blackshoe.esthete.dto.ExhibitionClusteringDto;
 import com.blackshoe.esthete.entity.Exhibition;
 import com.blackshoe.esthete.entity.User;
+import org.hibernate.query.spi.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -190,4 +191,8 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
     Boolean existsByUserAndExhibitionId(User user, UUID exhibitionId);
 
     Optional<Exhibition> findByUserAndExhibitionId(User user, UUID exhibitionId);
+
+    @Query(value = "SELECT e FROM Exhibition e JOIN e.exhibitionLocation el " +
+            "ORDER BY (6371 * acos(cos(radians(:latitude)) * cos(radians(el.latitude)) * cos(radians(el.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(el.latitude)))) ASC")
+    List<Exhibition> findTop6NearestExhibitions(@Param("latitude") Double latitude, @Param("longitude") Double longitude, Pageable pageable);
 }
