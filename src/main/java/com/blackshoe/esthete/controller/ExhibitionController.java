@@ -99,30 +99,32 @@ public class ExhibitionController {
     }
 
     // 개인 추천 전시회 조회 API
-    @GetMapping("/recommend")
+    @GetMapping( {"/recommend/{tag_name}", "/recommend"})
     public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getRecommendExhibitions(
-            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+            @PathVariable(value = "tag_name", required = false) String tagName) {
 
-        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getRecommendExhibitions(authorizationHeader);
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getRecommendExhibitions(authorizationHeader, tagName);
         return ApiResponse.onSuccess(SuccessStatus.GET_RECOMMEND_EXHIBITIONS, exhibitionResponses);
     }
 
     // 소외 전시회 조회 API
-    @GetMapping("/isolation")
-    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getIsolationExhibitions() {
+    @GetMapping({"/isolation/{tag_name}", "/isolation"})
+    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getIsolationExhibitions(
+            @PathVariable(value = "tag_name", required = false) String tagName) {
 
-        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getIsolationExhibitions();
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getIsolationExhibitions(tagName);
         return ApiResponse.onSuccess(SuccessStatus.GET_ISOLATION_EXHIBITIONS, exhibitionResponses);
     }
 
-    // 태그 선택 전시회 조회 API
+    /* 태그 선택 전시회 조회 API
     @GetMapping("/tags/{tag_name}")
     public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getExhibitionsByTag(
             @PathVariable("tag_name") String tagName) {
 
         List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getExhibitionsByTag(tagName);
         return ApiResponse.onSuccess(SuccessStatus.GET_TAG_EXHIBITIONS, exhibitionResponses);
-    }
+    }*/
 
     // 주변 전시회 조회 API
     @GetMapping("/location")
