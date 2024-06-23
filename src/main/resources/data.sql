@@ -35,7 +35,12 @@ INSERT INTO users (users_id, users_uuid, nickname, email, role, gender, introduc
     (2, UNHEX(REPLACE('550e8400-e29b-41d4-a716-446655440000', '-', '')), 'test_user2', 'asefa1354@naver.com', 'USER', 'FEMALE', '반가워요.', '저는 코닥 카메라를 즐겨씁니다!', 224, 201, 123),
     (3, UNHEX(REPLACE('4b55df30-7a87-49b2-bd56-e0f5210a9a5d', '-', '')), 'test_user3', 'riquer546@naver.com', 'USER', 'MALE', '행복해요.', '요즘은 필름 카메라에 빠졌네요..', 11231, 5042, 6034),
     (4, UNHEX(REPLACE('86a93e29-0f46-4a65-9c49-7fbf7c13e9f2', '-', '')), 'test_user4', 'fpdogsj44@naver.com', 'USER', 'FEMALE', '즐거워요.', '소통하실분?', 1241421, 100132, 1),
-    (5, UNHEX(REPLACE('4d4be043-5d57-45eb-a3fb-dc48e5e452b0', '-', '')), 'test_user5', 'sfas46587@naver.com', 'USER', 'MALE', '화가나요.', 'Skrrr', 15, 12, 14)
+    (5, UNHEX(REPLACE('4d4be043-5d57-45eb-a3fb-dc48e5e452b0', '-', '')), 'test_user5', 'sfas46587@naver.com', 'USER', 'MALE', '화가나요.', '으아아아아ㅏㅇㄱ', 15, 12, 14),
+    (6, UNHEX(REPLACE('d843ab0d-3b90-4d78-9812-7a5f3c11d312', '-', '')), 'test_user6', 'dswe133@naver.com', 'USER', 'FEMALE', '집갈래요.', '자고싶어요 흑흑', 314, 414, 123),
+    (7, UNHEX(REPLACE('f1a92b4d-8d08-4d02-9a9b-07c9979e9b24', '-', '')), 'test_user7', 'afgs2324@naver.com', 'USER', 'MALE', '배고파요.', '점메추 해주실 분?', 5, 6, 7),
+    (8, UNHEX(REPLACE('b21b5a4c-96f8-4a3b-af6e-7bf50b065365', '-', '')), 'test_user8', 'dsg23521@naver.com', 'USER', 'MALE', '엄마 보고 싶다.', '흑흑', 1, 2, 3),
+    (9, UNHEX(REPLACE('6b6590ac-003f-4c8b-82c3-0e2e24ce7cc8', '-', '')), 'test_user9', 'sdfhh32@naver.com', 'USER', 'FEMALE', '아빠 보고 싶다.', '흑흑', 11, 22, 33),
+    (10, UNHEX(REPLACE('fda6f365-0a2d-4b48-ae6c-935f1f6b2f2a', '-', '')), 'test_user10', 'we214@naver.com', 'USER', 'MALE', '검정신발입니다.', '화이팅합시다!!', 3214, 6124, 7466)
     ON DUPLICATE KEY UPDATE users_uuid = users_uuid;
 
 -- 디폴트 유저 프로필 URL 삽입
@@ -44,7 +49,12 @@ INSERT INTO profile_urls (profile_urls_id, users_id, img_url, s3_url) VALUES
     (2, 2, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
     (3, 3, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
     (4, 4, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (5, 5, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg')
+    (5, 5, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
+    (6, 6, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
+    (7, 7, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
+    (8, 8, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
+    (9, 9, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
+    (10, 10, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg')
     ON DUPLICATE KEY UPDATE profile_urls_id = profile_urls_id;
 
 
@@ -59,14 +69,14 @@ INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbna
 
 -- 디폴트 전시 삽입
 INSERT INTO exhibitions (created_at, exhibitions_id, users_id, view_count, like_count, exhibitions_uuid, title, description, thumbnail_url) VALUES
-    (NOW(), 1, 1, 203, 205, UNHEX(REPLACE('d8265394-573e-4d5e-baf0-8b75fe10896e', '-', '')), '겨울', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 1, 2, 203, 205, UNHEX(REPLACE('d8265394-573e-4d5e-baf0-8b75fe10896e', '-', '')), '겨울', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
     (NOW(), 2, 2, 152, 155, UNHEX(REPLACE('b35b9358-df1d-4d9c-b362-cb51e94e5e25', '-', '')), '겨울1', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
     (NOW(), 3, 3, 313, 216, UNHEX(REPLACE('5f2e2f9d-0411-437e-91e5-7922a35b1044', '-', '')), '가을1', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
     (NOW(), 4, 2, 22, 12, UNHEX(REPLACE('d61d5f71-f5bc-4ab3-92c8-62b1de207102', '-', '')), '가을2', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
     (NOW(), 5, 2, 15, 10, UNHEX(REPLACE('74148b2b-9f0e-4650-8e94-3ec6ccde34a6', '-', '')), '봄', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
     (NOW(), 6, 3, 1000, 562, UNHEX(REPLACE('f5f16b49-12ac-4745-aac5-4b1b269eabcb', '-', '')), '봄1', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
     (NOW(), 7, 2, 123, 120, UNHEX(REPLACE('a3087e10-7da2-4760-a82d-d80c4397e0e1', '-', '')), '봄2', '혼자여행', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
-    (NOW(), 8, 1, 456, 423, UNHEX(REPLACE('35519784-ce74-443b-8665-d1c00cafa6f5', '-', '')), '태양', '태양노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
+    (NOW(), 8, 3, 456, 423, UNHEX(REPLACE('35519784-ce74-443b-8665-d1c00cafa6f5', '-', '')), '태양', '태양노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg'),
     (NOW(), 9, 1, 78, 55, UNHEX(REPLACE('31216ebf-27a5-4013-bedf-06642401f332', '-', '')), '구름', '구름노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/31216ebf-27a5-4013-bedf-06642401f332/exhibition-photos/98e80855-83ac-4912-8119-373c797924a6.jpg'),
     (NOW(), 10, 1, 41, 40, UNHEX(REPLACE('2c8221cf-ea0b-442e-a49e-cd02e4af3ca8', '-', '')), '바람', '바람노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/2c8221cf-ea0b-442e-a49e-cd02e4af3ca8/exhibition-photos/38584504-e55f-40de-afeb-7ae754efe347.jpg'),
     (NOW(), 11, 1, 22, 20, UNHEX(REPLACE('93dbf19e-6d22-4e3d-8a3b-c04b233bea38', '-', '')), '불', '붉은노을', 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/93dbf19e-6d22-4e3d-8a3b-c04b233bea38/exhibition-photos/b9854f00-2b2f-4ce1-ab5e-3d2c83fd5568.jpg'),
@@ -107,13 +117,13 @@ VALUES
 -- 디폴트 전시 위치 삽입
 INSERT INTO exhibitions_locations (exhibitions_locations_id, exhibitions_id, temporary_exhibitions_id, longitude, latitude, state, city, town)
 VALUES
-    (1, 1, NULL, 127.003594, 37.55805, 'Seoul', 'Jung District', '173-6 Jangchung-dong 2(i)-ga'),
-    (2, 2, NULL, 126.9985627, 37.5592871, 'Seoul', 'Jung District', '30 Pildong-ro 1-gil'),
-    (3, 3, NULL, 127.006229, 37.561343, 'Seoul', 'Jung District', '56-77 Jangchung-dong 1(il)-gal'),
-    (4, 4, NULL, 127.005911, 37.56148, 'Seoul', 'Jung District', '57-9 Jangchung-dong 1(il)-ga'),
-    (5, 5, NULL, 127.010989, 37.551993, 'Seoul', 'Jung District', '372-85 Sindang-dong'),
-    (6, 6, NULL, 126.995965, 37.560144, 'Seoul', 'Jung District', '16 Pildong-ro'),
-    (7, 7, NULL, 127.1662, 37.601581, 'Gyeonggi-do', 'Namyangju-sit', '산1041-2 Jigeum-dong'),
+    (1, 1, NULL, 12.003594, 37.55805, 'Seoul', 'Jung District', '173-6 Jangchung-dong 2(i)-ga'),
+    (2, 2, NULL, 116.9985627, 37.5592871, 'Seoul', 'Jung District', '30 Pildong-ro 1-gil'),
+    (3, 3, NULL, 123.006229, 37.561343, 'Seoul', 'Jung District', '56-77 Jangchung-dong 1(il)-gal'),
+    (4, 4, NULL, 120.005911, 37.56148, 'Seoul', 'Jung District', '57-9 Jangchung-dong 1(il)-ga'),
+    (5, 5, NULL, 43.010989, 37.551993, 'Seoul', 'Jung District', '372-85 Sindang-dong'),
+    (6, 6, NULL, 66.995965, 37.560144, 'Seoul', 'Jung District', '16 Pildong-ro'),
+    (7, 7, NULL, 135.1662, 37.601581, 'Gyeonggi-do', 'Namyangju-sit', '산1041-2 Jigeum-dong'),
     (8, 8, NULL, 127.766922, 35.907757, 'Jeollabuk-do', 'Muju Seolcheon-myeon', '808-3 Samgong-ri'),
     -- 임시 저장
     (9, NULL, 1, 25.4, 21.4, '서울특별시', '은평구', '갈현동'),
@@ -159,3 +169,17 @@ VALUES
     (11, 11, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg'),
     (12, 12, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1237.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1237.jpeg')
     ON DUPLICATE KEY UPDATE photos_urls_id = photos_urls_id;
+
+
+-- 디폴트 좋아요 삽입
+INSERT INTO likes (likes_id, users_uuid, exhibitions_uuid)
+VALUES
+    (1, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), UNHEX(REPLACE('d8265394-573e-4d5e-baf0-8b75fe10896e', '-', ''))),
+    (2, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), UNHEX(REPLACE('b35b9358-df1d-4d9c-b362-cb51e94e5e25', '-', ''))),
+    (3, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), UNHEX(REPLACE('5f2e2f9d-0411-437e-91e5-7922a35b1044', '-', ''))),
+    (4, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), UNHEX(REPLACE('d61d5f71-f5bc-4ab3-92c8-62b1de207102', '-', ''))),
+    (5, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), UNHEX(REPLACE('74148b2b-9f0e-4650-8e94-3ec6ccde34a6', '-', ''))),
+    (6, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), UNHEX(REPLACE('f5f16b49-12ac-4745-aac5-4b1b269eabcb', '-', ''))),
+    (7, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), UNHEX(REPLACE('a3087e10-7da2-4760-a82d-d80c4397e0e1', '-', ''))),
+    (8, UNHEX(REPLACE('23e7b2b4-c1ac-4591-bb7f-c6706daf22aa', '-', '')), UNHEX(REPLACE('35519784-ce74-443b-8665-d1c00cafa6f5', '-', '')))
+    ON DUPLICATE KEY UPDATE likes_id = likes_id;

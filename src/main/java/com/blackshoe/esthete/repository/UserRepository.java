@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query("SELECT u FROM User u WHERE u.userId IN (SELECT f.user.userId FROM Follow f WHERE f.followerId = :followerId) AND u.nickname LIKE %:keyword%")
     List<User> findFollowingsByUserAndKeyword(UUID followerId, String keyword);
+
+    @Query(value = "SELECT u FROM User u ORDER BY RAND() LIMIT 6")
+    List<User> findRandom6Users();
 }
