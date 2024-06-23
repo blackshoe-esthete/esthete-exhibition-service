@@ -21,6 +21,8 @@ public interface ExhibitionService {
     List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader);
     List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions();
     List<MainHomeDto.ExhibitionResponse> getExhibitionsByTag(String tagName);
+    List<MainHomeDto.ExhibitionResponse> getNearByExhibitions(String authorizationHeader, Double longitude, Double latitude);
+    List<MainHomeDto.AuthorResponse> getPreferAuthors(String authorizationHeader);
     MainHomeDto.ExhibitionDetailResponse getExhibitionDetails(String authorizationHeader, String exhibitionId);
     List<MainHomeDto.CommentResponse> getAllComments(String exhibitionId);
     void addComments(String authorizationHeader, MainHomeDto.CommentRequest commentRequest);

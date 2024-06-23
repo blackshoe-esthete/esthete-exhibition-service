@@ -17,6 +17,8 @@ public enum ExhibitionErrorResult implements BaseErrorCode {
     NOT_FOUND_LIKE_EXHIBITION(HttpStatus.NOT_FOUND, "404", "존재하지 않는 좋아요 전시입니다."),
     NOT_FOUND_EXHIBITIONS(HttpStatus.NOT_FOUND, "404", "전체 전시회를 가져오는 데 실패했습니다."),
     NOT_FOUND_EXHIBITION_LOCATION(HttpStatus.NOT_FOUND, "404", "전시 위치가 존재하지 않습니다."),
+    INVALID_LONGITUDE(HttpStatus.BAD_REQUEST, "400", "유효하지 않은 경도 값입니다."),
+    INVALID_LATITUDE(HttpStatus.BAD_REQUEST, "400", "유효하지 않은 위도 값입니다."),
     INVALID_EXHIBITION_PHOTO_IMG_SIZE(HttpStatus.UNPROCESSABLE_ENTITY, "422", "유효하지 않은 전시 사진입니다."),
     EXHIBITION_PHOTO_IMG_UPLOAD_FAILED(HttpStatus.BAD_REQUEST, "400", "전시 사진 S3 업로드 실패했습니다."),
     NOT_FOUND_PHOTO_URL(HttpStatus.NOT_FOUND, "404", "존재하지 않는 사진 url입니다."),
