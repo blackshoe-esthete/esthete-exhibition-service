@@ -117,13 +117,13 @@ VALUES
 -- 디폴트 전시 위치 삽입
 INSERT INTO exhibitions_locations (exhibitions_locations_id, exhibitions_id, temporary_exhibitions_id, longitude, latitude, state, city, town)
 VALUES
-    (1, 1, NULL, 127.003594, 37.55805, 'Seoul', 'Jung District', '173-6 Jangchung-dong 2(i)-ga'),
-    (2, 2, NULL, 126.9985627, 37.5592871, 'Seoul', 'Jung District', '30 Pildong-ro 1-gil'),
-    (3, 3, NULL, 127.006229, 37.561343, 'Seoul', 'Jung District', '56-77 Jangchung-dong 1(il)-gal'),
-    (4, 4, NULL, 127.005911, 37.56148, 'Seoul', 'Jung District', '57-9 Jangchung-dong 1(il)-ga'),
-    (5, 5, NULL, 127.010989, 37.551993, 'Seoul', 'Jung District', '372-85 Sindang-dong'),
-    (6, 6, NULL, 126.995965, 37.560144, 'Seoul', 'Jung District', '16 Pildong-ro'),
-    (7, 7, NULL, 127.1662, 37.601581, 'Gyeonggi-do', 'Namyangju-sit', '산1041-2 Jigeum-dong'),
+    (1, 1, NULL, 12.003594, 37.55805, 'Seoul', 'Jung District', '173-6 Jangchung-dong 2(i)-ga'),
+    (2, 2, NULL, 116.9985627, 37.5592871, 'Seoul', 'Jung District', '30 Pildong-ro 1-gil'),
+    (3, 3, NULL, 123.006229, 37.561343, 'Seoul', 'Jung District', '56-77 Jangchung-dong 1(il)-gal'),
+    (4, 4, NULL, 120.005911, 37.56148, 'Seoul', 'Jung District', '57-9 Jangchung-dong 1(il)-ga'),
+    (5, 5, NULL, 43.010989, 37.551993, 'Seoul', 'Jung District', '372-85 Sindang-dong'),
+    (6, 6, NULL, 66.995965, 37.560144, 'Seoul', 'Jung District', '16 Pildong-ro'),
+    (7, 7, NULL, 135.1662, 37.601581, 'Gyeonggi-do', 'Namyangju-sit', '산1041-2 Jigeum-dong'),
     (8, 8, NULL, 127.766922, 35.907757, 'Jeollabuk-do', 'Muju Seolcheon-myeon', '808-3 Samgong-ri'),
     -- 임시 저장
     (9, NULL, 1, 25.4, 21.4, '서울특별시', '은평구', '갈현동'),

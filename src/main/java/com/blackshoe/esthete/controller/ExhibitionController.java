@@ -124,6 +124,17 @@ public class ExhibitionController {
         return ApiResponse.onSuccess(SuccessStatus.GET_TAG_EXHIBITIONS, exhibitionResponses);
     }
 
+    // 주변 전시회 조회 API
+    @GetMapping("/location")
+    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getNearByExhibitions(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+            @RequestParam(value = "longitude") Double longitude,
+            @RequestParam(value = "latitude") Double latitude) {
+
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getNearByExhibitions(authorizationHeader, longitude, latitude);
+        return ApiResponse.onSuccess(SuccessStatus.GET_NEARBY_EXHIBITIONS, exhibitionResponses);
+    }
+
     // 개인 선호 작가 조회 API
     @GetMapping("/authors")
     public ResponseEntity<ApiResponse<List<MainHomeDto.AuthorResponse>>> getPreferAuthors(
