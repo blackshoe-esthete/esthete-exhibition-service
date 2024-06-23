@@ -124,6 +124,15 @@ public class ExhibitionController {
         return ApiResponse.onSuccess(SuccessStatus.GET_TAG_EXHIBITIONS, exhibitionResponses);
     }
 
+    // 개인 선호 작가 조회 API
+    @GetMapping("/authors")
+    public ResponseEntity<ApiResponse<List<MainHomeDto.AuthorResponse>>> getPreferAuthors(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+
+        List<MainHomeDto.AuthorResponse> exhibitionResponses = exhibitionService.getPreferAuthors(authorizationHeader);
+        return ApiResponse.onSuccess(SuccessStatus.GET_PREFER_AUTHORS, exhibitionResponses);
+    }
+
     // 전시회 상세 조회 API
     @GetMapping("/details/{exhibition_id}")
     public ResponseEntity<ApiResponse<MainHomeDto.ExhibitionDetailResponse>> getExhibitionDetails(
