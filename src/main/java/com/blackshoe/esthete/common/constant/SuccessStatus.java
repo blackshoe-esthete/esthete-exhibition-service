@@ -41,6 +41,7 @@ public enum SuccessStatus implements BaseCode {
     GET_RECOMMEND_EXHIBITIONS(HttpStatus.OK, "200", "개인 추천 전시회 조회에 성공했습니다."),
     GET_ISOLATION_EXHIBITIONS(HttpStatus.OK, "200", "소외 전시회 조회에 성공했습니다."),
     GET_TAG_EXHIBITIONS(HttpStatus.OK, "200", "태그 선택 전시회 조회에 성공했습니다."),
+    GET_PREFER_AUTHORS(HttpStatus.OK, "200", "선호 작가 조회에 성공했습니다."),
     GET_TAG_EXHIBITION_DETAILS(HttpStatus.OK, "200", "전시회 상세 조회에 성공했습니다."),
     ADD_COMMENTS(HttpStatus.CREATED, "201", "댓글 등록에 성공했습니다."),
     GET_ALL_COMMENTS(HttpStatus.OK, "200", "댓글 전체 조회에 성공했습니다."),
