@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
 
@@ -28,9 +29,13 @@ public class JwtUtil {
     private String SECRET_KEY;
     private final UserRepository userRepository;
 
+//    private SecretKey getSigningKey() {
+//        byte[] keyBytes = Decoders.BASE64.decode(this.SECRET_KEY);
+//        return Keys.hmacShaKeyFor(keyBytes);
+//    }
+
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(this.SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     }
 
     // 응답 헤더에서 액세스 토큰을 반환하는 메서드
