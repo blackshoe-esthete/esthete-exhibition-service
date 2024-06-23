@@ -346,4 +346,23 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_LIKE));
         likeRepository.delete(like);
     }
+
+    // 댓글 신고 메서드
+    @Override
+    public void reportComment(String authorizationHeader, MainHomeDto.ReportCommentRequest reportCommentRequest) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Comment comment = commentRepository.findByCommentId(reportCommentRequest.getCommentId())
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_COMMENT));
+
+        MainHomeDto.ReportCommentResponse reportCommentResponse = MainHomeDto.ReportCommentResponse.builder()
+                .commentId(reportCommentRequest.getCommentId())
+                .commentContent(comment.getContent())
+                .reporterId(String.valueOf(user.getUserId()))
+                .writerId(String.valueOf(comment.getUserId()))
+                .reportType(reportCommentRequest.getReportType())
+                .reportDescription(reportCommentRequest.getReportDescription())
+                .build();
+
+        // Kafka 통신 부분 구현 예정
+    }
 }

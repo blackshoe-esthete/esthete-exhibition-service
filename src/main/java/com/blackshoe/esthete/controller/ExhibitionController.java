@@ -192,4 +192,14 @@ public class ExhibitionController {
         exhibitionService.removeLikeToComment(authorizationHeader, commentId);
         return ApiResponse.onSuccess(SuccessStatus.REMOVE_LIKE_TO_COMMENT);
     }
+
+    // 전시회 댓글 신고 API
+    @DeleteMapping("/comments/report")
+    public ResponseEntity<ApiResponse<SuccessStatus>> reportComment(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody MainHomeDto.ReportCommentRequest reportCommentRequest) {
+
+        exhibitionService.reportComment(authorizationHeader, reportCommentRequest);
+        return ApiResponse.onSuccess(SuccessStatus.REPORT_TO_COMMENT);
+    }
 }
