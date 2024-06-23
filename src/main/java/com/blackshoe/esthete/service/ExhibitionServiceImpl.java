@@ -65,7 +65,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     public Page<SearchExhibitionDto.SearchAuthorResponse> searchAllAuthor(int page, int size){
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "supportCount"));
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "followerCount"));
         Page<User> allUser = userRepository.findAll(pageRequest);
 
         return allUser.map(author -> SearchExhibitionDto.SearchAuthorResponse.builder()
@@ -78,7 +78,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     @Override
     public Page<SearchExhibitionDto.SearchAuthorResponse> searchAuthor(String authorKeyword, int page, int size){
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "supportCount"));
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "followerCount"));
         Page<User> findAuthorList = userRepository.findByNicknameContaining(authorKeyword, pageRequest);
 
         return findAuthorList.map(author -> SearchExhibitionDto.SearchAuthorResponse.builder()
