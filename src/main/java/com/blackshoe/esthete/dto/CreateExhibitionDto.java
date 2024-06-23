@@ -29,7 +29,6 @@ public class CreateExhibitionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FilterPhotoList {
         private List<FilterPhoto> filterPhotos;
     }
@@ -49,7 +48,6 @@ public class CreateExhibitionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ExhibitionLocation {
         private Double longitude;
         private Double latitude;
@@ -65,16 +63,12 @@ public class CreateExhibitionDto {
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class CreateExhibitionRequest {
 
-        @NotNull(message = "filter_photo_list를 입력해주세요.")
         private FilterPhotoList filterPhotoList;
 
-        @NotNull(message = "exhibition_information를 입력해주세요.")
         private ExhibitionInformation exhibitionInformation;
 
-        @NotNull(message = "exhibition_location를 입력해주세요.")
         private ExhibitionLocation exhibitionLocation;
 
-        @NotNull(message = "tmp_exhibition_id를 입력해주세요.")
         private UUID tmpExhibitionId;
     }
 
@@ -83,7 +77,6 @@ public class CreateExhibitionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ExhibitionInformation {
         private String title;
         private String description;

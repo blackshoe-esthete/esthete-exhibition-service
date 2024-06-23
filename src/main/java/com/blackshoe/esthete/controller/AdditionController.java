@@ -28,8 +28,8 @@ public class AdditionController {
     @PostMapping(value = "/temporary_exhibition", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<CreateExhibitionDto.CreateTmpExhibitionResponse> saveTemporaryExhibition(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestPart(name = "exhibition_photo") List<MultipartFile> exhibitionPhotos,
-            @Valid @RequestPart CreateExhibitionDto.CreateExhibitionRequest requestDto){
+            @RequestPart(name = "exhibition_photo", required = false) List<MultipartFile> exhibitionPhotos,
+            @RequestPart(required = false) CreateExhibitionDto.CreateExhibitionRequest requestDto){
 
         String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
         UUID userId = UUID.fromString(jwtUtil.getUserIdFromToken(accessToken));
