@@ -7,12 +7,14 @@ import com.blackshoe.esthete.dto.EditUserTagsDto;
 import com.blackshoe.esthete.dto.MyGalleryDto;
 import com.blackshoe.esthete.service.MyGalleryService;
 import com.blackshoe.esthete.service.UserService;
+import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/mygallery")
@@ -20,6 +22,7 @@ import java.util.List;
 public class MyGalleryController {
      private final MyGalleryService myGalleryService;
      private final UserService userService;
+     private final JwtUtil jwtUtil;
 
     // 사용자의 선호 태그를 수정하는 API
     @PutMapping("/edit/user/tags")
@@ -180,4 +183,13 @@ public class MyGalleryController {
         myGalleryService.removeFollow(authorizationHeader, userId);
         return ApiResponse.onSuccess(SuccessStatus.REMOVE_FOLLOW);
     }
+
+    @DeleteMapping("/edit/user/withdraw")
+    public ResponseEntity<ApiResponse<SuccessStatus>> deleteUser(
+            @RequestHeader("Authorization") String authorizationHeader){
+        myGalleryService.deleteUser(authorizationHeader);
+        return ApiResponse.onSuccess(SuccessStatus.REMOVE_USER);
+    }
+
+
 }

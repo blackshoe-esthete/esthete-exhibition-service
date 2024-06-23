@@ -20,4 +20,5 @@ public interface MyGalleryService {
     List<MyGalleryDto.FollowingResponse> getFollowings(String authorizationHeader, String userId, String keyword);
     void addFollow(String authorizationHeader, String userId);
     void removeFollow(String authorizationHeader, String userId);
+    void deleteUser(String authorizationHeader);
 }

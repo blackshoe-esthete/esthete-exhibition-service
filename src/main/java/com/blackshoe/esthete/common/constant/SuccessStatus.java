@@ -46,6 +46,7 @@ public enum SuccessStatus implements BaseCode {
     GET_ALL_COMMENTS(HttpStatus.OK, "200", "댓글 전체 조회에 성공했습니다."),
     ADD_LIKE_TO_COMMENT(HttpStatus.CREATED, "201", "댓글 좋아요 등록에 성공했습니다."),
     REMOVE_LIKE_TO_COMMENT(HttpStatus.OK, "200", "댓글 좋아요 취소에 성공했습니다."),
+    REMOVE_USER(HttpStatus.OK, "200", "회원 탈퇴에 성공했습니다.")
     ;
 
     private final HttpStatus httpStatus;

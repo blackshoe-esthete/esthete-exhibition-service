@@ -16,4 +16,6 @@ public interface TemporaryExhibitionRepository extends JpaRepository<TemporaryEx
     Optional<TemporaryExhibition> findByTemporaryExhibitionId(UUID temporaryExhibitionId);
 
     Optional<List<TemporaryExhibition>> findAllByUserOrderByCreatedAtDesc(User user);
+
+    Optional<List<TemporaryExhibition>> findAllByUser(User user);
 }

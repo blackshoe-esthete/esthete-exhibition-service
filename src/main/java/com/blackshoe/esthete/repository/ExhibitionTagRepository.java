@@ -1,5 +1,6 @@
 package com.blackshoe.esthete.repository;
 
+import com.blackshoe.esthete.entity.Exhibition;
 import com.blackshoe.esthete.entity.ExhibitionTag;
 import com.blackshoe.esthete.entity.Tag;
 import com.blackshoe.esthete.entity.TemporaryExhibition;
@@ -16,4 +17,6 @@ public interface ExhibitionTagRepository extends JpaRepository<ExhibitionTag,Lon
     Optional<List<ExhibitionTag>> findAllByTemporaryExhibition(TemporaryExhibition findTemporaryExhibition);
 
     Optional<List<ExhibitionTag>> findAllByTag(Tag tag);
+
+    Optional<List<ExhibitionTag>> findAllByExhibition(Exhibition exhibition);
 }

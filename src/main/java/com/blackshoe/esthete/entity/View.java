@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+//안쓰는 Entity?
 @Entity
 @Getter
 @Table(name = "views")

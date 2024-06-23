@@ -8,11 +8,13 @@ import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,6 +27,12 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final FollowRepository followRepository;
     private final LikeRepository likeRepository;
     private final JwtUtil jwtUtil;
+    private final ExhibitionLocationRepository exhibitionLocationRepository;
+    private final PhotoRepository photoRepository;
+    private final ExhibitionTagRepository exhibitionTagRepository;
+    private final ViewRepository viewRepository;
+    private final CommentRepository commentRepository;
+    private final PhotoUrlRepository photoUrlRepository;
 
     // 사용자 태그 목록 수정 메서드
     @Override
@@ -311,5 +319,93 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         } else {
             throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public void deleteUser(String authorizationHeader){
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+
+        List<Exhibition> findExhibitions = exhibitionRepository.findAllByUser(user).orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+
+        //exhibitionLocation 삭제
+        log.info("exhibitionLocation 삭제 : " + findExhibitions.size() + "개");
+        for(Exhibition e : findExhibitions){
+            ExhibitionLocation oneExhibition = exhibitionLocationRepository.findByExhibition(e).orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION_LOCATION));
+            exhibitionLocationRepository.delete(oneExhibition);
+            log.info("oneExhibition : " + oneExhibition.getId());
+        }
+
+        //exhibition photos 삭제
+        log.info("exhibition photos 삭제");
+        for(Exhibition e : findExhibitions){
+            List<Photo> photos = photoRepository.findAllByExhibition(e).orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION_PHOTO));
+
+            for(Photo p : photos){ // photos photoUrls 삭제
+                PhotoUrl photoUrl = photoUrlRepository.findByPhoto(p).orElseThrow(()->new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_PHOTO_URL));
+                log.info("photoUrl : " + photoUrl.getId());
+                photoUrlRepository.delete(photoUrl);
+            }
+
+            log.info("e : " + e.getId());
+            photoRepository.deleteAll(photos);
+        }
+
+        //exhibition tags 삭제
+        for(Exhibition e : findExhibitions){
+            List<ExhibitionTag> exhibitionTags = exhibitionTagRepository.findAllByExhibition(e).orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION_TAG));
+            log.info("exhibition tags 삭제" + e.getId());
+            exhibitionTagRepository.deleteAll(exhibitionTags);
+        }
+
+//        //exhibition views 삭제 --> 안쓰는 Entity인듯
+
+        //exhibition comments 삭제
+        for(Exhibition e : findExhibitions){
+            List<Comment> comments = commentRepository.findAllByExhibition(e);
+            if(comments == null) break;
+            log.info("exhibition comments 삭제 :" + e.getId());
+            commentRepository.deleteAll(comments);
+        }
+
+        exhibitionRepository.deleteAll(findExhibitions);
+
+        log.info("-----------------------------------temporary exhibition 삭제");
+        List<TemporaryExhibition> temporaryExhibitions = temporaryExhibitionRepository.findAllByUser(user).orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION));
+
+        //exhibitionLocation 삭제
+        log.info("tmpexhibitionLocation 삭제 : " + temporaryExhibitions.size() + "개");
+        for(TemporaryExhibition tmp : temporaryExhibitions){
+            ExhibitionLocation oneTmpExhibition = exhibitionLocationRepository.findByTemporaryExhibition(tmp).orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_LOCATION));
+            exhibitionLocationRepository.delete(oneTmpExhibition);
+            log.info("oneTmpExhibition : " + oneTmpExhibition.getId());
+        }
+
+        //exhibition photos 삭제
+        log.info("tmpExhibition photos 삭제");
+        for(TemporaryExhibition tmp : temporaryExhibitions){
+            List<Photo> photos = photoRepository.findAllByTemporaryExhibition(tmp).orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_PHOTO));
+
+            for(Photo p : photos){ // photos photoUrls 삭제
+                PhotoUrl photoUrl = photoUrlRepository.findByPhoto(p).orElseThrow(()->new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_PHOTO_URL));
+                log.info("photoUrl : " + photoUrl.getId());
+                photoUrlRepository.delete(photoUrl);
+            }
+
+            log.info("tmp : " + tmp.getId());
+            photoRepository.deleteAll(photos);
+        }
+
+        //exhibition tags 삭제
+        for(TemporaryExhibition tmp : temporaryExhibitions){
+            List<ExhibitionTag> exhibitionTags = exhibitionTagRepository.findAllByTemporaryExhibition(tmp).orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_TAG));
+            log.info("tmpExhibition tags 삭제" + tmp.getId());
+            exhibitionTagRepository.deleteAll(exhibitionTags);
+        }
+
+        //tmpExhibition views 삭제 --> 안쓰는 Entity인듯
+
+        temporaryExhibitionRepository.deleteAll(temporaryExhibitions);
+
+        userRepository.delete(user);
     }
 }
