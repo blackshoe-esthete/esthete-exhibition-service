@@ -5,7 +5,6 @@ import com.blackshoe.esthete.common.vo.ExhibitionPointFilter;
 import com.blackshoe.esthete.dto.ExhibitionClusteringDto;
 import com.blackshoe.esthete.entity.Exhibition;
 import com.blackshoe.esthete.entity.User;
-import org.hibernate.query.spi.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -179,10 +178,18 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.town = :#{#exhibitionAddressFilter.town} ")
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationStateAndCityAndTown(
             @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
-  
-    Optional<List<Exhibition>> findTop6ByOrderByViewCountDesc();
 
-    Optional<List<Exhibition>> findTop6ByOrderByViewCountAsc();
+    @Query("SELECT e FROM ExhibitionTag et JOIN et.exhibition e JOIN et.tag t WHERE t.name = :tagName ORDER BY e.viewCount DESC")
+    List<Exhibition> findTop6ByTagNameOrderByViewCountDesc(@Param("tagName") String tagName, Pageable pageable);
+
+    @Query("SELECT e FROM Exhibition e ORDER BY e.viewCount DESC")
+    List<Exhibition> findTop6ByOrderByViewCountDesc(Pageable pageable);
+
+    @Query("SELECT e FROM ExhibitionTag et JOIN et.exhibition e JOIN et.tag t WHERE t.name = :tagName ORDER BY e.viewCount ASC")
+    List<Exhibition> findTop6ByTagNameOrderByViewCountAsc(@Param("tagName") String tagName, Pageable pageable);
+
+    @Query("SELECT e FROM Exhibition e ORDER BY e.viewCount ASC")
+    List<Exhibition> findTop6ByOrderByViewCountAsc(Pageable pageable);
 
     Optional<List<Exhibition>> findAllByUser(User user);
 
