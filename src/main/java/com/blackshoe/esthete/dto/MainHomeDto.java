@@ -152,4 +152,31 @@ public class MainHomeDto {
                     .build();
         }
     }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class AuthorResponse {
+        private UUID userId;
+        private String profileUrl;
+        private String name;
+        private String introduce;
+
+        public static AuthorResponse of(User user) {
+            return AuthorResponse.builder()
+                    .userId(user.getUserId())
+                    .profileUrl(user.getProfileUrl().getCloudfrontUrl())
+                    .name(user.getNickname())
+                    .introduce(user.getIntroduce())
+                    .build();
+        }
+
+        public static List<AuthorResponse> of(List<User> users) {
+            return users.stream()
+                    .map(MainHomeDto.AuthorResponse::of)
+                    .collect(Collectors.toList());
+        }
+    }
 }
