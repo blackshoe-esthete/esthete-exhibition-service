@@ -135,12 +135,23 @@ public class ExhibitionServiceImpl implements ExhibitionService{
   
     // 개인 추천 전시회 조회 메서드
     @Override
-    public List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader) {
-        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc()
-                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
-        if (exhibitions.size() < 6) {
-            throw new ExhibitionException(ExhibitionErrorResult.FAIL_TO_GET_SIX_EXHIBITIONS);
+    public List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader, String tagName) {
+        List<Exhibition> exhibitions;
+        Pageable top6 = PageRequest.of(0, 6);
+
+        if (!Objects.isNull(tagName)) {
+            if (!tagRepository.existsByName(tagName)) {
+                throw new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TAG);
+            }
+            exhibitions = exhibitionRepository.findTop6ByTagNameOrderByViewCountDesc(tagName, top6);
+        } else {
+            exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc(top6);
         }
+
+        /*if (exhibitions.size() < 6) {
+            throw new ExhibitionException(ExhibitionErrorResult.FAIL_TO_GET_SIX_EXHIBITIONS);
+        }*/
+
         if (!Objects.isNull(authorizationHeader)) {
             User user = jwtUtil.getUserFromHeader(authorizationHeader);
             // 추후 기존 회원은 추천 알고리즘을 통해 받는 식으로 변경할 예정
@@ -152,16 +163,26 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     // 소외 전시회 조회 메서드
     @Override
-    public List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions() {
-        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountAsc()
-                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITIONS));
-        if (exhibitions.size() < 6) {
-            throw new ExhibitionException(ExhibitionErrorResult.FAIL_TO_GET_SIX_EXHIBITIONS);
+    public List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions(String tagName) {
+        List<Exhibition> exhibitions;
+        Pageable top6 = PageRequest.of(0, 6);
+
+        if (!Objects.isNull(tagName)) {
+            if (!tagRepository.existsByName(tagName)) {
+                throw new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TAG);
+            }
+            exhibitions = exhibitionRepository.findTop6ByTagNameOrderByViewCountAsc(tagName, top6);
+        } else {
+            exhibitions = exhibitionRepository.findTop6ByOrderByViewCountAsc(top6);
         }
+
+        /*if (exhibitions.size() < 6) {
+            throw new ExhibitionException(ExhibitionErrorResult.FAIL_TO_GET_SIX_EXHIBITIONS);
+        }*/
         return MainHomeDto.ExhibitionResponse.of(exhibitions);
     }
 
-    // 태그 선택 전시회 조회 메서드
+    /* 태그 선택 전시회 조회 메서드
     @Override
     public List<MainHomeDto.ExhibitionResponse> getExhibitionsByTag(String tagName) {
         Tag tag = tagRepository.findByName(tagName)
@@ -176,6 +197,52 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         }
         // 추후 추천 알고리즘 적용 예정, 현재는 단순히 태그가 포함되어 있으면 반환
         return MainHomeDto.ExhibitionResponse.of(exhibitions);
+    }*/
+
+    // 주변 전시회 조회 메서드
+    @Override
+    public List<MainHomeDto.ExhibitionResponse> getNearByExhibitions(String authorizationHeader, Double longitude, Double latitude) {
+        if (Math.abs(longitude) > 180) {
+            throw new ExhibitionException(ExhibitionErrorResult.INVALID_LONGITUDE);
+        }
+        if (Math.abs(latitude) > 90) {
+            throw new ExhibitionException(ExhibitionErrorResult.INVALID_LATITUDE);
+        }
+        List<Exhibition> exhibitions = exhibitionRepository.findTop6NearestExhibitions(latitude, longitude, PageRequest.of(0, 6));
+        return MainHomeDto.ExhibitionResponse.of(exhibitions);
+    }
+
+    // 선호 작가 조회 메서드
+    @Override
+    public List<MainHomeDto.AuthorResponse> getPreferAuthors(String authorizationHeader) {
+        List<User> users;
+        if (Objects.isNull(authorizationHeader)) {
+            users = userRepository.findRandom6Users();
+        } else {
+            User user = jwtUtil.getUserFromHeader(authorizationHeader);
+            List<Like> likes = likeRepository.findAllByUserId(user.getUserId());
+
+            Map<User, Integer> map = new HashMap<>();
+            List<User> existUsers = userRepository.findAll();
+            for (User existUser : existUsers) {
+                if (!existUser.getUserId().equals(user.getUserId())) {
+                    map.put(existUser, 0);
+                }
+            }
+            likes.forEach(like -> {
+                Exhibition exhibition = exhibitionRepository.findByExhibitionId(like.getExhibitionId())
+                        .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+                User exhibitionUser = exhibition.getUser();
+                map.put(exhibitionUser, map.get(exhibitionUser) + 1);
+            });
+            // 좋아요를 많이 누른 작가 6명을 뽑아냄
+            users = map.entrySet().stream()
+                    .sorted(Map.Entry.<User, Integer>comparingByValue().reversed())
+                    .limit(6)
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+        }
+        return MainHomeDto.AuthorResponse.of(users);
     }
 
     // 전시회 상세 조회 메서드
@@ -207,7 +274,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         return comments.stream()
                 .map(comment -> {
                     User user = userRepository.findByUserId(comment.getUserId())
-                            .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER)); // Comment와 User의 관계가 있다고 가정
+                            .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
                     return MainHomeDto.CommentResponse.of(comment, user);
                 })
                 .collect(Collectors.toList());
@@ -301,5 +368,24 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         Like like = likeRepository.findByUserIdAndExhibitionId(user.getUserId(), exhibitionId)
                 .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_LIKE));
         likeRepository.delete(like);
+    }
+
+    // 댓글 신고 메서드
+    @Override
+    public void reportComment(String authorizationHeader, MainHomeDto.ReportCommentRequest reportCommentRequest) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Comment comment = commentRepository.findByCommentId(reportCommentRequest.getCommentId())
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_COMMENT));
+
+        MainHomeDto.ReportCommentResponse reportCommentResponse = MainHomeDto.ReportCommentResponse.builder()
+                .commentId(reportCommentRequest.getCommentId())
+                .commentContent(comment.getContent())
+                .reporterId(String.valueOf(user.getUserId()))
+                .writerId(String.valueOf(comment.getUserId()))
+                .reportType(reportCommentRequest.getReportType())
+                .reportDescription(reportCommentRequest.getReportDescription())
+                .build();
+
+        // Kafka 통신 부분 구현 예정
     }
 }

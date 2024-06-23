@@ -12,7 +12,7 @@ public enum SuccessStatus implements BaseCode {
     // Global
     _OK(HttpStatus.OK, "200", "성공입니다."),
     _CREATED(HttpStatus.CREATED, "201", "성공적으로 생성되었습니다."),
-    // MyGallery
+    // Exhibition
     EDIT_USER_TAGS(HttpStatus.OK, "200", "선호 태그 수정에 성공했습니다."),
     EDIT_USER_PROFILE_IMG(HttpStatus.OK, "200", "프로필 사진 수정에 성공했습니다."),
     EDIT_USER_PROFILE_INFOS(HttpStatus.OK, "200", "프로필 정보 수정에 성공했습니다."),
@@ -21,8 +21,10 @@ public enum SuccessStatus implements BaseCode {
     GET_AUTHOR_INTRODUCTIONS(HttpStatus.OK, "200", "작가 소개 조회에 성공했습니다."),
     GET_ALL_EXHIBITIONS(HttpStatus.OK, "200", "전시 전체 조회에 성공했습니다."),
     GET_LIKE_EXHIBITIONS(HttpStatus.OK, "200", "좋아요 전시 조회에 성공했습니다."),
+    GET_NEARBY_EXHIBITIONS(HttpStatus.OK, "200", "주변 전시 조회에 성공했습니다."),
     ADD_LIKE_TO_EXHIBITION(HttpStatus.CREATED, "201", "전시 좋아요 등록에 성공했습니다."),
     REMOVE_LIKE_TO_EXHIBITION(HttpStatus.OK, "200", "전시 좋아요 취소에 성공했습니다."),
+    REPORT_TO_COMMENT(HttpStatus.OK, "200", "전시 댓글 신고에 성공했습니다."),
     REMOVE_EXHIBITION(HttpStatus.OK, "200", "내 전시 삭제에 성공했습니다."),
     GET_FOLLOWERS(HttpStatus.OK, "200", "팔로워 조회에 성공했습니다."),
     GET_FOLLOWINGS(HttpStatus.OK, "200", "팔로잉 조회에 성공했습니다."),
@@ -31,7 +33,6 @@ public enum SuccessStatus implements BaseCode {
     GET_ALL_TEMPORARY_EXHIBITIONS(HttpStatus.OK, "200", "임시저장 전시 전체 조회에 성공했습니다."),
     GET_ALL_TEMPORARY_EXHIBITION_DETAIL(HttpStatus.OK, "200", "임시저장 전시 상세 조회에 성공했습니다."),
     REMOVE_TEMPORARY_EXHIBITION(HttpStatus.OK, "200", "임시저장 전시 삭제에 성공했습니다."),
-    // Exhibition
     SEARCH_ALL_EXHIBITION(HttpStatus.OK, "200", "전체 전시 검색에 성공했습니다."),
     SEARCH_EXHIBITION_BY_KEYWORD(HttpStatus.OK, "200", "전시 검색에 성공했습니다."),
     SEARCH_ALL_AUTHOR(HttpStatus.OK, "200", "전체 작가 검색에 성공했습니다."),
@@ -41,6 +42,7 @@ public enum SuccessStatus implements BaseCode {
     GET_RECOMMEND_EXHIBITIONS(HttpStatus.OK, "200", "개인 추천 전시회 조회에 성공했습니다."),
     GET_ISOLATION_EXHIBITIONS(HttpStatus.OK, "200", "소외 전시회 조회에 성공했습니다."),
     GET_TAG_EXHIBITIONS(HttpStatus.OK, "200", "태그 선택 전시회 조회에 성공했습니다."),
+    GET_PREFER_AUTHORS(HttpStatus.OK, "200", "선호 작가 조회에 성공했습니다."),
     GET_TAG_EXHIBITION_DETAILS(HttpStatus.OK, "200", "전시회 상세 조회에 성공했습니다."),
     ADD_COMMENTS(HttpStatus.CREATED, "201", "댓글 등록에 성공했습니다."),
     GET_ALL_COMMENTS(HttpStatus.OK, "200", "댓글 전체 조회에 성공했습니다."),

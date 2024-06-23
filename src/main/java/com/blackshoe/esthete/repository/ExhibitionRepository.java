@@ -178,10 +178,18 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
             "AND el.town = :#{#exhibitionAddressFilter.town} ")
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> findAllByExhibitionLocationStateAndCityAndTown(
             @Param("exhibitionAddressFilter") ExhibitionAddressFilter exhibitionAddressFilter, Pageable pageable);
-  
-    Optional<List<Exhibition>> findTop6ByOrderByViewCountDesc();
 
-    Optional<List<Exhibition>> findTop6ByOrderByViewCountAsc();
+    @Query("SELECT e FROM ExhibitionTag et JOIN et.exhibition e JOIN et.tag t WHERE t.name = :tagName ORDER BY e.viewCount DESC")
+    List<Exhibition> findTop6ByTagNameOrderByViewCountDesc(@Param("tagName") String tagName, Pageable pageable);
+
+    @Query("SELECT e FROM Exhibition e ORDER BY e.viewCount DESC")
+    List<Exhibition> findTop6ByOrderByViewCountDesc(Pageable pageable);
+
+    @Query("SELECT e FROM ExhibitionTag et JOIN et.exhibition e JOIN et.tag t WHERE t.name = :tagName ORDER BY e.viewCount ASC")
+    List<Exhibition> findTop6ByTagNameOrderByViewCountAsc(@Param("tagName") String tagName, Pageable pageable);
+
+    @Query("SELECT e FROM Exhibition e ORDER BY e.viewCount ASC")
+    List<Exhibition> findTop6ByOrderByViewCountAsc(Pageable pageable);
 
     Optional<List<Exhibition>> findAllByUser(User user);
 
@@ -190,4 +198,8 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition,Long> {
     Boolean existsByUserAndExhibitionId(User user, UUID exhibitionId);
 
     Optional<Exhibition> findByUserAndExhibitionId(User user, UUID exhibitionId);
+
+    @Query(value = "SELECT e FROM Exhibition e JOIN e.exhibitionLocation el " +
+            "ORDER BY (6371 * acos(cos(radians(:latitude)) * cos(radians(el.latitude)) * cos(radians(el.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(el.latitude)))) ASC")
+    List<Exhibition> findTop6NearestExhibitions(@Param("latitude") Double latitude, @Param("longitude") Double longitude, Pageable pageable);
 }
