@@ -2,6 +2,7 @@ package com.blackshoe.esthete.exception;
 
 import com.blackshoe.esthete.common.ApiResponse;
 import com.blackshoe.esthete.common.code.BaseErrorCode;
+import com.blackshoe.esthete.dto.ResponseDto;
 import jakarta.security.auth.message.AuthException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -71,8 +72,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
     // ETC
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e) {
-        log.error("Exception", e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    public ResponseEntity<ResponseDto> handleException(Exception e) {
+
+        log.error("Exception" + String.valueOf(e));
+
+        if(e.getClass().getName().equals("org.springframework.security.access.AccessDeniedException")){
+            final ResponseDto responseDto = ResponseDto.error()
+                    .error(e.getMessage())
+                    .build();
+
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDto);
+        }
+
+        final ResponseDto responseDto = ResponseDto.error()
+                .error(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
     }
 }
