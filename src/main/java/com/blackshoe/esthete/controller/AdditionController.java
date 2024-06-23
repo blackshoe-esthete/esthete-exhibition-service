@@ -4,6 +4,7 @@ import com.blackshoe.esthete.dto.CreateExhibitionDto;
 import com.blackshoe.esthete.service.AdditionService;
 import com.blackshoe.esthete.service.GeoCodingService;
 import com.blackshoe.esthete.util.JwtUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,9 @@ public class AdditionController {
     @PostMapping(value = "/temporary_exhibition", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<CreateExhibitionDto.CreateTmpExhibitionResponse> saveTemporaryExhibition(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestPart(name = "exhibition_photo") List<MultipartFile> exhibitionPhotos,
-            @RequestPart CreateExhibitionDto.CreateExhibitionRequest requestDto){
+            @RequestPart(name = "exhibition_photo", required = false) List<MultipartFile> exhibitionPhotos,
+            @RequestPart(required = false) CreateExhibitionDto.CreateExhibitionRequest requestDto){
+
         String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
         UUID userId = UUID.fromString(jwtUtil.getUserIdFromToken(accessToken));
         CreateExhibitionDto.CreateTmpExhibitionResponse tmpExhibitionResponse = additionService.saveTemporaryExhibition(userId, exhibitionPhotos, requestDto);
@@ -40,8 +42,11 @@ public class AdditionController {
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestPart(name = "exhibition_photo") List<MultipartFile> exhibitionPhotos,
             @RequestPart CreateExhibitionDto.CreateExhibitionRequest requestDto){
+        log.info("saveExhibition");
+
         String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
         UUID userId = UUID.fromString(jwtUtil.getUserIdFromToken(accessToken));
+
         CreateExhibitionDto.CreateExhibitionResponse exhibitionResponse = additionService.saveExhibition(userId, exhibitionPhotos, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(exhibitionResponse);
     }

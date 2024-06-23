@@ -77,3 +77,12 @@ services:
 #  instance:
 #    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 #    hostname: ${INSTANCE_HOST}
+
+logging:
+  level:
+    root: DEBUG
+    org:
+      springframework: DEBUG
+      springframework.web: DEBUG
+      springframework.web.filter: DEBUG
+      springframework.boot: DEBUG

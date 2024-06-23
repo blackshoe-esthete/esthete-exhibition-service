@@ -2,15 +2,19 @@ package com.blackshoe.esthete.exception;
 
 import com.blackshoe.esthete.common.ApiResponse;
 import com.blackshoe.esthete.common.code.BaseErrorCode;
+import com.blackshoe.esthete.dto.ResponseDto;
 import jakarta.security.auth.message.AuthException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.net.BindException;
 
 @RestControllerAdvice
 @Slf4j
@@ -69,10 +73,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ExhibitionErrorResult errorResult = e.getExhibitionErrorResult();
         return ApiResponse.onFailure(errorResult);
     }
+
+    @ExceptionHandler(BindException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ResponseDto> handleBindException(BindException e) {
+        log.error("BindException", e);
+        final ResponseDto responseDto = ResponseDto.error()
+                .error(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+    }
     // ETC
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e) {
-        log.error("Exception", e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    public ResponseEntity<ResponseDto> handleException(Exception e) {
+
+        log.error("Exception" + String.valueOf(e));
+
+        if(e.getClass().getName().equals("org.springframework.security.access.AccessDeniedException")){
+            final ResponseDto responseDto = ResponseDto.error()
+                    .error(e.getMessage())
+                    .build();
+
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDto);
+        }
+
+        final ResponseDto responseDto = ResponseDto.error()
+                .error(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
     }
 }
