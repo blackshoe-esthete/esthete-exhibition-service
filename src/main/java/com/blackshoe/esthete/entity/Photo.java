@@ -27,10 +27,10 @@ public class Photo extends BaseEntity {
     @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "photos_fk_temporary_exhibitions_id"))
     private TemporaryExhibition temporaryExhibition;
 
-    @Column(name = "photos_uuid", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "photos_uuid", columnDefinition = "BINARY(16)")
     private UUID photoId;
 
-    @Column(name = "filters_uuid", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "filters_uuid", columnDefinition = "BINARY(16)")
     private UUID filterId;
 
     @Column(name = "gray_scale")
