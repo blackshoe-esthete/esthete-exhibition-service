@@ -94,7 +94,10 @@ public class AdditionServiceImpl implements AdditionService{
     @Override
     @Transactional
     public CreateExhibitionDto.CreateExhibitionResponse saveExhibition(UUID userId, List<MultipartFile> exhibitionPhotos, CreateExhibitionDto.CreateExhibitionRequest requestDto){
+        log.info("전시 저장 시작");
+
         Optional<TemporaryExhibition> findTemporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(requestDto.getTmpExhibitionId());
+        log.info("임시저장 이력이 있는지 확인");
 
         if (findTemporaryExhibition.isPresent()) { // 임시저장 테이블에 해당 전시가 있는 경우 -> 업데이트 후 삭제하고 전시 테이블로 옮김
             log.info("임시저장 이력이 있는 저장");

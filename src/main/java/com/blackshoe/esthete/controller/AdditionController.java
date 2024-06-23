@@ -40,8 +40,11 @@ public class AdditionController {
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestPart(name = "exhibition_photo") List<MultipartFile> exhibitionPhotos,
             @RequestPart CreateExhibitionDto.CreateExhibitionRequest requestDto){
+        log.info("saveExhibition");
+
         String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
         UUID userId = UUID.fromString(jwtUtil.getUserIdFromToken(accessToken));
+
         CreateExhibitionDto.CreateExhibitionResponse exhibitionResponse = additionService.saveExhibition(userId, exhibitionPhotos, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(exhibitionResponse);
     }
