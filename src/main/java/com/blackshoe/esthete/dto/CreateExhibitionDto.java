@@ -3,6 +3,8 @@ package com.blackshoe.esthete.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -61,11 +63,18 @@ public class CreateExhibitionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class CreateExhibitionRequest {
+
+        @NotNull(message = "filter_photo_list를 입력해주세요.")
         private FilterPhotoList filterPhotoList;
+
+        @NotNull(message = "exhibition_information를 입력해주세요.")
         private ExhibitionInformation exhibitionInformation;
+
+        @NotNull(message = "exhibition_location를 입력해주세요.")
         private ExhibitionLocation exhibitionLocation;
+
+        @NotNull(message = "tmp_exhibition_id를 입력해주세요.")
         private UUID tmpExhibitionId;
     }
 

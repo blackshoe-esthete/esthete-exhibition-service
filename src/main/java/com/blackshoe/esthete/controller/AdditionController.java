@@ -4,6 +4,7 @@ import com.blackshoe.esthete.dto.CreateExhibitionDto;
 import com.blackshoe.esthete.service.AdditionService;
 import com.blackshoe.esthete.service.GeoCodingService;
 import com.blackshoe.esthete.util.JwtUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,8 @@ public class AdditionController {
     public ResponseEntity<CreateExhibitionDto.CreateTmpExhibitionResponse> saveTemporaryExhibition(
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestPart(name = "exhibition_photo") List<MultipartFile> exhibitionPhotos,
-            @RequestPart CreateExhibitionDto.CreateExhibitionRequest requestDto){
+            @Valid @RequestPart CreateExhibitionDto.CreateExhibitionRequest requestDto){
+
         String accessToken = jwtUtil.getTokenFromHeader(authorizationHeader);
         UUID userId = UUID.fromString(jwtUtil.getUserIdFromToken(accessToken));
         CreateExhibitionDto.CreateTmpExhibitionResponse tmpExhibitionResponse = additionService.saveTemporaryExhibition(userId, exhibitionPhotos, requestDto);
