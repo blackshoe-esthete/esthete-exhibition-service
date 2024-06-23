@@ -21,7 +21,7 @@ public class ProfileUrl extends BaseEntity {
     @JoinColumn(name = "users_id", foreignKey = @ForeignKey(name = "profile_urls_fk_users_id"))
     private User user;
 
-    @Column(name = "img_url", nullable = false)
+    @Column(name = "img_url", nullable = false, columnDefinition = "VARCHAR(250) default 'default'")
     private String cloudfrontUrl;
 
     @Column(name = "s3_url", nullable = false)
