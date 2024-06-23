@@ -179,4 +179,29 @@ public class MainHomeDto {
                     .collect(Collectors.toList());
         }
     }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ReportCommentRequest {
+        private UUID commentId;
+        private String reportType;
+        private String reportDescription;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ReportCommentResponse {
+        private UUID commentId;
+        private String commentContent;
+        private String reporterId;
+        private String writerId;
+        private String reportType;
+        private String reportDescription;
+    }
 }
