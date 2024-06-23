@@ -80,7 +80,9 @@ services:
 
 logging:
   level:
+    root: DEBUG
     org:
-      springframework:
-          web:
-            filter: DEBUG
+      springframework: DEBUG
+      springframework.web: DEBUG
+      springframework.web.filter: DEBUG
+      springframework.boot: DEBUG
