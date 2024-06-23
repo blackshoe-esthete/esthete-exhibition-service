@@ -72,6 +72,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .photographerId(author.getUserId())
                 .photographerName(author.getNickname())
                 .photographerIntroduction(author.getIntroduce())
+                .profileImgUrl(author.getProfileUrl().getCloudfrontUrl())
                 .supportCount(author.getFollowerCount())
                 .build());
     }
@@ -85,6 +86,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .photographerId(author.getUserId())
                 .photographerName(author.getNickname())
                 .photographerIntroduction(author.getIntroduce())
+                .profileImgUrl(author.getProfileUrl().getCloudfrontUrl())
                 .supportCount(author.getFollowerCount())
                 .build());
     }
