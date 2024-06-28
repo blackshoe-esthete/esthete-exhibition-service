@@ -1,20 +1,32 @@
 package com.blackshoe.esthete.entity;
 
-public enum DeleteReason {
-    NOT_A_TARGET_USER("서비스 이용 대상이 아님"),
-    TOO_COMPLEX("서비스 이용이 복잡하고 어려움"),
-    SERVICE_ERROR("서비스 장애와 오류 때문에"),
-    NO_INTENTION_AFTER_REFUND("환불 후 이용 의사가 없어서"),
-    REJOINING_AFTER_DELETION("탈퇴 후 신규 가입하기 위함"),
-    OTHER("기타");
 
-    private final String reason;
+import com.blackshoe.esthete.common.BaseEntity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-    DeleteReason(String reason) {
-        this.reason = reason;
-    }
+@Entity
+@Getter
+@Table(name = "delete_reasons")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class DeleteReason extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "delete_reason_id")
+    private Long id;
 
-    public String getReason() {
-        return reason;
+    @Column(name = "email", nullable = false, length = 50)
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    private DeleteReasonValue deleteReasonValue;
+
+    @Builder
+    public DeleteReason(String email, DeleteReasonValue deleteReasonValue){
+        this.email = email;
+        this.deleteReasonValue = deleteReasonValue;
     }
 }

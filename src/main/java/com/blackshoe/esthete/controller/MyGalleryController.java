@@ -184,6 +184,16 @@ public class MyGalleryController {
         return ApiResponse.onSuccess(SuccessStatus.REMOVE_FOLLOW);
     }
 
+    //탈퇴사유입력
+    @PostMapping("/edit/user/withdraw-reason")
+    public ResponseEntity<ApiResponse<SuccessStatus>> saveDeleteReason(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody MyGalleryDto.DeleteReasonRequest deleteReasonRequest){
+        myGalleryService.saveDeleteReason(authorizationHeader, deleteReasonRequest);
+        return ApiResponse.onSuccess(SuccessStatus.REMOVE_USER);
+    }
+
+    //회원탈퇴
     @DeleteMapping("/edit/user/withdraw")
     public ResponseEntity<ApiResponse<SuccessStatus>> deleteUser(
             @RequestHeader("Authorization") String authorizationHeader){

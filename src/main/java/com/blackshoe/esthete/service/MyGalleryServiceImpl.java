@@ -322,6 +322,18 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     }
 
     @Override
+    public void saveDeleteReason(String authorizationHeader, MyGalleryDto.DeleteReasonRequest deleteReasonRequest){
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+
+        DeleteReason deleteReason = DeleteReason.builder()
+                .email(user.getEmail())
+                .deleteReasonValue(deleteReasonRequest.getDeleteReasonValue())
+                .build();
+
+
+    }
+
+    @Override
     public void deleteUser(String authorizationHeader){
         User user = jwtUtil.getUserFromHeader(authorizationHeader);
 

@@ -262,4 +262,13 @@ public class MyGalleryDto {
                     .collect(Collectors.toList());
         }
     }
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public class DeleteReasonRequest {
+        private DeleteReasonValue deleteReasonValue;
+    }
+
 }
