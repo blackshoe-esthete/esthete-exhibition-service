@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -262,4 +263,14 @@ public class MyGalleryDto {
                     .collect(Collectors.toList());
         }
     }
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class DeleteReasonRequest {
+        private String reason;
+    }
+
 }

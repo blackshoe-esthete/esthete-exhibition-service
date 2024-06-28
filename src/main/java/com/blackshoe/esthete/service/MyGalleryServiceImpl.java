@@ -30,9 +30,9 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final ExhibitionLocationRepository exhibitionLocationRepository;
     private final PhotoRepository photoRepository;
     private final ExhibitionTagRepository exhibitionTagRepository;
-    private final ViewRepository viewRepository;
     private final CommentRepository commentRepository;
     private final PhotoUrlRepository photoUrlRepository;
+    private final DeleteReasonRepository deleteReasonRepository;
 
     // 사용자 태그 목록 수정 메서드
     @Override
@@ -319,6 +319,22 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         } else {
             throw new MyGalleryException(MyGalleryErrorResult.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public void saveDeleteReason(String authorizationHeader, MyGalleryDto.DeleteReasonRequest reason){
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        log.info("service : " + reason.getReason());
+        DeleteReasonValue deleteReasonValue = DeleteReasonValue.valueOf(reason.getReason());
+
+        DeleteReason deleteReason = DeleteReason.builder()
+                .email(user.getEmail())
+                .deleteReasonValue(deleteReasonValue)
+                .build();
+
+        log.info("완료");
+        deleteReasonRepository.save(deleteReason);
+
     }
 
     @Override
