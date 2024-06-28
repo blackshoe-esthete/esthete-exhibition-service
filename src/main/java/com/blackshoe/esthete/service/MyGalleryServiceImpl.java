@@ -30,9 +30,9 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final ExhibitionLocationRepository exhibitionLocationRepository;
     private final PhotoRepository photoRepository;
     private final ExhibitionTagRepository exhibitionTagRepository;
-    private final ViewRepository viewRepository;
     private final CommentRepository commentRepository;
     private final PhotoUrlRepository photoUrlRepository;
+    private final DeleteReasonRepository deleteReasonRepository;
 
     // 사용자 태그 목록 수정 메서드
     @Override
@@ -330,6 +330,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
                 .deleteReasonValue(deleteReasonRequest.getDeleteReasonValue())
                 .build();
 
+        deleteReasonRepository.save(deleteReason);
 
     }
 
