@@ -322,14 +322,17 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     }
 
     @Override
-    public void saveDeleteReason(String authorizationHeader, MyGalleryDto.DeleteReasonRequest deleteReasonRequest){
+    public void saveDeleteReason(String authorizationHeader, MyGalleryDto.DeleteReasonRequest reason){
         User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        log.info("service : " + reason.getReason());
+        DeleteReasonValue deleteReasonValue = DeleteReasonValue.valueOf(reason.getReason());
 
         DeleteReason deleteReason = DeleteReason.builder()
                 .email(user.getEmail())
-                .deleteReasonValue(deleteReasonRequest.getDeleteReasonValue())
+                .deleteReasonValue(deleteReasonValue)
                 .build();
 
+        log.info("완료");
         deleteReasonRepository.save(deleteReason);
 
     }

@@ -21,5 +21,5 @@ public interface MyGalleryService {
     void addFollow(String authorizationHeader, String userId);
     void removeFollow(String authorizationHeader, String userId);
     void deleteUser(String authorizationHeader);
-    void saveDeleteReason(String authorizationHeader, MyGalleryDto.DeleteReasonRequest deleteReasonRequest);
+    void saveDeleteReason(String authorizationHeader, MyGalleryDto.DeleteReasonRequest reason);
 }

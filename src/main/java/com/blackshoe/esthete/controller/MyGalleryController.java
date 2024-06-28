@@ -9,6 +9,7 @@ import com.blackshoe.esthete.service.MyGalleryService;
 import com.blackshoe.esthete.service.UserService;
 import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/mygallery")
 @RequiredArgsConstructor
@@ -188,9 +190,10 @@ public class MyGalleryController {
     @PostMapping("/edit/user/withdraw-reason")
     public ResponseEntity<ApiResponse<SuccessStatus>> saveDeleteReason(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestBody MyGalleryDto.DeleteReasonRequest deleteReasonRequest){
-        myGalleryService.saveDeleteReason(authorizationHeader, deleteReasonRequest);
-        return ApiResponse.onSuccess(SuccessStatus.REMOVE_USER);
+            @RequestBody MyGalleryDto.DeleteReasonRequest reason){
+        log.info("controller : " + reason);
+        myGalleryService.saveDeleteReason(authorizationHeader, reason);
+        return ApiResponse.onSuccess(SuccessStatus.SAVE_DELETE_REASON);
     }
 
     //회원탈퇴
