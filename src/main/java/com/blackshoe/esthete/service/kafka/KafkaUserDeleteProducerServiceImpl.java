@@ -12,10 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class KafkaUserDeleteProducer {
+public class KafkaUserDeleteProducerServiceImpl implements KafkaUserDeleteProducerService {
     private final KafkaProducer kafkaProducer;
     private final ObjectMapper objectMapper;
 
+    @Override
     public void deleteUser(KafkaProducerDto.UserDelete userDelete) {
         String topic = "user-delete";
 
