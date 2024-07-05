@@ -1,6 +1,6 @@
 package com.blackshoe.esthete.service.kafka;
 
-import com.blackshoe.esthete.dto.KafkaDto;
+import com.blackshoe.esthete.dto.KafkaProducerDto;
 import com.blackshoe.esthete.entity.User;
 import com.blackshoe.esthete.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,15 +19,15 @@ public class KafkaUserInfoConsumerServiceImpl implements KafkaUserInfoConsumerSe
     private final UserRepository userRepository;
 
     @Override
-    @KafkaListener(topics = "exhibition-user-create")
+    @KafkaListener(topics = "user-create")
     @Transactional
     public void createUser(String payload, Acknowledgment acknowledgment) {
         log.info("received payload='{}'", payload);
-        KafkaDto.UserInfo userInfoDto = null;
+        KafkaProducerDto.UserInfo userInfoDto = null;
 
         try {
             // 역직렬화
-            userInfoDto = objectMapper.readValue(payload, KafkaDto.UserInfo.class);
+            userInfoDto = objectMapper.readValue(payload, KafkaProducerDto.UserInfo.class);
         } catch (Exception e) {
             log.error("Error while converting json string to user object", e);
         }

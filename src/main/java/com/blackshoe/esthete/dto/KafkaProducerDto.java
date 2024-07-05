@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class KafkaDto {
+public class KafkaProducerDto {
 
     @Getter
     @Builder
