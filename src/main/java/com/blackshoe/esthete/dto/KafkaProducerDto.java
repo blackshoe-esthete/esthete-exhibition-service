@@ -1,8 +1,10 @@
 package com.blackshoe.esthete.dto;
 
 import com.blackshoe.esthete.common.constant.Gender;
+import com.blackshoe.esthete.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,27 +17,15 @@ import java.util.UUID;
 public class KafkaProducerDto {
 
     @Getter
-    @Builder
     @NoArgsConstructor
-    @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class UserInfo {
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class UserDelete {
         private UUID userId;
-        private String nickname;
-        private String email;
-        private Gender gender;
-        private LocalDate birthday;
+
+        @Builder
+        public UserDelete(UUID userId){
+            this.userId = userId;
+        }
     }
 
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class FilterInfo {
-        private UUID filterId;
-        private String filterName;
-    }
 }
