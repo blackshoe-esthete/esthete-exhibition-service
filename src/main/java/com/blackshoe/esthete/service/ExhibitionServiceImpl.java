@@ -29,7 +29,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     private final ExhibitionRepository exhibitionRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
-    private final ExhibitionTagRepository exhibitionTagRepository;
     private final ViewRepository viewRepository;
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
@@ -130,25 +129,31 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 throw new ExhibitionException(ExhibitionErrorResult.INVALID_ADDRESS_FILTER);
         }
     }
-  
+
     // 개인 추천 전시회 조회 메서드
     @Override
-    public List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader, String tagName) {
-        List<Exhibition> exhibitions;
+    public List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader) {
+        Pageable top6 = PageRequest.of(0, 6);
+        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc(top6);
+
+        if (!Objects.isNull(authorizationHeader)) {
+            User user = jwtUtil.getUserFromHeader(authorizationHeader);
+            // 추후 기존 회원은 추천 알고리즘을 통해 받는 식으로 변경할 예정
+            return MainHomeDto.ExhibitionResponse.of(exhibitions);
+        } else {
+            return MainHomeDto.ExhibitionResponse.of(exhibitions);
+        }
+    }
+
+    // 개인 추천 전시회 조회 메서드 (태그 포함)
+    @Override
+    public List<MainHomeDto.ExhibitionResponse> getRecommendExhibitionsByTag(String authorizationHeader, String tagName) {
         Pageable top6 = PageRequest.of(0, 6);
 
-        if (!Objects.isNull(tagName)) {
-            if (!tagRepository.existsByName(tagName)) {
-                throw new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TAG);
-            }
-            exhibitions = exhibitionRepository.findTop6ByTagNameOrderByViewCountDesc(tagName, top6);
-        } else {
-            exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc(top6);
+        if (!tagRepository.existsByName(tagName)) {
+            throw new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TAG);
         }
-
-        /*if (exhibitions.size() < 6) {
-            throw new ExhibitionException(ExhibitionErrorResult.FAIL_TO_GET_SIX_EXHIBITIONS);
-        }*/
+        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByTagNameOrderByViewCountDesc(tagName, top6);
 
         if (!Objects.isNull(authorizationHeader)) {
             User user = jwtUtil.getUserFromHeader(authorizationHeader);
