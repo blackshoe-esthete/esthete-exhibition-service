@@ -166,22 +166,21 @@ public class ExhibitionServiceImpl implements ExhibitionService{
 
     // 소외 전시회 조회 메서드
     @Override
-    public List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions(String tagName) {
-        List<Exhibition> exhibitions;
+    public List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions() {
+        Pageable top6 = PageRequest.of(0, 6);
+        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountAsc(top6);
+        return MainHomeDto.ExhibitionResponse.of(exhibitions);
+    }
+
+    // 소외 전시회 조회 메서드 (태그 포함)
+    @Override
+    public List<MainHomeDto.ExhibitionResponse> getIsolationExhibitionsByTag(String tagName) {
         Pageable top6 = PageRequest.of(0, 6);
 
-        if (!Objects.isNull(tagName)) {
-            if (!tagRepository.existsByName(tagName)) {
-                throw new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TAG);
-            }
-            exhibitions = exhibitionRepository.findTop6ByTagNameOrderByViewCountAsc(tagName, top6);
-        } else {
-            exhibitions = exhibitionRepository.findTop6ByOrderByViewCountAsc(top6);
+        if (!tagRepository.existsByName(tagName)) {
+            throw new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TAG);
         }
-
-        /*if (exhibitions.size() < 6) {
-            throw new ExhibitionException(ExhibitionErrorResult.FAIL_TO_GET_SIX_EXHIBITIONS);
-        }*/
+        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByTagNameOrderByViewCountAsc(tagName, top6);
         return MainHomeDto.ExhibitionResponse.of(exhibitions);
     }
 

@@ -20,7 +20,8 @@ public interface ExhibitionService {
     Page<ExhibitionClusteringDto.MarkedExhibitionsResponse> readByAddress(ExhibitionAddressFilter exhibitionAddressFilter, Integer page, Integer size, Sort sortBy);
     List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader);
     List<MainHomeDto.ExhibitionResponse> getRecommendExhibitionsByTag(String authorizationHeader, String tagName);
-    List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions(String tagName);
+    List<MainHomeDto.ExhibitionResponse> getIsolationExhibitions();
+    List<MainHomeDto.ExhibitionResponse> getIsolationExhibitionsByTag(String tagName);
     //List<MainHomeDto.ExhibitionResponse> getExhibitionsByTag(String tagName);
     List<MainHomeDto.ExhibitionResponse> getNearByExhibitions(String authorizationHeader, Double longitude, Double latitude);
     List<MainHomeDto.AuthorResponse> getPreferAuthors(String authorizationHeader);
