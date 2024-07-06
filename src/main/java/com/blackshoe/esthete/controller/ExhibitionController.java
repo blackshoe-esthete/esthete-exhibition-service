@@ -99,22 +99,39 @@ public class ExhibitionController {
     }
 
     // 개인 추천 전시회 조회 API
-    @GetMapping( {"/recommend/{tag_name}", "/recommend"})
+    @GetMapping("/recommend")
     public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getRecommendExhibitions(
-            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
-            @PathVariable(value = "tag_name", required = false) String tagName) {
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
 
-        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getRecommendExhibitions(authorizationHeader, tagName);
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getRecommendExhibitions(authorizationHeader);
         return ApiResponse.onSuccess(SuccessStatus.GET_RECOMMEND_EXHIBITIONS, exhibitionResponses);
     }
 
-    // 소외 전시회 조회 API
-    @GetMapping({"/isolation/{tag_name}", "/isolation"})
-    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getIsolationExhibitions(
-            @PathVariable(value = "tag_name", required = false) String tagName) {
+    // 개인 추천 전시회 조회 API (태그 포함)
+    @GetMapping("/recommend/{tag_name}")
+    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getRecommendExhibitionsByTag(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+            @PathVariable(value = "tag_name") String tagName) {
 
-        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getIsolationExhibitions(tagName);
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getRecommendExhibitionsByTag(authorizationHeader, tagName);
+        return ApiResponse.onSuccess(SuccessStatus.GET_RECOMMEND_EXHIBITIONS_BY_TAG, exhibitionResponses);
+    }
+
+    // 소외 전시회 조회 API
+    @GetMapping("/isolation")
+    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getIsolationExhibitions() {
+
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getIsolationExhibitions();
         return ApiResponse.onSuccess(SuccessStatus.GET_ISOLATION_EXHIBITIONS, exhibitionResponses);
+    }
+
+    // 소외 전시회 조회 API (태그 포함)
+    @GetMapping("/isolation/{tag_name}")
+    public ResponseEntity<ApiResponse<List<MainHomeDto.ExhibitionResponse>>> getIsolationExhibitionsByTag(
+            @PathVariable(value = "tag_name") String tagName) {
+
+        List<MainHomeDto.ExhibitionResponse> exhibitionResponses = exhibitionService.getIsolationExhibitionsByTag(tagName);
+        return ApiResponse.onSuccess(SuccessStatus.GET_ISOLATION_EXHIBITIONS_BY_TAG, exhibitionResponses);
     }
 
     /* 태그 선택 전시회 조회 API
