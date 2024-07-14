@@ -10,6 +10,7 @@ import com.blackshoe.esthete.dto.SearchExhibitionDto;
 import com.blackshoe.esthete.entity.*;
 import com.blackshoe.esthete.exception.*;
 import com.blackshoe.esthete.repository.*;
+import com.blackshoe.esthete.service.kafka.KafkaCommentReportProducerService;
 import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     private final ViewRepository viewRepository;
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
+    private final KafkaCommentReportProducerService kafkaCommentReportProducerService;
     private final JwtUtil jwtUtil;
 
     @Override
@@ -293,7 +295,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
         if (commentRequest.getContent().length() > 50) {
             throw new ExhibitionException(ExhibitionErrorResult.CONTENT_OVER_LIMIT_LENGTH);
         }
-        if (exhibitionRepository.existsByUserId(user.getId())) {
+        if (exhibition.getUser().getUserId().equals(user.getUserId())) {
             throw new ExhibitionException(ExhibitionErrorResult.CANNOT_COMMENT_ON_OWN_POST);
         }
         Comment comment = Comment.builder()
@@ -390,6 +392,6 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .reportDescription(reportCommentRequest.getReportDescription())
                 .build();
 
-        // Kafka 통신 부분 구현 예정
+        kafkaCommentReportProducerService.reportComment(reportCommentResponse);
     }
 }
