@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo,Long> {
@@ -16,4 +17,5 @@ public interface PhotoRepository extends JpaRepository<Photo,Long> {
     Boolean existsAllByTemporaryExhibition(TemporaryExhibition findTemporaryExhibition);
 
     Optional<List<Photo>> findAllByExhibition(Exhibition exhibition);
+    Optional<Photo> findByPhotoId(UUID photoId);
 }
