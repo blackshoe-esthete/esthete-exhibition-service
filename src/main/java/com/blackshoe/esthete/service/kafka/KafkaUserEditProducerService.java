@@ -4,4 +4,5 @@ import com.blackshoe.esthete.dto.KafkaProducerDto;
 
 public interface KafkaUserEditProducerService {
     void editProfileImgUrl(KafkaProducerDto.UserProfileImgUrl userProfileImgUrl);
+    void editNickname(KafkaProducerDto.UserNickName userNickName);
 }

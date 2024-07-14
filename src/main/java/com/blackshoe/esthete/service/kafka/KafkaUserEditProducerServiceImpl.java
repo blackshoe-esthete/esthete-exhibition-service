@@ -28,4 +28,17 @@ public class KafkaUserEditProducerServiceImpl implements KafkaUserEditProducerSe
 
         kafkaProducer.send(topic, userProfileImgUrlJsonString);
     }
+
+    @Override
+    public void editNickname(KafkaProducerDto.UserNickName userNickName) {
+        String topic = "user-set-nickname";
+        String userNicknameJsonString;
+        try {
+            userNicknameJsonString = objectMapper.writeValueAsString(userNickName);
+        } catch (JsonProcessingException e) {
+            throw new KafkaException(String.valueOf(KafkaErrorResult.JSON_CONVERSION_ERROR));
+        }
+
+        kafkaProducer.send(topic, userNicknameJsonString);
+    }
 }

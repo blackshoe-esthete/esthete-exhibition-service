@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService {
         // 새로운 프로필 사진 저장
         profileUrlRepository.save(profileUrl);
 
+        // 카프카 전송
         KafkaProducerDto.UserProfileImgUrl userProfileImgUrl = KafkaProducerDto.UserProfileImgUrl.builder()
                 .userId(user.getUserId())
                 .profileImgUrl(profileUrl.getCloudfrontUrl())
@@ -86,9 +87,19 @@ public class UserServiceImpl implements UserService {
             throw new UserException(UserErrorResult.BIOGRAPHY_TOO_LONG);
         }
 
+        String nickname = editUserProfileInfosRequest.getUserName();
+        // 닉네임이 변경된 경우 카프카 전송
+        if (!user.getNickname().equals(nickname)) {
+            KafkaProducerDto.UserNickName userNickName = KafkaProducerDto.UserNickName.builder()
+                    .userId(user.getUserId())
+                    .nickname(nickname)
+                    .build();
+            kafkaUserEditProducerService.editNickname(userNickName);
+        }
+
         // 사용자 프로필 업데이트 및 저장
         user.updateUserProfile(
-                editUserProfileInfosRequest.getUserName(),
+                nickname,
                 editUserProfileInfosRequest.getUserIntroduce(),
                 editUserProfileInfosRequest.getUserBiography()
         );
