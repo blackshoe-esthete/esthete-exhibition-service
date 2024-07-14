@@ -45,25 +45,25 @@ INSERT INTO users (users_id, users_uuid, nickname, email, role, gender, introduc
 
 -- 디폴트 유저 프로필 URL 삽입
 INSERT INTO profile_urls (profile_urls_id, users_id, img_url, s3_url) VALUES
-    (1, 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (2, 2, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (3, 3, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (4, 4, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (5, 5, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (6, 6, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (7, 7, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (8, 8, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (9, 9, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (10, 10, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg')
+    (1, 1, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (2, 2, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (3, 3, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (4, 4, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (5, 5, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (6, 6, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (7, 7, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (8, 8, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (9, 9, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (10, 10, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png')
     ON DUPLICATE KEY UPDATE profile_urls_id = profile_urls_id;
 
 
 -- 디폴트 임시저장 전시 삽입
 INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbnail_url, title, description, created_at) VALUES
-    (UNHEX(REPLACE('a5c6e3f7-8a91-4a54-bd3e-d0e77a8d4e7e', '-', '')), 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', '봄이다.', '봄이네요..', NOW()),
-    (UNHEX(REPLACE('b4f9f0ea-5b71-4dbf-a2de-1fc82b86d86b', '-', '')), 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf5678.jpeg', '여름이다.', '덥네요..', NOW()),
-    (UNHEX(REPLACE('c1e17a68-f30b-4fa1-9f6d-dde228bf9ff2', '-', '')), 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf9012.jpeg', '가을이다.', '좋네요..', NOW()),
-    (UNHEX(REPLACE('d2f0cb21-7c9e-4a5b-950e-ea1ef2a3ad75', '-', '')), 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf9012.jpeg', '겨울이다.', '춥네요..', NOW())
+    (UNHEX(REPLACE('a5c6e3f7-8a91-4a54-bd3e-d0e77a8d4e7e', '-', '')), 1, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', '봄이다.', '봄이네요..', NOW()),
+    (UNHEX(REPLACE('b4f9f0ea-5b71-4dbf-a2de-1fc82b86d86b', '-', '')), 1, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', '여름이다.', '덥네요..', NOW()),
+    (UNHEX(REPLACE('c1e17a68-f30b-4fa1-9f6d-dde228bf9ff2', '-', '')), 1, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', '가을이다.', '좋네요..', NOW()),
+    (UNHEX(REPLACE('d2f0cb21-7c9e-4a5b-950e-ea1ef2a3ad75', '-', '')), 1, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', '겨울이다.', '춥네요..', NOW())
     ON DUPLICATE KEY UPDATE temporary_exhibitions_uuid = temporary_exhibitions_uuid;
 
 
@@ -164,10 +164,10 @@ VALUES
     (7, 7,  'https://d1g6qszf7cmafu.cloudfront.net/exhibition/7ea6b1a6-b6c0-4731-87e1-f4844cca01d3/exhibition-photos/9d19ca4a-4372-40fb-9b67-733df0e4a9bd.jpg', 'https://esthete-bucket.s3.amazonaws.com/exhibition/7ea6b1a6-b6c0-4731-87e1-f4844cca01d3/exhibition-photos/9d19ca4a-4372-40fb-9b67-733df0e4a9bd.jpg'),
     (8, 8, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/6422e443-fedd-4f94-ae26-6e4fa9b58860/exhibition-photos/b342c93a-02fb-4ef0-a12c-f2949501e6fd.jpg', 'https://esthete-bucket.s3.amazonaws.com/exhibition/6422e443-fedd-4f94-ae26-6e4fa9b58860/exhibition-photos/b342c93a-02fb-4ef0-a12c-f2949501e6fd.jpg'),
     -- 임시저장
-    (9, 9, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (10, 10, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg'),
-    (11, 11, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg'),
-    (12, 12, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1237.jpeg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1237.jpeg')
+    (9, 9, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
+    (10, 10, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1235.jpeg'),
+    (11, 11, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1236.jpeg'),
+    (12, 12, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', 'https://blackshoe-esthete-s3/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1237.jpeg')
     ON DUPLICATE KEY UPDATE photos_urls_id = photos_urls_id;
 
 
