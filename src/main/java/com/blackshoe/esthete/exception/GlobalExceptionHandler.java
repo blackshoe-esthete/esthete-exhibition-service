@@ -73,6 +73,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ExhibitionErrorResult errorResult = e.getExhibitionErrorResult();
         return ApiResponse.onFailure(errorResult);
     }
+    // Kafka Error
+    @ExceptionHandler(KafkaException.class)
+    public ResponseEntity<ApiResponse<BaseErrorCode>> handleKafkaException(KafkaException e) {
+        KafkaErrorResult errorResult = e.getKafkaErrorResult();
+        return ApiResponse.onFailure(errorResult);
+    }
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
