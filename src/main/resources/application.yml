@@ -39,6 +39,8 @@ spring:
       database: 1
   jwt:
     secret: ${JWT_SECRET}
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
   cloud:
     aws:
       credentials:
