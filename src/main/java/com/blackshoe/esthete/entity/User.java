@@ -5,6 +5,7 @@ import com.blackshoe.esthete.common.constant.Gender;
 import com.blackshoe.esthete.common.constant.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,7 +32,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role")
     private Role role;
 
     @Enumerated(EnumType.STRING)
@@ -61,6 +62,14 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserTag> userTags;
+
+    @Builder
+    public User(UUID userId, String nickname, String email, Gender gender){
+        this.userId = userId;
+        this.nickname = nickname;
+        this.email = email;
+        this.gender = gender;
+    }
 
     public void increaseViewCount() {
         this.viewCount++;
