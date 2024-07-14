@@ -12,6 +12,7 @@ public enum ExhibitionErrorResult implements BaseErrorCode {
     NOT_FOUND_TEMPORARY_EXHIBITION(HttpStatus.NOT_FOUND, "404", "존재하지 않는 임시저장 전시입니다."),
     NOT_FOUND_TEMPORARY_EXHIBITION_PHOTO(HttpStatus.NOT_FOUND, "404", "임시저장 전시에서 사진을 찾을 수 없습니다."),
     NOT_FOUND_EXHIBITION_PHOTO(HttpStatus.NOT_FOUND, "404", "전시에서 사진을 찾을 수 없습니다."),
+    NOT_FOUND_PHOTO(HttpStatus.NOT_FOUND, "404", "존재하지 않는 사진입니다."),
     NOT_FOUND_TEMPORARY_EXHIBITION_TAG(HttpStatus.NOT_FOUND, "404", "임시저장 전시에서 태그를 찾을 수 없습니다."),
     NOT_FOUND_EXHIBITION_TAG(HttpStatus.NOT_FOUND, "404", "전시에서 태그를 찾을 수 없습니다."),
     NOT_FOUND_VIEW(HttpStatus.NOT_FOUND, "404", "VIEW가 존재하지 않습니다."),

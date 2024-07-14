@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -186,7 +185,7 @@ public class MyGalleryController {
         return ApiResponse.onSuccess(SuccessStatus.REMOVE_FOLLOW);
     }
 
-    //탈퇴사유입력
+    // 탈퇴사유입력
     @PostMapping("/edit/user/withdraw-reason")
     public ResponseEntity<ApiResponse<SuccessStatus>> saveDeleteReason(
             @RequestHeader("Authorization") String authorizationHeader,
@@ -196,13 +195,11 @@ public class MyGalleryController {
         return ApiResponse.onSuccess(SuccessStatus.SAVE_DELETE_REASON);
     }
 
-    //회원탈퇴
+    // 회원탈퇴
     @DeleteMapping("/edit/user/withdraw")
     public ResponseEntity<ApiResponse<SuccessStatus>> deleteUser(
             @RequestHeader("Authorization") String authorizationHeader){
         myGalleryService.deleteUser(authorizationHeader);
         return ApiResponse.onSuccess(SuccessStatus.REMOVE_USER);
     }
-
-
 }
