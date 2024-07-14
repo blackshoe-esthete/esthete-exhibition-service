@@ -1,10 +1,15 @@
 package com.blackshoe.esthete.exception;
 
-public class KafkaException extends  RuntimeException{
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public class KafkaException extends RuntimeException {
     private final KafkaErrorResult kafkaErrorResult;
 
-    public KafkaException(KafkaErrorResult kafkaErrorResult) {
-        super(kafkaErrorResult.getMessage());
-        this.kafkaErrorResult = kafkaErrorResult;
+    @Override
+    public String getMessage() {
+        return kafkaErrorResult.getMessage();
     }
 }
