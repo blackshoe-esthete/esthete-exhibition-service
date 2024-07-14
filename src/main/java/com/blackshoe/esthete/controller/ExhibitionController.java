@@ -213,7 +213,7 @@ public class ExhibitionController {
     }
 
     // 전시회 댓글 신고 API
-    @DeleteMapping("/comments/report")
+    @PostMapping("/comments/report")
     public ResponseEntity<ApiResponse<SuccessStatus>> reportComment(
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody MainHomeDto.ReportCommentRequest reportCommentRequest) {
