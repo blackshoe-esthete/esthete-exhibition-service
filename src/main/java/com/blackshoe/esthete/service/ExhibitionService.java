@@ -31,4 +31,5 @@ public interface ExhibitionService {
     void addLikeToComment(String authorizationHeader, String commentId);
     void removeLikeToComment(String authorizationHeader, String commentId);
     void reportComment(String authorizationHeader, MainHomeDto.ReportCommentRequest reportCommentRequest);
+    void reportPhoto(String authorizationHeader, MainHomeDto.ReportPhotoRequest reportPhotoRequest);
 }

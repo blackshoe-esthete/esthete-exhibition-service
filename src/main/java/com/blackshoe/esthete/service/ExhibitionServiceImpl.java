@@ -11,6 +11,7 @@ import com.blackshoe.esthete.entity.*;
 import com.blackshoe.esthete.exception.*;
 import com.blackshoe.esthete.repository.*;
 import com.blackshoe.esthete.service.kafka.KafkaCommentReportProducerService;
+import com.blackshoe.esthete.service.kafka.KafkaPhotoReportProducerService;
 import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,9 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     private final ViewRepository viewRepository;
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
+    private final PhotoRepository photoRepository;
     private final KafkaCommentReportProducerService kafkaCommentReportProducerService;
+    private final KafkaPhotoReportProducerService kafkaPhotoReportProducerService;
     private final JwtUtil jwtUtil;
 
     @Override
@@ -393,5 +396,26 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                 .build();
 
         kafkaCommentReportProducerService.reportComment(reportCommentResponse);
+    }
+
+    // 사진 신고 메서드
+    @Override
+    public void reportPhoto(String authorizationHeader, MainHomeDto.ReportPhotoRequest reportPhotoRequest) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        Photo photo = photoRepository.findByPhotoId(reportPhotoRequest.getPhotoId())
+                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_PHOTO));
+        Exhibition exhibition = photo.getExhibition();
+
+        MainHomeDto.ReportPhotoResponse reportPhotoResponse = MainHomeDto.ReportPhotoResponse.builder()
+                .reporterId(user.getUserId())
+                .writerId(exhibition.getUser().getUserId())
+                .reportType(reportPhotoRequest.getReportType())
+                .reportDescription(reportPhotoRequest.getReportDescription())
+                .photoId(photo.getPhotoId())
+                .photoImgUrl(photo.getPhotoUrl().getCloudfrontUrl())
+                .exhibitionTitle(exhibition.getTitle())
+                .build();
+
+        kafkaPhotoReportProducerService.reportPhoto(reportPhotoResponse);
     }
 }

@@ -12,21 +12,21 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class KafkaCommentReportProducerServiceImpl implements KafkaCommentReportProducerService {
+public class KafkaPhotoReportProducerServiceImpl implements KafkaPhotoReportProducerService {
     private final KafkaProducer kafkaProducer;
     private final ObjectMapper objectMapper;
 
     @Override
-    public void reportComment(MainHomeDto.ReportCommentResponse reportCommentResponse) {
-        String topic = "comment-report";
-        String reportCommentJsonString;
+    public void reportPhoto(MainHomeDto.ReportPhotoResponse reportPhotoResponse) {
+        String topic = "photo-report";
+        String reportPhotoJsonString;
 
         try {
-            reportCommentJsonString = objectMapper.writeValueAsString(reportCommentResponse);
+            reportPhotoJsonString = objectMapper.writeValueAsString(reportPhotoResponse);
         } catch (JsonProcessingException e) {
             throw new KafkaException(String.valueOf(KafkaErrorResult.JSON_CONVERSION_ERROR));
         }
 
-        kafkaProducer.send(topic, reportCommentJsonString);
+        kafkaProducer.send(topic, reportPhotoJsonString);
     }
 }
