@@ -25,6 +25,7 @@ public enum SuccessStatus implements BaseCode {
     ADD_LIKE_TO_EXHIBITION(HttpStatus.CREATED, "201", "전시 좋아요 등록에 성공했습니다."),
     REMOVE_LIKE_TO_EXHIBITION(HttpStatus.OK, "200", "전시 좋아요 취소에 성공했습니다."),
     REPORT_TO_COMMENT(HttpStatus.OK, "200", "전시 댓글 신고에 성공했습니다."),
+    REPORT_TO_PHOTO(HttpStatus.OK, "200", "전시 사진 신고에 성공했습니다."),
     REMOVE_EXHIBITION(HttpStatus.OK, "200", "내 전시 삭제에 성공했습니다."),
     GET_FOLLOWERS(HttpStatus.OK, "200", "팔로워 조회에 성공했습니다."),
     GET_FOLLOWINGS(HttpStatus.OK, "200", "팔로잉 조회에 성공했습니다."),

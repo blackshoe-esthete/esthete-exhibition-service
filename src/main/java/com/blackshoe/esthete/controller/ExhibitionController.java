@@ -221,4 +221,14 @@ public class ExhibitionController {
         exhibitionService.reportComment(authorizationHeader, reportCommentRequest);
         return ApiResponse.onSuccess(SuccessStatus.REPORT_TO_COMMENT);
     }
+
+    // 전시회 사진 신고 API
+    @PostMapping("/photos/report")
+    public ResponseEntity<ApiResponse<SuccessStatus>> reportPhoto(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody MainHomeDto.ReportPhotoRequest reportPhotoRequest) {
+
+        exhibitionService.reportPhoto(authorizationHeader, reportPhotoRequest);
+        return ApiResponse.onSuccess(SuccessStatus.REPORT_TO_PHOTO);
+    }
 }

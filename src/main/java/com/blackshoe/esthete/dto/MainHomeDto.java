@@ -204,4 +204,30 @@ public class MainHomeDto {
         private String reportType;
         private String reportDescription;
     }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ReportPhotoRequest {
+        private UUID photoId;
+        private String reportType;
+        private String reportDescription;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ReportPhotoResponse {
+        private UUID reporterId;
+        private UUID writerId;
+        private String reportType;
+        private String reportDescription;
+        private UUID photoId;
+        private String photoImgUrl;
+        private String exhibitionTitle;
+    }
 }
