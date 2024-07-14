@@ -1,10 +1,12 @@
 package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.dto.EditUserTagsDto;
+import com.blackshoe.esthete.dto.KafkaProducerDto;
 import com.blackshoe.esthete.dto.MyGalleryDto;
 import com.blackshoe.esthete.entity.*;
 import com.blackshoe.esthete.exception.*;
 import com.blackshoe.esthete.repository.*;
+import com.blackshoe.esthete.service.kafka.KafkaUserDeleteProducerService;
 import com.blackshoe.esthete.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final CommentRepository commentRepository;
     private final PhotoUrlRepository photoUrlRepository;
     private final DeleteReasonRepository deleteReasonRepository;
+    private final KafkaUserDeleteProducerService kafkaUserDeleteProducerService;
 
     // 사용자 태그 목록 수정 메서드
     @Override
@@ -422,6 +425,13 @@ public class MyGalleryServiceImpl implements MyGalleryService {
 
         temporaryExhibitionRepository.deleteAll(temporaryExhibitions);
 
+        KafkaProducerDto.UserDelete userDelete = KafkaProducerDto.UserDelete.builder()
+                .userId(user.getUserId())
+                .build();
+
         userRepository.delete(user);
+
+        //kafka 처리
+        kafkaUserDeleteProducerService.deleteUser(userDelete);
     }
 }
