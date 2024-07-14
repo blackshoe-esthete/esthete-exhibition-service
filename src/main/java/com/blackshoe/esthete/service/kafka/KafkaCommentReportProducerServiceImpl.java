@@ -23,7 +23,6 @@ public class KafkaCommentReportProducerServiceImpl implements KafkaCommentReport
 
         try {
             reportCommentJsonString = objectMapper.writeValueAsString(reportCommentResponse);
-            kafkaProducer.send(topic, reportCommentJsonString);
         } catch (JsonProcessingException e) {
             throw new KafkaException(String.valueOf(KafkaErrorResult.JSON_CONVERSION_ERROR));
         }
