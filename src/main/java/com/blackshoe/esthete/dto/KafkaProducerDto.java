@@ -35,4 +35,18 @@ public class KafkaProducerDto {
             this.profileImgUrl = profileImgUrl;
         }
     }
+
+    @Getter
+    @NoArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class UserNickName {
+        private UUID userId;
+        private String nickname;
+
+        @Builder
+        public UserNickName(UUID userId, String nickname){
+            this.userId = userId;
+            this.nickname = nickname;
+        }
+    }
 }
