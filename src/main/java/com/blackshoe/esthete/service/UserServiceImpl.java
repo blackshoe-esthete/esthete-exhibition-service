@@ -2,12 +2,14 @@ package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.common.constant.Rule;
 import com.blackshoe.esthete.dto.EditUserProfileDto;
+import com.blackshoe.esthete.dto.KafkaProducerDto;
 import com.blackshoe.esthete.entity.ProfileUrl;
 import com.blackshoe.esthete.entity.User;
 import com.blackshoe.esthete.exception.UserErrorResult;
 import com.blackshoe.esthete.exception.UserException;
 import com.blackshoe.esthete.repository.ProfileUrlRepository;
 import com.blackshoe.esthete.repository.UserRepository;
+import com.blackshoe.esthete.service.kafka.KafkaUserEditProducerService;
 import com.blackshoe.esthete.util.JwtUtil;
 import com.blackshoe.esthete.util.S3Util;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ProfileUrlRepository profileUrlRepository;
+    private final KafkaUserEditProducerService kafkaUserEditProducerService;
     private final JwtUtil jwtUtil;
     private final S3Util s3Util;
 
@@ -55,6 +58,12 @@ public class UserServiceImpl implements UserService {
 
         // 새로운 프로필 사진 저장
         profileUrlRepository.save(profileUrl);
+
+        KafkaProducerDto.UserProfileImgUrl userProfileImgUrl = KafkaProducerDto.UserProfileImgUrl.builder()
+                .userId(user.getUserId())
+                .profileImgUrl(profileUrl.getCloudfrontUrl())
+                .build();
+        kafkaUserEditProducerService.editProfileImgUrl(userProfileImgUrl);
 
         return EditUserProfileDto.EditUserProfileImgResponse.builder()
                 .s3Url(s3Url)
