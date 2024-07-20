@@ -21,6 +21,9 @@ public enum MyGalleryErrorResult implements BaseErrorCode {
     IS_ALREADY_FOLLOWED(HttpStatus.CONFLICT, "409", "이미 팔로우 된 계정입니다."),
     IS_NOT_FOLLOWED(HttpStatus.CONFLICT, "409", "팔로우하지 않은 계정입니다."),
     NOT_FOUND_FOLLOWER(HttpStatus.NOT_FOUND, "404", "팔로워를 찾을 수 없습니다."),
+    IS_OWN_NICKNAME(HttpStatus.BAD_REQUEST, "400", "기존 닉네임과 동일합니다."),
+    IS_OVER_10_LENGTH(HttpStatus.BAD_REQUEST, "400", "닉네임 길이 제한 10자를 넘습니다."),
+    IS_DUPLICATE_NICKNAME(HttpStatus.CONFLICT, "409", "이미 존재하는 닉네임입니다."),
     ;
 
     private final HttpStatus httpStatus;

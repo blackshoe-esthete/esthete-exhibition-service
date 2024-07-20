@@ -13,6 +13,7 @@ public enum SuccessStatus implements BaseCode {
     _OK(HttpStatus.OK, "200", "성공입니다."),
     _CREATED(HttpStatus.CREATED, "201", "성공적으로 생성되었습니다."),
     // Exhibition
+    GET_USER_TAGS(HttpStatus.OK, "200", "선호 태그 조회에 성공했습니다."),
     EDIT_USER_TAGS(HttpStatus.OK, "200", "선호 태그 수정에 성공했습니다."),
     EDIT_USER_PROFILE_IMG(HttpStatus.OK, "200", "프로필 사진 수정에 성공했습니다."),
     EDIT_USER_PROFILE_INFOS(HttpStatus.OK, "200", "프로필 정보 수정에 성공했습니다."),
@@ -51,6 +52,7 @@ public enum SuccessStatus implements BaseCode {
     GET_ALL_COMMENTS(HttpStatus.OK, "200", "댓글 전체 조회에 성공했습니다."),
     ADD_LIKE_TO_COMMENT(HttpStatus.CREATED, "201", "댓글 좋아요 등록에 성공했습니다."),
     REMOVE_LIKE_TO_COMMENT(HttpStatus.OK, "200", "댓글 좋아요 취소에 성공했습니다."),
+    IS_POSSIBLE_NICKNAME(HttpStatus.OK, "200", "사용할 수 있는 닉네임입니다."),
     REMOVE_USER(HttpStatus.OK, "200", "회원 탈퇴에 성공했습니다."),
     SAVE_DELETE_REASON(HttpStatus.OK, "200", "회원탈퇴 이유 저장에 성공했습니다.")
     ;
