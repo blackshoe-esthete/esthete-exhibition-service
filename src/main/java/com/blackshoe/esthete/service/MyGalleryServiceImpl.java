@@ -34,6 +34,14 @@ public class MyGalleryServiceImpl implements MyGalleryService {
     private final PhotoUrlRepository photoUrlRepository;
     private final DeleteReasonRepository deleteReasonRepository;
 
+    // 사용자 태그 목록 조회 메서드
+    @Override
+    public EditUserTagsDto.TagList getUserTags(String authorizationHeader) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        List<UserTag> userTags = userTagRepository.findAllByUser(user);
+        return EditUserTagsDto.TagList.ofUserTags(userTags);
+    }
+
     // 사용자 태그 목록 수정 메서드
     @Override
     @Transactional
