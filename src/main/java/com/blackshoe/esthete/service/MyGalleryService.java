@@ -6,6 +6,7 @@ import com.blackshoe.esthete.dto.MyGalleryDto;
 import java.util.List;
 
 public interface MyGalleryService {
+    EditUserTagsDto.TagList getUserTags(String authorizationHeader);
     EditUserTagsDto.TagList editUserTags(String authorizationHeader, EditUserTagsDto.TagList tagList);
     List<MyGalleryDto.TemporaryExhibitionResponse> getTemporaryExhibitions(String authorizationHeader);
     MyGalleryDto.TemporaryExhibitionDetailResponse getTemporaryExhibitionDetails(String authorizationHeader, String tempExhibitionId);
@@ -20,6 +21,7 @@ public interface MyGalleryService {
     List<MyGalleryDto.FollowingResponse> getFollowings(String authorizationHeader, String userId, String keyword);
     void addFollow(String authorizationHeader, String userId);
     void removeFollow(String authorizationHeader, String userId);
+    void checkNickname(String authorizationHeader, String nickname);
     void deleteUser(String authorizationHeader);
     void saveDeleteReason(String authorizationHeader, MyGalleryDto.DeleteReasonRequest reason);
 }
