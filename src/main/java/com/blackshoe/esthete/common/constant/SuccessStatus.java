@@ -13,6 +13,7 @@ public enum SuccessStatus implements BaseCode {
     _OK(HttpStatus.OK, "200", "성공입니다."),
     _CREATED(HttpStatus.CREATED, "201", "성공적으로 생성되었습니다."),
     // Exhibition
+    GET_USER_TAGS(HttpStatus.OK, "200", "선호 태그 조회에 성공했습니다."),
     EDIT_USER_TAGS(HttpStatus.OK, "200", "선호 태그 수정에 성공했습니다."),
     EDIT_USER_PROFILE_IMG(HttpStatus.OK, "200", "프로필 사진 수정에 성공했습니다."),
     EDIT_USER_PROFILE_INFOS(HttpStatus.OK, "200", "프로필 정보 수정에 성공했습니다."),
