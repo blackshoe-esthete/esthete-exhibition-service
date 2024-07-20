@@ -316,6 +316,20 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         followRepository.delete(follow);
     }
 
+    // 닉네임 체크 API
+    @Override
+    public void checkNickname(String authorizationHeader, String nickname) {
+        User user = jwtUtil.getUserFromHeader(authorizationHeader);
+        if (nickname.length() > 10) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_OVER_10_LENGTH);
+        }
+        if (user.getNickname().equals(nickname)) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_OWN_NICKNAME);
+        } else if (userRepository.existsByNickname(nickname)) {
+            throw new MyGalleryException(MyGalleryErrorResult.IS_DUPLICATE_NICKNAME);
+        }
+    }
+
     // 유저 타입을 결정하는 메서드
     private String determineUserType(String authorizationHeader, String userId) {
         if (!Objects.isNull(authorizationHeader) && !Objects.isNull(userId)) {
