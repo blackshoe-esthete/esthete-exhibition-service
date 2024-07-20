@@ -7,7 +7,6 @@ import com.blackshoe.esthete.dto.EditUserTagsDto;
 import com.blackshoe.esthete.dto.MyGalleryDto;
 import com.blackshoe.esthete.service.MyGalleryService;
 import com.blackshoe.esthete.service.UserService;
-import com.blackshoe.esthete.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,6 @@ import java.util.List;
 public class MyGalleryController {
      private final MyGalleryService myGalleryService;
      private final UserService userService;
-     private final JwtUtil jwtUtil;
 
     // 사용자의 선호 태그를 조회하는 API
     @GetMapping("/edit/user/tags")
@@ -192,6 +190,15 @@ public class MyGalleryController {
 
         myGalleryService.removeFollow(authorizationHeader, userId);
         return ApiResponse.onSuccess(SuccessStatus.REMOVE_FOLLOW);
+    }
+
+    // 닉네임 중복 체크 API
+    @GetMapping("/check-nickname/{nickname}")
+    public ResponseEntity<ApiResponse<SuccessStatus>> checkNickname(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable String nickname){
+        myGalleryService.checkNickname(authorizationHeader, nickname);
+        return ApiResponse.onSuccess(SuccessStatus.IS_POSSIBLE_NICKNAME);
     }
 
     // 탈퇴사유입력
