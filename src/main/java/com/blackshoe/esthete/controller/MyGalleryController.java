@@ -25,6 +25,15 @@ public class MyGalleryController {
      private final UserService userService;
      private final JwtUtil jwtUtil;
 
+    // 사용자의 선호 태그를 조회하는 API
+    @GetMapping("/edit/user/tags")
+    public ResponseEntity<ApiResponse<EditUserTagsDto.TagList>> getUserTags(
+            @RequestHeader("Authorization") String authorizationHeader) {
+
+        EditUserTagsDto.TagList userTags = myGalleryService.getUserTags(authorizationHeader);
+        return ApiResponse.onSuccess(SuccessStatus.GET_USER_TAGS, userTags);
+    }
+
     // 사용자의 선호 태그를 수정하는 API
     @PutMapping("/edit/user/tags")
     public ResponseEntity<ApiResponse<EditUserTagsDto.TagList>> editUserTags(

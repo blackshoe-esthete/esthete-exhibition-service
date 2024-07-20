@@ -2,6 +2,7 @@ package com.blackshoe.esthete.dto;
 
 import com.blackshoe.esthete.entity.ExhibitionTag;
 import com.blackshoe.esthete.entity.Tag;
+import com.blackshoe.esthete.entity.UserTag;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -34,6 +35,14 @@ public class EditUserTagsDto {
             return exhibitionTags.stream()
                     .map(et -> et.getTag().getName())
                     .collect(Collectors.toList());
+        }
+
+        public static EditUserTagsDto.TagList ofUserTags(List<UserTag> userTags) {
+            return TagList.builder()
+                    .tagList(userTags.stream()
+                            .map(et -> et.getTag().getName())
+                            .collect(Collectors.toList()))
+                    .build();
         }
     }
 }

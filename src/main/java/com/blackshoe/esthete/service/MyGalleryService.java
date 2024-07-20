@@ -6,6 +6,7 @@ import com.blackshoe.esthete.dto.MyGalleryDto;
 import java.util.List;
 
 public interface MyGalleryService {
+    EditUserTagsDto.TagList getUserTags(String authorizationHeader);
     EditUserTagsDto.TagList editUserTags(String authorizationHeader, EditUserTagsDto.TagList tagList);
     List<MyGalleryDto.TemporaryExhibitionResponse> getTemporaryExhibitions(String authorizationHeader);
     MyGalleryDto.TemporaryExhibitionDetailResponse getTemporaryExhibitionDetails(String authorizationHeader, String tempExhibitionId);
