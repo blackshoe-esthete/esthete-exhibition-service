@@ -79,7 +79,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         KafkaErrorResult errorResult = e.getKafkaErrorResult();
         return ApiResponse.onFailure(errorResult);
     }
-
+    // Flask Error
+    @ExceptionHandler(FlaskException.class)
+    public ResponseEntity<ApiResponse<BaseErrorCode>> handleFlaskException(FlaskException e) {
+        FlaskErrorResult errorResult = e.getFlaskErrorResult();
+        return ApiResponse.onFailure(errorResult);
+    }
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseDto> handleBindException(BindException e) {
