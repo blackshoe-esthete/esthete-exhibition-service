@@ -36,13 +36,13 @@ public class KafkaCommentConsumerServiceImpl implements KafkaCommentConsumerServ
         if (deleteComment != null) {
             UUID commentId = UUID.fromString(deleteComment.getCommentId());
             Comment findComment = commentRepository.findByCommentId(commentId).orElseThrow(
-                    () -> new KafkaException(KafkaErrorResult.PHOTO_NOT_FOUND)
+                    () -> new KafkaException(KafkaErrorResult.COMMENT_NOT_FOUND)
             );
 
             commentRepository.delete(findComment);
         }
 
-        log.info("photo info : {}", deleteComment);
+        log.info("comment info : {}", deleteComment);
         acknowledgment.acknowledge();
     }
 }
