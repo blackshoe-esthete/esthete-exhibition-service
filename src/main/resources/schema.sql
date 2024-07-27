@@ -61,7 +61,7 @@ CREATE TABLE `temporary_exhibitions` (
                                          PRIMARY KEY (`temporary_exhibitions_id`),
                                          UNIQUE KEY `UK_dlyne539n3xhap9wiy6xl77lf` (`temporary_exhibitions_uuid`),
                                          KEY `temporary_exhibitions_fk_users_id` (`users_id`),
-                                         CONSTRAINT `temporary_exhibitions_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`)
+                                         CONSTRAINT `temporary_exhibitions_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `exhibitions` (
@@ -78,7 +78,7 @@ CREATE TABLE `exhibitions` (
                                PRIMARY KEY (`exhibitions_id`),
                                UNIQUE KEY `UK_icif9r1xmm82u6bw8sxnql2nh` (`exhibitions_uuid`),
                                KEY `exhibitions_fk_users_id` (`users_id`),
-                               CONSTRAINT `exhibitions_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`)
+                               CONSTRAINT `exhibitions_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `comments` (
@@ -93,7 +93,7 @@ CREATE TABLE `comments` (
                             PRIMARY KEY (`comments_id`),
                             UNIQUE KEY `UK_bs6vgdjqok5v8uwchbaelhe93` (`comments_uuid`),
                             KEY `comments_fk_exhibitions_id` (`exhibitions_id`),
-                            CONSTRAINT `comments_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`)
+                            CONSTRAINT `comments_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `delete_reasons` (
@@ -119,8 +119,8 @@ CREATE TABLE `exhibitions_locations` (
                                          PRIMARY KEY (`exhibitions_locations_id`),
                                          UNIQUE KEY `UK_mhsjkv8jeyriw7793i3sr6lrd` (`exhibitions_id`),
                                          UNIQUE KEY `UK_79m6rq2xbid8pmyh5ebktll3e` (`temporary_exhibitions_id`),
-                                         CONSTRAINT `exhibitions_locations_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`),
-                                         CONSTRAINT `exhibitions_locations_fk_temporary_exhibitions_id` FOREIGN KEY (`temporary_exhibitions_id`) REFERENCES `temporary_exhibitions` (`temporary_exhibitions_id`)
+                                         CONSTRAINT `exhibitions_locations_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`) ON DELETE CASCADE,
+                                         CONSTRAINT `exhibitions_locations_fk_temporary_exhibitions_id` FOREIGN KEY (`temporary_exhibitions_id`) REFERENCES `temporary_exhibitions` (`temporary_exhibitions_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `exhibitions_tags` (
@@ -134,9 +134,9 @@ CREATE TABLE `exhibitions_tags` (
                                     KEY `exhibitions_tags_fk_exhibitions_id` (`exhibitions_id`),
                                     KEY `exhibitions_tags_fk_tags_id` (`tags_id`),
                                     KEY `exhibitions_tags_fk_temporary_exhibitions_id` (`temporary_exhibitions_id`),
-                                    CONSTRAINT `exhibitions_tags_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`),
-                                    CONSTRAINT `exhibitions_tags_fk_tags_id` FOREIGN KEY (`tags_id`) REFERENCES `tags` (`tags_id`),
-                                    CONSTRAINT `exhibitions_tags_fk_temporary_exhibitions_id` FOREIGN KEY (`temporary_exhibitions_id`) REFERENCES `temporary_exhibitions` (`temporary_exhibitions_id`)
+                                    CONSTRAINT `exhibitions_tags_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`) ON DELETE CASCADE,
+                                    CONSTRAINT `exhibitions_tags_fk_tags_id` FOREIGN KEY (`tags_id`) REFERENCES `tags` (`tags_id`) ON DELETE CASCADE,
+                                    CONSTRAINT `exhibitions_tags_fk_temporary_exhibitions_id` FOREIGN KEY (`temporary_exhibitions_id`) REFERENCES `temporary_exhibitions` (`temporary_exhibitions_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `follows` (
@@ -147,7 +147,7 @@ CREATE TABLE `follows` (
                            `follower_uuid` binary(16) NOT NULL,
                            PRIMARY KEY (`follows_id`),
                            KEY `follows_fk_users_id` (`users_id`),
-                           CONSTRAINT `follows_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`)
+                           CONSTRAINT `follows_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `likes` (
@@ -171,8 +171,8 @@ CREATE TABLE `photos` (
                           PRIMARY KEY (`photos_id`),
                           KEY `photos_fk_exhibitions_id` (`exhibitions_id`),
                           KEY `photos_fk_temporary_exhibitions_id` (`temporary_exhibitions_id`),
-                          CONSTRAINT `photos_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`),
-                          CONSTRAINT `photos_fk_temporary_exhibitions_id` FOREIGN KEY (`temporary_exhibitions_id`) REFERENCES `temporary_exhibitions` (`temporary_exhibitions_id`)
+                          CONSTRAINT `photos_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`) ON DELETE CASCADE,
+                          CONSTRAINT `photos_fk_temporary_exhibitions_id` FOREIGN KEY (`temporary_exhibitions_id`) REFERENCES `temporary_exhibitions` (`temporary_exhibitions_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `photos_tags` (
@@ -184,8 +184,8 @@ CREATE TABLE `photos_tags` (
                                PRIMARY KEY (`photos_tags_id`),
                                KEY `photos_tags_fk_photos_id` (`photos_id`),
                                KEY `photos_tags_fk_tags_id` (`tags_id`),
-                               CONSTRAINT `photos_tags_fk_photos_id` FOREIGN KEY (`photos_id`) REFERENCES `photos` (`photos_id`),
-                               CONSTRAINT `photos_tags_fk_tags_id` FOREIGN KEY (`tags_id`) REFERENCES `tags` (`tags_id`)
+                               CONSTRAINT `photos_tags_fk_photos_id` FOREIGN KEY (`photos_id`) REFERENCES `photos` (`photos_id`) ON DELETE CASCADE,
+                               CONSTRAINT `photos_tags_fk_tags_id` FOREIGN KEY (`tags_id`) REFERENCES `tags` (`tags_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `photos_urls` (
@@ -196,7 +196,7 @@ CREATE TABLE `photos_urls` (
                                `s3_url` varchar(255) NOT NULL,
                                PRIMARY KEY (`photos_urls_id`),
                                UNIQUE KEY `UK_ny1g4l9bvm1eb6rhey30k22cg` (`photos_id`),
-                               CONSTRAINT `photos_urls_fk_photos_id` FOREIGN KEY (`photos_id`) REFERENCES `photos` (`photos_id`)
+                               CONSTRAINT `photos_urls_fk_photos_id` FOREIGN KEY (`photos_id`) REFERENCES `photos` (`photos_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `profile_urls` (
@@ -208,7 +208,7 @@ CREATE TABLE `profile_urls` (
                                 `s3_url` varchar(255) NOT NULL,
                                 PRIMARY KEY (`profile_urls_id`),
                                 UNIQUE KEY `UK_rs70ovr3s852k5kc731f30vc8` (`users_id`),
-                                CONSTRAINT `profile_urls_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`)
+                                CONSTRAINT `profile_urls_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `users_tags` (
@@ -220,8 +220,8 @@ CREATE TABLE `users_tags` (
                               PRIMARY KEY (`users_tags_id`),
                               KEY `users_tags_fk_tags_id` (`tags_id`),
                               KEY `users_tags_fk_users_id` (`users_id`),
-                              CONSTRAINT `users_tags_fk_tags_id` FOREIGN KEY (`tags_id`) REFERENCES `tags` (`tags_id`),
-                              CONSTRAINT `users_tags_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`)
+                              CONSTRAINT `users_tags_fk_tags_id` FOREIGN KEY (`tags_id`) REFERENCES `tags` (`tags_id`) ON DELETE CASCADE,
+                              CONSTRAINT `users_tags_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `views` (
@@ -233,9 +233,9 @@ CREATE TABLE `views` (
                          KEY `views_fk_exhibitions_id` (`exhibitions_id`),
                          KEY `views_fk_photos_id` (`photos_id`),
                          KEY `views_fk_users_id` (`users_id`),
-                         CONSTRAINT `views_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`),
-                         CONSTRAINT `views_fk_photos_id` FOREIGN KEY (`photos_id`) REFERENCES `photos` (`photos_id`),
-                         CONSTRAINT `views_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`)
+                         CONSTRAINT `views_fk_exhibitions_id` FOREIGN KEY (`exhibitions_id`) REFERENCES `exhibitions` (`exhibitions_id`) ON DELETE CASCADE,
+                         CONSTRAINT `views_fk_photos_id` FOREIGN KEY (`photos_id`) REFERENCES `photos` (`photos_id`) ON DELETE CASCADE,
+                         CONSTRAINT `views_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `withdraw_reasons` (
