@@ -348,17 +348,20 @@ public class AdditionServiceImpl implements AdditionService{
                         requestDto.getExhibitionLocation().getTown());
 
                 exhibitionLocationRepository.save(findExhibitionLocation);
-            }else{ // 첫 임시저장
-                ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
-                        .longitude(requestDto.getExhibitionLocation().getLongitude())
-                        .latitude(requestDto.getExhibitionLocation().getLatitude())
-                        .state(requestDto.getExhibitionLocation().getState())
-                        .city(requestDto.getExhibitionLocation().getCity())
-                        .town(requestDto.getExhibitionLocation().getTown())
-                        .build();
+            }else{ // 첫 임시저장 -> 여기부분이 필수가 되면 안됌, location 지정된 것이 없더라도 추가 가능하게끔
+                log.info("// 첫 임시저장 -> 여기부분이 필수가 되면 안됌, location 지정된 것이 없더라도 추가 가능하게끔");
 
-                exhibitionLocation.updateTemporaryExhibition(findTemporaryExhibition);
-                exhibitionLocationRepository.save(exhibitionLocation);
+                    ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
+                            .longitude(requestDto.getExhibitionLocation().getLongitude())
+                            .latitude(requestDto.getExhibitionLocation().getLatitude())
+                            .state(requestDto.getExhibitionLocation().getState())
+                            .city(requestDto.getExhibitionLocation().getCity())
+                            .town(requestDto.getExhibitionLocation().getTown())
+                            .build();
+
+                    exhibitionLocation.updateTemporaryExhibition(findTemporaryExhibition);
+                    exhibitionLocationRepository.save(exhibitionLocation);
+
             }
 
             temporaryExhibitionRepository.save(findTemporaryExhibition);
