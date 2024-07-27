@@ -350,7 +350,9 @@ public class AdditionServiceImpl implements AdditionService{
                 exhibitionLocationRepository.save(findExhibitionLocation);
             }else{ // 첫 임시저장 -> 여기부분이 필수가 되면 안됌, location 지정된 것이 없더라도 추가 가능하게끔
                 log.info("// 첫 임시저장 -> 여기부분이 필수가 되면 안됌, location 지정된 것이 없더라도 추가 가능하게끔");
-
+                if(requestDto.getExhibitionLocation().getCity() != null && requestDto.getExhibitionLocation().getTown() != null &&
+                        requestDto.getExhibitionLocation().getState() != null && requestDto.getExhibitionLocation().getLatitude() != null
+                && requestDto.getExhibitionLocation().getLongitude() != null){
                     ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
                             .longitude(requestDto.getExhibitionLocation().getLongitude())
                             .latitude(requestDto.getExhibitionLocation().getLatitude())
@@ -361,7 +363,7 @@ public class AdditionServiceImpl implements AdditionService{
 
                     exhibitionLocation.updateTemporaryExhibition(findTemporaryExhibition);
                     exhibitionLocationRepository.save(exhibitionLocation);
-
+                }
             }
 
             temporaryExhibitionRepository.save(findTemporaryExhibition);
