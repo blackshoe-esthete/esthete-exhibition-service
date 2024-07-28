@@ -51,6 +51,7 @@ public class MainHomeDto {
         private String authorName;
         private String authorProfileUrl;
         private String thumbnailUrl;
+        private Boolean isLiked;
         private List<PhotoResponse> photos;
         private MainHomeDto.LocationResponse location;
 
@@ -65,6 +66,10 @@ public class MainHomeDto {
                     .photos(PhotoResponse.of(exhibition.getPhotos()))
                     .location(MainHomeDto.LocationResponse.of(exhibition.getExhibitionLocation()))
                     .build();
+        }
+
+        public void updateIsLiked(boolean isLiked) {
+            this.isLiked = isLiked;
         }
     }
 

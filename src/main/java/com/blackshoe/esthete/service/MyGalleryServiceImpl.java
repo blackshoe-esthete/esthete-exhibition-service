@@ -179,7 +179,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         if (exhibitionRepository.existsByUserAndExhibitionId(user, exhibition.getExhibitionId())) {
             throw new MyGalleryException(MyGalleryErrorResult.CANNOT_LIKE_ON_OWN_EXHIBITION);
         }
-        if (likeRepository.existsByExhibitionId(exhibition.getExhibitionId())) {
+        if (likeRepository.existsByUserIdAndExhibitionId(user.getUserId(), exhibition.getExhibitionId())) {
             throw new MyGalleryException(MyGalleryErrorResult.IS_ALREADY_LIKED);
         }
 
@@ -201,7 +201,7 @@ public class MyGalleryServiceImpl implements MyGalleryService {
         if (exhibitionRepository.existsByUserAndExhibitionId(user, exhibition.getExhibitionId())) {
             throw new MyGalleryException(MyGalleryErrorResult.CANNOT_LIKE_ON_OWN_EXHIBITION);
         }
-        if (!likeRepository.existsByExhibitionId(exhibition.getExhibitionId())) {
+        if (!likeRepository.existsByUserIdAndExhibitionId(user.getUserId(), exhibition.getExhibitionId())) {
             throw new MyGalleryException(MyGalleryErrorResult.IS_NOT_LIKED);
         }
 
