@@ -259,6 +259,7 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     public MainHomeDto.ExhibitionDetailResponse getExhibitionDetails(String authorizationHeader, String exhibitionId) {
         Exhibition exhibition = exhibitionRepository.findByExhibitionId(UUID.fromString(exhibitionId))
                 .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION));
+        MainHomeDto.ExhibitionDetailResponse exhibitionDetailResponse = MainHomeDto.ExhibitionDetailResponse.of(exhibition);
 
         if (!Objects.isNull(authorizationHeader)) {
             User user = jwtUtil.getUserFromHeader(authorizationHeader);
@@ -270,8 +271,10 @@ public class ExhibitionServiceImpl implements ExhibitionService{
                     .user(user)
                     .build();
             viewRepository.save(view);
+            // 좋아요 여부 확인
+            exhibitionDetailResponse.updateIsLiked(likeRepository.existsByUserIdAndExhibitionId(user.getUserId(), exhibition.getExhibitionId()));
         }
-        return MainHomeDto.ExhibitionDetailResponse.of(exhibition);
+        return exhibitionDetailResponse;
     }
 
     // 댓글 전체 조회 메서드
