@@ -73,6 +73,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ExhibitionErrorResult errorResult = e.getExhibitionErrorResult();
         return ApiResponse.onFailure(errorResult);
     }
+    // Like Error
+    @ExceptionHandler(LikeException.class)
+    public ResponseEntity<ApiResponse<BaseErrorCode>> handleLikeException(LikeException e) {
+        LikeErrorResult errorResult = e.getLikeErrorResult();
+        return ApiResponse.onFailure(errorResult);
+    }
     // Kafka Error
     @ExceptionHandler(KafkaException.class)
     public ResponseEntity<ApiResponse<BaseErrorCode>> handleKafkaException(KafkaException e) {
