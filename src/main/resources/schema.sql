@@ -106,16 +106,16 @@ CREATE TABLE `delete_reasons` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `exhibitions_locations` (
-                                         `latitude` double NOT NULL,
-                                         `longitude` double NOT NULL,
+                                         `latitude` double DEFAULT NULL,
+                                         `longitude` double DEFAULT NULL,
                                          `created_at` datetime(6) DEFAULT NULL,
                                          `exhibitions_id` bigint DEFAULT NULL,
                                          `exhibitions_locations_id` bigint NOT NULL AUTO_INCREMENT,
                                          `temporary_exhibitions_id` bigint DEFAULT NULL,
                                          `updated_at` datetime(6) DEFAULT NULL,
-                                         `city` varchar(100) NOT NULL,
-                                         `state` varchar(100) NOT NULL,
-                                         `town` varchar(100) NOT NULL,
+                                         `city` varchar(100) DEFAULT NULL,
+                                         `state` varchar(100) DEFAULT NULL,
+                                         `town` varchar(100) DEFAULT NULL,
                                          PRIMARY KEY (`exhibitions_locations_id`),
                                          UNIQUE KEY `UK_mhsjkv8jeyriw7793i3sr6lrd` (`exhibitions_id`),
                                          UNIQUE KEY `UK_79m6rq2xbid8pmyh5ebktll3e` (`temporary_exhibitions_id`),

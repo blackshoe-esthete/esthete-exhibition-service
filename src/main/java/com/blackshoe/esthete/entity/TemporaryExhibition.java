@@ -39,13 +39,13 @@ public class TemporaryExhibition extends BaseEntity {
     @Column(name = "view_count")
     private Long viewCount;
 
-    @OneToOne(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = false)
     private ExhibitionLocation exhibitionLocation;
 
-    @OneToMany(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<ExhibitionTag> exhibitionTags;
 
-    @OneToMany(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "temporaryExhibition", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Photo> photos;
 
     @PrePersist
