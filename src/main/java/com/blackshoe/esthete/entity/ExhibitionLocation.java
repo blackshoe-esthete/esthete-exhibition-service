@@ -25,19 +25,19 @@ public class ExhibitionLocation extends BaseEntity {
     @JoinColumn(name = "temporary_exhibitions_id", foreignKey = @ForeignKey(name = "exhibitions_locations_fk_temporary_exhibitions_id"))
     private TemporaryExhibition temporaryExhibition;
 
-    @Column(name = "longitude", nullable = false, length = 20)
+    @Column(name = "longitude", length = 20)
     private Double longitude;
 
-    @Column(name = "latitude", nullable = false, length = 20)
+    @Column(name = "latitude", length = 20)
     private Double latitude;
 
-    @Column(name = "state", nullable = false, length = 100)
+    @Column(name = "state", length = 100)
     private String state;
 
-    @Column(name = "city", nullable = false, length = 100)
+    @Column(name = "city", length = 100)
     private String city;
 
-    @Column(name = "town", nullable = false, length = 100)
+    @Column(name = "town", length = 100)
     private String town;
 
     @Builder
