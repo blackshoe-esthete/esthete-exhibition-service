@@ -1,21 +1,18 @@
 package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.dto.FlaskDto;
-import com.blackshoe.esthete.entity.Exhibition;
-import com.blackshoe.esthete.entity.ExhibitionTag;
-import com.blackshoe.esthete.entity.User;
 import com.blackshoe.esthete.entity.UserTag;
 import com.blackshoe.esthete.exception.FlaskErrorResult;
 import com.blackshoe.esthete.exception.FlaskException;
-import com.blackshoe.esthete.repository.ExhibitionRepository;
-import com.blackshoe.esthete.repository.ExhibitionTagRepository;
-import com.blackshoe.esthete.repository.UserRepository;
-import com.blackshoe.esthete.repository.UserTagRepository;
+import com.blackshoe.esthete.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,70 +21,83 @@ public class FlaskServiceImpl implements FlaskService {
     private final UserTagRepository userTagRepository;
     private final ExhibitionRepository exhibitionRepository;
     private final ExhibitionTagRepository exhibitionTagRepository;
+    private final RecommendationRepository recommendationRepository;
 
     // Flask로 유저 정보를 반환하는 메서드
     @Override
+    @Transactional
     public List<FlaskDto.UserInfo> sendUserInfosToFlask() {
-        List<FlaskDto.UserInfo> userInfos = new ArrayList<>();
-        List<User> users = userRepository.findAll();
+        return userRepository.findAll().stream()
+                .map(user -> {
+                    List<UserTag> userTags = userTagRepository.findAllByUserId(user.getId())
+                            .orElse(Collections.emptyList());
 
-        for (User user : users) {
-            List<UserTag> userTags = userTagRepository.findAllByUserId(user.getId())
-                    .orElseThrow(() -> new FlaskException(FlaskErrorResult.NOT_FOUND_ALL_USER_TAGS));
-            List<String> tagNames = new ArrayList<>();
+                    if (userTags.isEmpty()) {
+                        return null;
+                    }
 
-            // 사용자의 태그 목록에서 태그 이름을 가져와서 리스트에 추가
-            for (UserTag userTag : userTags) {
-                String tagName = userTag.getTag().getName();
+                    List<String> tagNames = userTags.stream()
+                            .map(userTag -> userTag.getTag().getName())
+                            .distinct()
+                            .collect(Collectors.toList());
 
-                if (!tagNames.contains(tagName)) {
-                    tagNames.add(tagName);
-                }
-            }
-
-            // UserInfo DTO에 사용자의 ID와 태그 목록 설정
-            FlaskDto.UserInfo userInfo = FlaskDto.UserInfo.builder()
-                    .userId(user.getId())
-                    .userTagNames(tagNames)
-                    .build();
-
-            // 리스트에 UserInfo DTO 추가
-            userInfos.add(userInfo);
-        }
-
-        return userInfos;
+                    return FlaskDto.UserInfo.builder()
+                            .userId(user.getId())
+                            .userTagNames(tagNames)
+                            .build();
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
+
 
     // Flask로 전시 정보를 반환하는 메서드
     @Override
+    @Transactional
     public List<FlaskDto.ExhibitionInfo> sendExhibitionInfosToFlask() {
-        List<FlaskDto.ExhibitionInfo> exhibitionInfos = new ArrayList<>();
-        List<Exhibition> exhibitions = exhibitionRepository.findAll();
+        return exhibitionRepository.findAll().stream()
+                .map(exhibition -> {
+                    List<String> tagNames = exhibitionTagRepository.findAllByExhibitionId(exhibition.getId())
+                            .orElseThrow(() -> new FlaskException(FlaskErrorResult.NOT_FOUND_ALL_EXHIBITION_TAGS))
+                            .stream()
+                            .map(exhibitionTag -> exhibitionTag.getTag().getName())
+                            .distinct()
+                            .collect(Collectors.toList());
 
-        for (Exhibition exhibition : exhibitions) {
-            List<ExhibitionTag> exhibitionTags = exhibitionTagRepository.findAllByExhibitionId(exhibition.getId())
-                    .orElseThrow(() -> new FlaskException(FlaskErrorResult.NOT_FOUND_ALL_EXHIBITION_TAGS));
-            List<String> tagNames = new ArrayList<>();
+                    return FlaskDto.ExhibitionInfo.builder()
+                            .exhibitionId(exhibition.getId())
+                            .exhibitionTagNames(tagNames)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 
-            // 전시회의 태그 목록에서 태그 이름을 가져와서 리스트에 추가
-            for (ExhibitionTag exhibitionTag : exhibitionTags) {
-                String exhibitionName = exhibitionTag.getTag().getName();
+    // Flask에서 받은 추천 전시회를 Redis에 저장하는 메서드
+    @Override
+    @Transactional
+    public void saveRecommendations(List<FlaskDto.RecommendationInfo> recommendationInfos) {
+        // 기존 데이터 백업
+        recommendationRepository.backupData();
 
-                if (!tagNames.contains(exhibitionName)) {
-                    tagNames.add(exhibitionName);
-                }
-            }
+        try {
+            // 기존 데이터 삭제
+            recommendationRepository.clearData();
 
-            // ExhibitionInfo DTO에 전시회의 ID와 태그 목록 설정
-            FlaskDto.ExhibitionInfo exhibitionInfo = FlaskDto.ExhibitionInfo.builder()
-                    .exhibitionId(exhibition.getId())
-                    .exhibitionTagNames(tagNames)
-                    .build();
+            // 새로운 데이터 저장
+            recommendationInfos.forEach(recommendationInfo -> {
+                Long userId = recommendationInfo.getUserId();
+                recommendationInfo.getRecommendations().stream()
+                        .map(FlaskDto.Recommendation::getExhibitionId)
+                        .filter(exhibitionId -> exhibitionId != 0)
+                        .forEach(exhibitionId -> recommendationRepository.save(userId, exhibitionId));
+            });
 
-            // 리스트에 ExhibitionInfo DTO 추가
-            exhibitionInfos.add(exhibitionInfo);
+            // 새로운 데이터가 성공적으로 저장되었으면 백업 데이터 삭제
+            recommendationRepository.deleteBackupData();
+        } catch (Exception e) {
+            // 데이터 저장에 실패했으면 백업 데이터로 복원
+            recommendationRepository.restoreData();
+            throw e;
         }
-
-        return exhibitionInfos;
     }
 }
