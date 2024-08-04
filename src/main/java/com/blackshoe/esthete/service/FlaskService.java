@@ -7,4 +7,5 @@ import java.util.List;
 public interface FlaskService {
     List<FlaskDto.UserInfo> sendUserInfosToFlask();
     List<FlaskDto.ExhibitionInfo> sendExhibitionInfosToFlask();
+    void saveRecommendations(List<FlaskDto.RecommendationInfo> recommendationInfos);
 }
