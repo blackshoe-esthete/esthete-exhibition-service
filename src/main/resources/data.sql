@@ -42,6 +42,40 @@ INSERT INTO profile_urls (profile_urls_id, users_id, img_url, s3_url) VALUES
     (10, 10, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png')
     ON DUPLICATE KEY UPDATE profile_urls_id = profile_urls_id;
 
+-- 디폴트 유저 태그 삽입
+INSERT INTO users_tags (users_tags_id, users_id, tags_id)
+VALUES
+    (1, 1, 1),
+    (2, 1, 3),
+    (3, 1, 10),
+    (4, 2, 2),
+    (5, 2, 4),
+    (6, 2, 9),
+    (7, 3, 5),
+    (8, 3, 8),
+    (9, 3, 7),
+    (10, 4, 6),
+    (11, 4, 1),
+    (12, 4, 9),
+    (13, 5, 6),
+    (14, 5, 2),
+    (15, 5, 5),
+    (16, 6, 10),
+    (17, 6, 2),
+    (18, 6, 3),
+    (19, 7, 6),
+    (20, 7, 7),
+    (21, 7, 8),
+    (22, 8, 11),
+    (23, 8, 1),
+    (24, 8, 3),
+    (25, 9, 4),
+    (26, 9, 7),
+    (27, 9, 9),
+    (28, 10, 2),
+    (29, 10, 11),
+    (30, 10, 5)
+ON DUPLICATE KEY UPDATE users_tags_id = users_tags_id;
 
 -- 디폴트 임시저장 전시 삽입
 INSERT INTO temporary_exhibitions (temporary_exhibitions_id, temporary_exhibitions_uuid, users_id, thumbnail_url, title, description, created_at) VALUES
