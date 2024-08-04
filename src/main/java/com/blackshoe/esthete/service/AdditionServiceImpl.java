@@ -531,7 +531,7 @@ public class AdditionServiceImpl implements AdditionService{
         exhibitionRepository.save(exhibition);
 
         temporaryExhibition.deleteUser();
-        temporaryExhibitionRepository.delete(temporaryExhibition);
+//        temporaryExhibitionRepository.delete(temporaryExhibition);
 
         return exhibition;
     }
