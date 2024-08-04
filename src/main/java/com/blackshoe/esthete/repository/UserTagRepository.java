@@ -13,4 +13,5 @@ public interface UserTagRepository extends JpaRepository<UserTag,Long> {
     void deleteAllByUser(User user);
     List<UserTag> findAllByUser(User user);
     Optional<List<UserTag>> findAllByUserId(Long userId);
+    boolean existsByUser(User user);
 }

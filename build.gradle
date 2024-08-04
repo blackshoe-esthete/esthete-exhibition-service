@@ -16,7 +16,6 @@ repositories {
 }
 
 dependencies {
-	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client' // 이거 중복되는듯
 	// web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -30,30 +29,23 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.2'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.2'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.2'
-
+	// Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	// swagger
 	implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.20'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-
 	// Spring Context Support
 	implementation 'org.springframework:spring-context-support:5.3.9'
-
 	// AWS S3
 	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.0")
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
-
 	// Google gcp
 	implementation 'org.springframework.cloud:spring-cloud-gcp-dependencies:1.2.8.RELEASE'
-
-	//webflux
+	// webflux
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
-	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-
 	// kafka
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.apache.kafka:kafka-clients:3.6.0'
-
 }
 
 dependencyManagement {

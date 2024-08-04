@@ -31,12 +31,14 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     private final ExhibitionRepository exhibitionRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
+    private final UserTagRepository userTagRepository;
     private final ViewRepository viewRepository;
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
     private final PhotoRepository photoRepository;
     private final KafkaCommentReportProducerService kafkaCommentReportProducerService;
     private final KafkaPhotoReportProducerService kafkaPhotoReportProducerService;
+    private final RecommendationRepository recommendationRepository;
     private final JwtUtil jwtUtil;
 
     @Override
@@ -141,34 +143,58 @@ public class ExhibitionServiceImpl implements ExhibitionService{
     @Override
     public List<MainHomeDto.ExhibitionResponse> getRecommendExhibitions(String authorizationHeader) {
         Pageable top6 = PageRequest.of(0, 6);
-        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc(top6);
+        List<Exhibition> exhibitions;
 
         if (!Objects.isNull(authorizationHeader)) {
             User user = jwtUtil.getUserFromHeader(authorizationHeader);
-            // 추후 기존 회원은 추천 알고리즘을 통해 받는 식으로 변경할 예정
-            return MainHomeDto.ExhibitionResponse.of(exhibitions);
+            if (!userTagRepository.existsByUser(user)) {
+                exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc(top6);
+            } else {
+                List<Long> exhibitionIds = recommendationRepository.findAllByUserId(user.getId());
+
+                exhibitions = exhibitionIds.stream()
+                        .map(id -> exhibitionRepository.findById(id)
+                                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION)))
+                        .limit(6)
+                        .collect(Collectors.toList());
+            }
         } else {
-            return MainHomeDto.ExhibitionResponse.of(exhibitions);
+            exhibitions = exhibitionRepository.findTop6ByOrderByViewCountDesc(top6);
         }
+
+        return MainHomeDto.ExhibitionResponse.of(exhibitions);
     }
 
     // 개인 추천 전시회 조회 메서드 (태그 포함)
     @Override
     public List<MainHomeDto.ExhibitionResponse> getRecommendExhibitionsByTag(String authorizationHeader, String tagName) {
         Pageable top6 = PageRequest.of(0, 6);
+        List<Exhibition> exhibitions;
 
         if (!tagRepository.existsByName(tagName)) {
             throw new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TAG);
         }
-        List<Exhibition> exhibitions = exhibitionRepository.findTop6ByTagNameOrderByViewCountDesc(tagName, top6);
 
         if (!Objects.isNull(authorizationHeader)) {
             User user = jwtUtil.getUserFromHeader(authorizationHeader);
-            // 추후 기존 회원은 추천 알고리즘을 통해 받는 식으로 변경할 예정
-            return MainHomeDto.ExhibitionResponse.of(exhibitions);
+            if (!userTagRepository.existsByUser(user)) {
+                exhibitions = exhibitionRepository.findTop6ByTagNameOrderByViewCountDesc(tagName, top6);
+            } else {
+                List<Long> exhibitionIds = recommendationRepository.findAllByUserId(user.getId());
+
+                exhibitions = exhibitionIds.stream()
+                        .map(id -> exhibitionRepository.findById(id)
+                                .orElseThrow(() -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION)))
+                        .filter(exhibition -> exhibition.getExhibitionTags().stream()
+                                .anyMatch(exhibitionTag -> tagName.equals(exhibitionTag.getTag().getName())))
+                        .limit(6)
+                        .collect(Collectors.toList());
+            }
         } else {
-            return MainHomeDto.ExhibitionResponse.of(exhibitions);
+            exhibitions = exhibitionRepository.findTop6ByTagNameOrderByViewCountDesc(tagName, top6);
         }
+
+        return MainHomeDto.ExhibitionResponse.of(exhibitions);
     }
 
     // 소외 전시회 조회 메서드
