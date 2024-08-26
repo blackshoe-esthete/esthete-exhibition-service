@@ -134,7 +134,7 @@ public class MyGalleryDto {
                     .name(user.getNickname())
                     .introduce(user.getIntroduce())
                     .biography(user.getBiography())
-                    .profileUrl(user.getProfileUrl().getCloudfrontUrl())
+                    .profileUrl(user.getProfileUrl() != null ? user.getProfileUrl().getCloudfrontUrl() : null)
                     .followerCount(user.getFollowerCount())
                     .followingCount(user.getFollowingCount())
                     .build();
