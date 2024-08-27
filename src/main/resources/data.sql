@@ -1,16 +1,16 @@
 -- 태그 전체 삽입
-INSERT INTO tags (tags_uuid, name) VALUES
-                                                              (UNHEX(REPLACE('d20e2654-3c4a-4ebe-b1c9-5695ac2a6207', '-', '')), '초상화'),
-                                                              (UNHEX(REPLACE('fe96c294-b5f3-425e-a6de-8cc1b13beb5a', '-', '')), '풍경'),
-                                                              (UNHEX(REPLACE('118ccbfb-8caf-498b-913a-16a315b3a859', '-', '')), '거리'),
-                                                              (UNHEX(REPLACE('4a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab', '-', '')), '음식'),
-                                                              (UNHEX(REPLACE('ae4a3cee-f7e3-48a1-8b0a-eb4d177b2267', '-', '')), '패션'),
-                                                              (UNHEX(REPLACE('1f479a8d-dab2-4d95-96c9-73d5f7382a01', '-', '')), '건축'),
-                                                              (UNHEX(REPLACE('8969e7f1-2d1e-4a6d-b234-73c2aa7b24ff', '-', '')), '야경'),
-                                                              (UNHEX(REPLACE('9b11a16b-6786-4a28-8273-ff9e06b80318', '-', '')), '스포츠'),
-                                                              (UNHEX(REPLACE('35009d25-65e1-48da-800e-44be42bf3b4e', '-', '')), '저널리즘'),
-                                                              (UNHEX(REPLACE('775f2020-070f-4ba1-b601-b456b4a8c165', '-', '')), '야생'),
-                                                              (UNHEX(REPLACE('5b3a7d95-529d-42a4-a9eb-9e3fd3c42933', '-', '')), '미술')
+INSERT INTO tags (tags_id, tags_uuid, name) VALUES
+                                                              (1, UNHEX(REPLACE('d20e2654-3c4a-4ebe-b1c9-5695ac2a6207', '-', '')), '초상화'),
+                                                              (2, UNHEX(REPLACE('fe96c294-b5f3-425e-a6de-8cc1b13beb5a', '-', '')), '풍경'),
+                                                              (3, UNHEX(REPLACE('118ccbfb-8caf-498b-913a-16a315b3a859', '-', '')), '거리'),
+                                                              (4, UNHEX(REPLACE('4a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab', '-', '')), '음식'),
+                                                              (5, UNHEX(REPLACE('ae4a3cee-f7e3-48a1-8b0a-eb4d177b2267', '-', '')), '패션'),
+                                                              (6, UNHEX(REPLACE('1f479a8d-dab2-4d95-96c9-73d5f7382a01', '-', '')), '건축'),
+                                                              (7, UNHEX(REPLACE('8969e7f1-2d1e-4a6d-b234-73c2aa7b24ff', '-', '')), '야경'),
+                                                              (8, UNHEX(REPLACE('9b11a16b-6786-4a28-8273-ff9e06b80318', '-', '')), '스포츠'),
+                                                              (9, UNHEX(REPLACE('35009d25-65e1-48da-800e-44be42bf3b4e', '-', '')), '저널리즘'),
+                                                              (10, UNHEX(REPLACE('775f2020-070f-4ba1-b601-b456b4a8c165', '-', '')), '야생'),
+                                                              (11, UNHEX(REPLACE('5b3a7d95-529d-42a4-a9eb-9e3fd3c42933', '-', '')), '미술')
 ON DUPLICATE KEY UPDATE tags_uuid = tags_uuid;
 
 
@@ -31,25 +31,59 @@ INSERT INTO users (users_id, users_uuid, nickname, email, role, gender, introduc
 
 -- 디폴트 유저 프로필 URL 삽입
 INSERT INTO profile_urls (profile_urls_id, users_id, img_url, s3_url) VALUES
-    (1, 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (2, 2, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (3, 3, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (4, 4, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (5, 5, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (6, 6, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (7, 7, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (8, 8, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (9, 9, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg'),
-    (10, 10, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg')
+    (1, 1, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (2, 2, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (3, 3, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (4, 4, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (5, 5, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (6, 6, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (7, 7, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (8, 8, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (9, 9, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png'),
+    (10, 10, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png', 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png')
     ON DUPLICATE KEY UPDATE profile_urls_id = profile_urls_id;
 
+-- 디폴트 유저 태그 삽입
+INSERT INTO users_tags (users_tags_id, users_id, tags_id)
+VALUES
+    (1, 1, 1),
+    (2, 1, 3),
+    (3, 1, 10),
+    (4, 2, 2),
+    (5, 2, 4),
+    (6, 2, 9),
+    (7, 3, 5),
+    (8, 3, 8),
+    (9, 3, 7),
+    (10, 4, 6),
+    (11, 4, 1),
+    (12, 4, 9),
+    (13, 5, 6),
+    (14, 5, 2),
+    (15, 5, 5),
+    (16, 6, 10),
+    (17, 6, 2),
+    (18, 6, 3),
+    (19, 7, 6),
+    (20, 7, 7),
+    (21, 7, 8),
+    (22, 8, 11),
+    (23, 8, 1),
+    (24, 8, 3),
+    (25, 9, 4),
+    (26, 9, 7),
+    (27, 9, 9),
+    (28, 10, 2),
+    (29, 10, 11),
+    (30, 10, 5)
+ON DUPLICATE KEY UPDATE users_tags_id = users_tags_id;
 
 -- 디폴트 임시저장 전시 삽입
-INSERT INTO temporary_exhibitions (temporary_exhibitions_uuid, users_id, thumbnail_url, title, description, created_at) VALUES
-    (UNHEX(REPLACE('a5c6e3f7-8a91-4a54-bd3e-d0e77a8d4e7e', '-', '')), 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf1234.jpeg', '봄이다.', '봄이네요..', NOW()),
-    (UNHEX(REPLACE('b4f9f0ea-5b71-4dbf-a2de-1fc82b86d86b', '-', '')), 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf5678.jpeg', '여름이다.', '덥네요..', NOW()),
-    (UNHEX(REPLACE('c1e17a68-f30b-4fa1-9f6d-dde228bf9ff2', '-', '')), 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf9012.jpeg', '가을이다.', '좋네요..', NOW()),
-    (UNHEX(REPLACE('d2f0cb21-7c9e-4a5b-950e-ea1ef2a3ad75', '-', '')), 1, 'https://d30asln0ue7bf5.cloudfront.net/user/23e7b2b4-c1ac-4591-bb7f-c6706daf22aa/exhibition/c9189f9b-1e78-4117-a0e2-b9ca8ab27cf8/photo/asdf9012.jpeg', '겨울이다.', '춥네요..', NOW())
+INSERT INTO temporary_exhibitions (temporary_exhibitions_id, temporary_exhibitions_uuid, users_id, thumbnail_url, title, description, created_at) VALUES
+    (1, UNHEX(REPLACE('a5c6e3f7-8a91-4a54-bd3e-d0e77a8d4e7e', '-', '')), 1, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', '봄이다.', '봄이네요..', NOW()),
+    (2, UNHEX(REPLACE('b4f9f0ea-5b71-4dbf-a2de-1fc82b86d86b', '-', '')), 1, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', '여름이다.', '덥네요..', NOW()),
+    (3, UNHEX(REPLACE('c1e17a68-f30b-4fa1-9f6d-dde228bf9ff2', '-', '')), 1, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', '가을이다.', '좋네요..', NOW()),
+    (4, UNHEX(REPLACE('d2f0cb21-7c9e-4a5b-950e-ea1ef2a3ad75', '-', '')), 1, 'https://d1g6qszf7cmafu.cloudfront.net/exhibition/35519784-ce74-443b-8665-d1c00cafa6f5/exhibition-photos/7b75cde4-ba6b-405f-9a36-eafd2e7e163e.jpg', '겨울이다.', '춥네요..', NOW())
     ON DUPLICATE KEY UPDATE temporary_exhibitions_uuid = temporary_exhibitions_uuid;
 
 -- 디폴트 전시 삽입

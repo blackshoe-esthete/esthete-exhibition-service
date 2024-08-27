@@ -19,4 +19,6 @@ public interface ExhibitionTagRepository extends JpaRepository<ExhibitionTag,Lon
     Optional<List<ExhibitionTag>> findAllByTag(Tag tag);
 
     Optional<List<ExhibitionTag>> findAllByExhibition(Exhibition exhibition);
+
+    Optional<List<ExhibitionTag>> findAllByExhibitionId(Long exhibitionId);
 }

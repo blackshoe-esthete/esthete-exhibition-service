@@ -88,6 +88,9 @@ jobs:
                 -e SPRING_DATASOURCE_DDL_AUTO=${{ secrets.SPRING_DATASOURCE_DDL_AUTO }} \
                 -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
                 -e INITIAL_DB=${{ secrets.INITIAL_DB }} \
+                -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
+                -e REDIS_PORT=${{ secrets.REDIS_PORT }} \
+                -e REDIS_DB=${{ secrets.REDIS_DB }} \
                 -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
                 -e AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} \
                 -e AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \

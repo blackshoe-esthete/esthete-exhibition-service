@@ -112,6 +112,9 @@ public class AdditionServiceImpl implements AdditionService{
             //임시저장 데이터 삭제 후 전시 테이블로 이전
             Exhibition exhibition = transferTmpExhibitionToExhibition(findTemporaryExhibition.get());
 
+            //임시저장 데이터 삭제
+//            deleteTmpExhibtion(findTemporaryExhibition.get());
+
             return CreateExhibitionDto.CreateExhibitionResponse.builder()
                     .exhibitionId(exhibition.getExhibitionId())
                     .createdAt(exhibition.getCreatedAt())
@@ -140,7 +143,7 @@ public class AdditionServiceImpl implements AdditionService{
         }
     }
 
-
+    @Transactional
     public List<CreateExhibitionDto.ExhibitionPhotoImgUrl> uploadExhibitionPhotoWithFilter(List<MultipartFile> exhibitionPhotos, UUID temporaryExhibitionId, UUID exhibitionId){
         if(temporaryExhibitionId != null && exhibitionId == null){ // 임시저장 전시 경우, 설정값 업데이트
             TemporaryExhibition findTemporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(temporaryExhibitionId).orElseThrow(
@@ -235,7 +238,7 @@ public class AdditionServiceImpl implements AdditionService{
         }
         return exhibitionPhotoImgUrlDtos;
     }
-
+    @Transactional
     public void saveExhibitionPhoto(List<CreateExhibitionDto.ExhibitionPhotoImgUrl> exhibitionPhotoImgUrls, CreateExhibitionDto.CreateExhibitionRequest requestDto, UUID temporaryExhibitionId, UUID exhibitionId){
         if(temporaryExhibitionId != null && exhibitionId == null){ // 임시저장 경우
             TemporaryExhibition findTemporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(temporaryExhibitionId).orElseThrow(
@@ -306,7 +309,7 @@ public class AdditionServiceImpl implements AdditionService{
             findExhibition.setCloudfrontUrl(exhibitionPhotoImgUrls.get(0).getCloudfrontUrl());
         }
     }
-
+    @Transactional
     public void saveExhibitionPhotoInformation(UUID temporaryExhibitionId, CreateExhibitionDto.CreateExhibitionRequest requestDto, UUID exhibitionId){
         if(temporaryExhibitionId != null && exhibitionId == null){ //임시저장
             TemporaryExhibition findTemporaryExhibition = temporaryExhibitionRepository.findByTemporaryExhibitionId(temporaryExhibitionId).orElseThrow(
@@ -348,17 +351,22 @@ public class AdditionServiceImpl implements AdditionService{
                         requestDto.getExhibitionLocation().getTown());
 
                 exhibitionLocationRepository.save(findExhibitionLocation);
-            }else{ // 첫 임시저장
-                ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
-                        .longitude(requestDto.getExhibitionLocation().getLongitude())
-                        .latitude(requestDto.getExhibitionLocation().getLatitude())
-                        .state(requestDto.getExhibitionLocation().getState())
-                        .city(requestDto.getExhibitionLocation().getCity())
-                        .town(requestDto.getExhibitionLocation().getTown())
-                        .build();
+            }else{ // 첫 임시저장 -> 여기부분이 필수가 되면 안됌, location 지정된 것이 없더라도 추가 가능하게끔
+//                log.info("// 첫 임시저장 -> 여기부분이 필수가 되면 안됌, location 지정된 것이 없더라도 추가 가능하게끔");
+//                if(requestDto.getExhibitionLocation().getCity() != null && requestDto.getExhibitionLocation().getTown() != null &&
+//                        requestDto.getExhibitionLocation().getState() != null && requestDto.getExhibitionLocation().getLatitude() != null
+//                && requestDto.getExhibitionLocation().getLongitude() != null){
+                    ExhibitionLocation exhibitionLocation = ExhibitionLocation.builder()
+                            .longitude(requestDto.getExhibitionLocation().getLongitude())
+                            .latitude(requestDto.getExhibitionLocation().getLatitude())
+                            .state(requestDto.getExhibitionLocation().getState())
+                            .city(requestDto.getExhibitionLocation().getCity())
+                            .town(requestDto.getExhibitionLocation().getTown())
+                            .build();
 
-                exhibitionLocation.updateTemporaryExhibition(findTemporaryExhibition);
-                exhibitionLocationRepository.save(exhibitionLocation);
+                    exhibitionLocation.updateTemporaryExhibition(findTemporaryExhibition);
+                    exhibitionLocationRepository.save(exhibitionLocation);
+//                }
             }
 
             temporaryExhibitionRepository.save(findTemporaryExhibition);
@@ -389,8 +397,94 @@ public class AdditionServiceImpl implements AdditionService{
         }
 
     }
+//    @Transactional
+//    public Exhibition transferTmpExhibitionToExhibition(TemporaryExhibition temporaryExhibition){
+//        User user = userRepository.findByUserId(temporaryExhibition.getUser().getUserId()).orElseThrow(
+//                () -> new UserException(UserErrorResult.NOT_FOUND_USER));
+//
+//        Exhibition exhibition = Exhibition.builder().build();
+//        exhibition.setUser(user);
+//        exhibitionRepository.save(exhibition);
+//
+//        //thumbnail
+//        exhibition.setCloudfrontUrl(temporaryExhibition.getThumbnailUrl());
+//
+//        //photo
+//        List<Photo> photos = photoRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(
+//                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_PHOTO));
+//
+//        for(Photo photo : photos){
+//            photo.setExhibition(exhibition);
+//        }
+//
+//        //exhibitionInfo
+//        exhibition.updateExhibitionInfo(temporaryExhibition.getTitle(), temporaryExhibition.getDescription());
+//
+//        //exhibitionTag
+//        List<ExhibitionTag> exhibitionTags = exhibitionTagRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(
+//                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_TAG));
+//
+//        for(ExhibitionTag exhibitionTag : exhibitionTags){
+//            exhibitionTag.updateExhibition(exhibition);
+//        }
+//
+//        //exhibitionLocation
+//        ExhibitionLocation exhibitionLocation = exhibitionLocationRepository.findByTemporaryExhibition(temporaryExhibition).orElseThrow(
+//                () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION_LOCATION));
+//
+//        exhibitionLocation.updateExhibition(exhibition);
+//
+//        exhibitionRepository.save(exhibition);
+//
+//        log.info("임시저장 전시 옮기기, 자식들과 연관관계 끊기 -> 데이터 삭제");
+//        //임시저장 전시 자식들과 연관관계 끊기 -> 데이터 삭제
+//
+//        //thumbnail 삭제 -> 추가함
+//        temporaryExhibition.setCloudfrontUrl(null);
+//
+//        for(Photo photo : photos){
+//            photo.deleteTemporaryExhibition(temporaryExhibition);
+//        }
+//
+//        for(ExhibitionTag exhibitionTag : exhibitionTags){
+//            exhibitionTag.deleteTemporaryExhibition();
+//        }
+//
+//        exhibitionLocation.deleteTemporaryExhibition();
+//
+//        temporaryExhibition.deleteUser();
+//        temporaryExhibitionRepository.save(temporaryExhibition);
+//
+////        log.info("임시저장 전시 옮기기, 자식들과 연관관계 끊기 -> 데이터 삭제");
+////        //임시저장 전시 자식들과 연관관계 끊기 -> 데이터 삭제
+////
+////        //thumbnail 삭제 -> 추가함
+////        temporaryExhibition.setCloudfrontUrl(null);
+////
+////        for(Photo photo : photos){
+////            photo.deleteTemporaryExhibition(temporaryExhibition);
+////        }
+////
+////        for(ExhibitionTag exhibitionTag : exhibitionTags){
+////            exhibitionTag.deleteTemporaryExhibition();
+////        }
+////
+////        exhibitionLocation.deleteTemporaryExhibition();
+////
+////        temporaryExhibition.deleteUser();
+////
+////        temporaryExhibitionRepository.delete(temporaryExhibition);
+//
+//        return exhibition;
+//
+//    }
+//    @Transactional
+//    public void deleteTmpExhibtion(TemporaryExhibition temporaryExhibition){
+//        temporaryExhibitionRepository.delete(temporaryExhibition);
+//    }
 
-    public Exhibition transferTmpExhibitionToExhibition(TemporaryExhibition temporaryExhibition){
+    @Transactional
+    public Exhibition transferTmpExhibitionToExhibition(TemporaryExhibition temporaryExhibition) {
         User user = userRepository.findByUserId(temporaryExhibition.getUser().getUserId()).orElseThrow(
                 () -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
@@ -398,57 +492,48 @@ public class AdditionServiceImpl implements AdditionService{
         exhibition.setUser(user);
         exhibitionRepository.save(exhibition);
 
-        //thumbnail
+        // thumbnail 설정
         exhibition.setCloudfrontUrl(temporaryExhibition.getThumbnailUrl());
+        temporaryExhibition.setCloudfrontUrl(null);
 
-        //photo
+        // photo 설정 및 연관 관계 해제
         List<Photo> photos = photoRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(
                 () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_PHOTO));
 
-        for(Photo photo : photos){
+        for (Photo photo : photos) {
             photo.setExhibition(exhibition);
+            photo.setTemporaryExhibition(null); // 연관 관계 해제
+            photoRepository.save(photo); // 변경된 상태를 저장
         }
 
-        //exhibitionInfo
+        // exhibitionInfo 업데이트
         exhibition.updateExhibitionInfo(temporaryExhibition.getTitle(), temporaryExhibition.getDescription());
 
-        //exhibitionTag
+        // exhibitionTag 설정 및 연관 관계 해제
         List<ExhibitionTag> exhibitionTags = exhibitionTagRepository.findAllByTemporaryExhibition(temporaryExhibition).orElseThrow(
                 () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_TEMPORARY_EXHIBITION_TAG));
 
-        for(ExhibitionTag exhibitionTag : exhibitionTags){
+        for (ExhibitionTag exhibitionTag : exhibitionTags) {
             exhibitionTag.updateExhibition(exhibition);
+            exhibitionTag.updateTemporaryExhibition(null); // 연관 관계 해제
+            exhibitionTagRepository.save(exhibitionTag); // 변경된 상태를 저장
         }
 
-        //exhibitionLocation
+        // exhibitionLocation 설정 및 연관 관계 해제
         ExhibitionLocation exhibitionLocation = exhibitionLocationRepository.findByTemporaryExhibition(temporaryExhibition).orElseThrow(
                 () -> new ExhibitionException(ExhibitionErrorResult.NOT_FOUND_EXHIBITION_LOCATION));
 
         exhibitionLocation.updateExhibition(exhibition);
+        exhibitionLocation.updateTemporaryExhibition(null); // 연관 관계 해제
+        exhibitionLocationRepository.save(exhibitionLocation); // 변경된 상태를 저장
 
+        // exhibition 저장
         exhibitionRepository.save(exhibition);
 
-        log.info("임시저장 전시 옮기기, 자식들과 연관관계 끊기 -> 데이터 삭제");
-        //임시저장 전시 자식들과 연관관계 끊기 -> 데이터 삭제
-
-        //thumbnail 삭제 -> 추가함
-        temporaryExhibition.setCloudfrontUrl(null);
-
-        for(Photo photo : photos){
-            photo.deleteTemporaryExhibition(temporaryExhibition);
-        }
-
-        for(ExhibitionTag exhibitionTag : exhibitionTags){
-            exhibitionTag.deleteTemporaryExhibition();
-        }
-
-        exhibitionLocation.deleteTemporaryExhibition();
-
         temporaryExhibition.deleteUser();
-
         temporaryExhibitionRepository.delete(temporaryExhibition);
 
         return exhibition;
-
     }
+
 }

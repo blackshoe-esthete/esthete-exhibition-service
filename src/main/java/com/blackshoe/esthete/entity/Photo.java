@@ -36,7 +36,7 @@ public class Photo extends BaseEntity {
     @Column(name = "gray_scale")
     private Float grayScale;
 
-    @OneToOne(mappedBy = "photo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "photo", cascade = CascadeType.ALL, orphanRemoval = false)
     private PhotoUrl photoUrl;
 
     @PrePersist

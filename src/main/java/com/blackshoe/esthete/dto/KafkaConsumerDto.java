@@ -1,6 +1,8 @@
 package com.blackshoe.esthete.dto;
 
 import com.blackshoe.esthete.common.constant.Gender;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -30,4 +32,31 @@ public class KafkaConsumerDto {
             this.birthday = birthday;
         }
     }
+
+    @Data
+    @NoArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class DeletePhoto {
+        private String photoId;
+
+        @Builder
+        public DeletePhoto(String photoId) {
+            this.photoId = photoId;
+        }
+    }
+
+    @Data
+    @NoArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class DeleteComment {
+        private String commentId;
+
+        @Builder
+        public DeleteComment(String commentId) {
+            this.commentId = commentId;
+        }
+    }
+
 }
